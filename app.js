@@ -9,14 +9,18 @@
         token,
         apiBaseUrl,
         flowStatus,
+        subscriptionStatus: "",
         categories: [],
         allSourceIds: [],
         dbPreferencesEnabled: false,
     };
 
+    const topActions = document.getElementById("top-actions");
+    const subscriptionStatusPill = document.getElementById("subscription-status-pill");
     const flowBanner = document.getElementById("flow-banner");
     const flowBannerTitle = document.getElementById("flow-banner-title");
     const flowBannerText = document.getElementById("flow-banner-text");
+    const unsubscribeButton = document.getElementById("unsubscribe-button");
     const resubscribeButton = document.getElementById("resubscribe-button");
     const statusMessage = document.getElementById("status-message");
     const legacyNote = document.getElementById("legacy-note");
@@ -35,6 +39,7 @@
     function setBusy(isBusy) {
         saveButton.disabled = isBusy;
         resetButton.disabled = isBusy;
+        unsubscribeButton.disabled = isBusy;
         resubscribeButton.disabled = isBusy;
     }
 
@@ -67,7 +72,6 @@
         flowBanner.classList.toggle("is-hidden", !visible);
         flowBanner.classList.toggle("flow-banner-warm", status === "unsubscribed");
         flowBanner.classList.toggle("flow-banner-success", status === "resubscribed");
-        resubscribeButton.classList.toggle("is-hidden", status !== "unsubscribed");
 
         if (!visible) {
             flowBannerTitle.textContent = "";
@@ -83,6 +87,48 @@
 
         flowBannerTitle.textContent = "You have been resubscribed successfully.";
         flowBannerText.textContent = "Your subscription is active again. You can update your settings below.";
+    }
+
+    function updateTopActions() {
+        const status = state.subscriptionStatus;
+        const knownStatus = status === "active" || status === "unsubscribed";
+        topActions.classList.toggle("is-hidden", !knownStatus);
+        unsubscribeButton.classList.toggle("is-hidden", status !== "active");
+        resubscribeButton.classList.toggle("is-hidden", status !== "unsubscribed");
+
+        if (!knownStatus) {
+            subscriptionStatusPill.textContent = "";
+            subscriptionStatusPill.className = "status-pill";
+            return;
+        }
+
+        if (status === "active") {
+            subscriptionStatusPill.textContent = "Status: Active";
+            subscriptionStatusPill.className = "status-pill status-pill-active";
+            return;
+        }
+
+        subscriptionStatusPill.textContent = "Status: Unsubscribed";
+        subscriptionStatusPill.className = "status-pill status-pill-inactive";
+    }
+
+    function syncFlowStatusWithSubscriptionStatus() {
+        if (state.flowStatus === "unsubscribed" && state.subscriptionStatus !== "unsubscribed") {
+            state.flowStatus = "";
+        }
+        if (state.flowStatus === "resubscribed" && state.subscriptionStatus !== "active") {
+            state.flowStatus = "";
+        }
+    }
+
+    function updateUrlStatus(status) {
+        const nextUrl = new URL(window.location.href);
+        if (status) {
+            nextUrl.searchParams.set("status", status);
+        } else {
+            nextUrl.searchParams.delete("status");
+        }
+        window.history.replaceState({}, "", nextUrl.toString());
     }
 
     function renderSources(categories, selectedSourceIds) {
@@ -237,7 +283,11 @@
             state.allSourceIds = state.categories.flatMap((category) =>
                 (category.sources || []).map((source) => source.id)
             ).sort((a, b) => a - b);
+            state.subscriptionStatus = payload.status || "";
             state.dbPreferencesEnabled = Boolean(payload.db_preferences_enabled);
+            syncFlowStatusWithSubscriptionStatus();
+            updateTopActions();
+            updateFlowBanner();
 
             dailyCheckbox.checked = Boolean(payload.daily_enabled);
             weeklyCheckbox.checked = Boolean(payload.weekly_enabled);
@@ -258,6 +308,46 @@
                 return;
             }
             showFatal("Temporary error. Please try again later or contact us.");
+        } finally {
+            setBusy(false);
+        }
+    }
+
+    async function unsubscribe() {
+        if (!token) {
+            showFatal("This manage-subscription link is incomplete.");
+            return;
+        }
+
+        const unsubscribeUrl = buildUnsubscribeApiUrl();
+        if (!unsubscribeUrl) {
+            setStatus("Could not unsubscribe right now. Please try again later or contact us.", "warm");
+            return;
+        }
+
+        setBusy(true);
+        setStatus("Unsubscribing...");
+
+        try {
+            const response = await fetch(unsubscribeUrl, {
+                method: "GET",
+                headers: {
+                    Accept: "text/plain",
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error("request_failed");
+            }
+
+            state.subscriptionStatus = "unsubscribed";
+            state.flowStatus = "unsubscribed";
+            updateTopActions();
+            updateFlowBanner();
+            updateUrlStatus("unsubscribed");
+            setStatus("You have been unsubscribed successfully.");
+        } catch (_error) {
+            setStatus("Could not unsubscribe right now. Please try again later or contact us.", "warm");
         } finally {
             setBusy(false);
         }
@@ -290,11 +380,11 @@
                 throw new Error("request_failed");
             }
 
+            state.subscriptionStatus = "active";
             state.flowStatus = "resubscribed";
+            updateTopActions();
             updateFlowBanner();
-            const nextUrl = new URL(window.location.href);
-            nextUrl.searchParams.set("status", "resubscribed");
-            window.history.replaceState({}, "", nextUrl.toString());
+            updateUrlStatus("resubscribed");
             setStatus("You have been resubscribed successfully.");
         } catch (_error) {
             setStatus("Could not resubscribe right now. Please try again later or contact us.", "warm");
@@ -326,7 +416,9 @@
             );
 
             state.dbPreferencesEnabled = Boolean(payload.db_preferences_enabled);
+            state.subscriptionStatus = payload.status || state.subscriptionStatus;
             legacyNote.classList.add("is-hidden");
+            updateTopActions();
             setStatus("Your subscription settings have been saved.");
         } catch (_error) {
             setStatus("Could not save your changes. Please try again later or contact us.", "warm");
@@ -351,7 +443,9 @@
             dailyCheckbox.checked = Boolean(payload.daily_enabled);
             weeklyCheckbox.checked = Boolean(payload.weekly_enabled);
             state.dbPreferencesEnabled = Boolean(payload.db_preferences_enabled);
+            state.subscriptionStatus = payload.status || state.subscriptionStatus;
             legacyNote.classList.add("is-hidden");
+            updateTopActions();
             renderSources(state.categories, payload.selected_source_ids);
             setStatus("Your subscription settings have been reset.");
         } catch (_error) {
@@ -361,9 +455,11 @@
         }
     }
 
+    unsubscribeButton.addEventListener("click", unsubscribe);
     saveButton.addEventListener("click", savePreferences);
     resetButton.addEventListener("click", resetPreferences);
     resubscribeButton.addEventListener("click", resubscribe);
+    updateTopActions();
     updateFlowBanner();
     loadPreferences();
 })();

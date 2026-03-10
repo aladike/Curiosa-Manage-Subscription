@@ -111,10 +111,48 @@ h2 {
     color: var(--brand-orange);
 }
 
-.flow-banner {
+.is-hidden {
+    display: none !important;
+}
+
+.top-actions {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 12px;
+    margin: 18px 0 0;
+}
+
+.top-action-buttons {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.status-pill-active {
+    color: var(--brand-green);
+    background: var(--brand-green-soft);
+}
+
+.status-pill-inactive {
+    color: var(--brand-red);
+    background: var(--brand-red-soft);
+}
+
+.flow-banner {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
     gap: 16px;
     margin: 18px 0 0;
     padding: 14px 16px;
@@ -332,6 +370,11 @@ h2 {
     color: #ffffff;
 }
 
+.button-success-soft {
+    background: var(--brand-green-soft);
+    color: var(--brand-green);
+}
+
 .button-danger {
     background: var(--brand-red-soft);
     color: var(--brand-red);
@@ -353,6 +396,11 @@ h2 {
     .actions-card {
         flex-direction: column;
         align-items: stretch;
+    }
+
+    .top-actions {
+        align-items: stretch;
+        flex-direction: column;
     }
 
     .category-header {
