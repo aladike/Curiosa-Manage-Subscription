@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Curiosa Manage Subscription</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <script>
+        window.CURIOSA_MANAGE_CONFIG = window.CURIOSA_MANAGE_CONFIG || {
+            apiBaseUrl: "https://bwdddngjubszavoftljo.supabase.co/functions/v1/manage-subscription"
+        };
+    </script>
+
+    <main class="page-shell">
+        <section class="hero-card">
+            <p class="eyebrow">Curiosa Manage Subscription</p>
+            <h1>Manage your newsletter settings</h1>
+            <p class="intro">
+                Update your daily and weekly delivery settings and choose which Curiosa sources should shape
+                your daily briefing.
+            </p>
+            <div id="flow-banner" class="flow-banner is-hidden" role="status" aria-live="polite">
+                <div class="flow-banner-copy">
+                    <strong id="flow-banner-title"></strong>
+                    <p id="flow-banner-text"></p>
+                </div>
+                <button id="resubscribe-button" class="button button-success is-hidden" type="button">Resubscribe</button>
+            </div>
+            <p id="legacy-note" class="note note-warm is-hidden">
+                Your account is still using legacy YAML-based daily preferences. Saving here will switch you to the new
+                DB-managed settings.
+            </p>
+            <p id="status-message" class="note is-hidden" role="status" aria-live="polite"></p>
+        </section>
+
+        <section class="card">
+            <div class="card-heading">
+                <h2>Subscription settings</h2>
+                <p>Choose which digests Curiosa should send you.</p>
+            </div>
+            <div class="toggle-grid">
+                <label class="toggle-card">
+                    <input type="checkbox" id="daily-enabled">
+                    <span>
+                        <strong>Daily briefing</strong>
+                        <small>Receive the daily Curiosa email.</small>
+                    </span>
+                </label>
+                <label class="toggle-card">
+                    <input type="checkbox" id="weekly-enabled">
+                    <span>
+                        <strong>Weekly digest</strong>
+                        <small>Receive the weekly Curiosa roundup.</small>
+                    </span>
+                </label>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-heading">
+                <h2>Sources by category</h2>
+                <p>These source selections affect the daily briefing only.</p>
+            </div>
+            <div id="sources-root" class="sources-root"></div>
+        </section>
+
+        <section class="actions-card">
+            <button id="save-button" class="button button-primary" type="button">Save changes</button>
+            <button id="reset-button" class="button button-danger" type="button">Reset settings</button>
+        </section>
+    </main>
+
+    <script src="./app.js" defer></script>
+</body>
+</html>
