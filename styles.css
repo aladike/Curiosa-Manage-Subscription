@@ -4,10 +4,10 @@
     --text: #101828;
     --muted: #4b5563;
     --line: #dbe4ef;
-    --brand-blue: #0050ab;
-    --brand-blue-soft: #e7f1ff;
+    --brand-blue: #1e3a8a;
+    --brand-blue-soft: #dbeafe;
     --brand-orange: #9a3412;
-    --brand-orange-soft: #ffefdb;
+    --brand-orange-soft: #fef2e8;
     --brand-green: #166534;
     --brand-green-soft: #dcfce7;
     --brand-red: #be485d;
@@ -38,7 +38,7 @@ body {
 .actions-card {
     background: var(--card);
     border: 1px solid var(--line);
-    border-radius: 18px;
+    border-radius: 12px;
     box-shadow: var(--shadow);
 }
 
@@ -95,7 +95,7 @@ h2 {
 .note {
     margin: 16px 0 0;
     padding: 12px 14px;
-    border-radius: 12px;
+    border-radius: 8px;
     font-size: 14px;
     line-height: 1.5;
     background: var(--brand-blue-soft);
@@ -156,7 +156,7 @@ h2 {
     gap: 16px;
     margin: 18px 0 0;
     padding: 14px 16px;
-    border-radius: 14px;
+    border-radius: 10px;
     border: 1px solid var(--line);
 }
 
@@ -209,7 +209,7 @@ h2 {
     align-items: flex-start;
     padding: 16px;
     border: 1px solid var(--line);
-    border-radius: 14px;
+    border-radius: 10px;
     background: #fcfdff;
 }
 
@@ -240,7 +240,7 @@ h2 {
 
 .category-card {
     border: 1px solid var(--line);
-    border-radius: 16px;
+    border-radius: 12px;
     padding: 18px;
     background: #fcfdff;
 }
@@ -390,7 +390,7 @@ h2 {
     .card,
     .actions-card {
         padding: 18px;
-        border-radius: 16px;
+        border-radius: 12px;
     }
 
     .actions-card {
