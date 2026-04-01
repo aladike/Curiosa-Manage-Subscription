@@ -6,7 +6,6 @@
     const form = document.getElementById("subscribe-form");
     const emailInput = document.getElementById("email");
     const inviteCodeInput = document.getElementById("invite-code");
-    const companyInput = document.getElementById("company");
     const submittedAtInput = document.getElementById("submitted-at");
     const submitButton = document.getElementById("submit-button");
     const statusMessage = document.getElementById("status-message");
@@ -31,7 +30,6 @@
         submitButton.disabled = isBusy;
         emailInput.disabled = isBusy;
         inviteCodeInput.disabled = isBusy;
-        companyInput.disabled = isBusy;
     }
 
     function normalizeManageUrl(rawUrl) {
@@ -72,7 +70,6 @@
                 body: JSON.stringify({
                     email,
                     inviteCode,
-                    company: companyInput.value,
                     submittedAt: Number(submittedAtInput.value) || Date.now(),
                 }),
             });
