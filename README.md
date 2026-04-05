@@ -10,6 +10,11 @@ This folder is a frontend-only GitHub Pages MVP for Curiosa subscription managem
   - daily on/off
   - weekly on/off
   - daily source selection by category
+  - source catalogs that now include RSS, HTML and email-backed sources
+  - the three separate IAPP Media & Blogs email sources:
+    - `IAPP Daily Dashboard`
+    - `IAPP AI Governance Dashboard`
+    - `IAPP Europe Data Protection Digest`
 - Saves and resets preferences through the Edge Function only
 
 The browser does not talk to Supabase tables directly.
