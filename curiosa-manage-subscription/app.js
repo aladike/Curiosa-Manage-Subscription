@@ -15,6 +15,14 @@
         dbPreferencesEnabled: false,
     };
 
+    const IAPP_EMAIL_SOURCES = [
+        { id: 18, label: "IAPP Daily Dashboard", format: "email" },
+        { id: 56, label: "IAPP AI Governance Dashboard", format: "email" },
+        { id: 57, label: "IAPP Europe Data Protection Digest", format: "email" },
+    ];
+    const IAPP_SOURCE_IDS = new Set(IAPP_EMAIL_SOURCES.map((source) => source.id));
+    const IAPP_SOURCE_LABELS = new Set(IAPP_EMAIL_SOURCES.map((source) => source.label));
+
     const topActions = document.getElementById("top-actions");
     const subscriptionStatusPill = document.getElementById("subscription-status-pill");
     const flowBanner = document.getElementById("flow-banner");
@@ -129,6 +137,40 @@
             nextUrl.searchParams.delete("status");
         }
         window.history.replaceState({}, "", nextUrl.toString());
+    }
+
+    function normalizeCategories(categories) {
+        const normalizedCategories = Array.isArray(categories)
+            ? categories.map((category) => ({
+                ...category,
+                sources: Array.isArray(category.sources)
+                    ? category.sources.map((source) => ({ ...source }))
+                    : [],
+            }))
+            : [];
+
+        let mediaCategory = normalizedCategories.find((category) => category.id === "media");
+        if (!mediaCategory) {
+            mediaCategory = { id: "media", label: "Media & Blogs", sources: [] };
+            normalizedCategories.push(mediaCategory);
+        }
+
+        mediaCategory.label = mediaCategory.label || "Media & Blogs";
+        mediaCategory.sources = mediaCategory.sources.filter((source) => {
+            return !IAPP_SOURCE_IDS.has(source.id) && !IAPP_SOURCE_LABELS.has(source.label);
+        });
+
+        IAPP_EMAIL_SOURCES.forEach((source) => {
+            mediaCategory.sources.push({ ...source });
+        });
+
+        mediaCategory.sources.sort((left, right) => {
+            return String(left.label || "").localeCompare(String(right.label || ""), undefined, {
+                sensitivity: "base",
+            });
+        });
+
+        return normalizedCategories;
     }
 
     function renderSources(categories, selectedSourceIds) {
@@ -279,7 +321,7 @@
                 { method: "GET", headers: { Accept: "application/json" } },
             );
 
-            state.categories = payload.categories || [];
+            state.categories = normalizeCategories(payload.categories || []);
             state.allSourceIds = state.categories.flatMap((category) =>
                 (category.sources || []).map((source) => source.id)
             ).sort((a, b) => a - b);
