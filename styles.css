@@ -106,10 +106,10 @@ body {
 
 h1 {
     margin: 0 0 12px;
-    font-size: clamp(32px, 4vw, 42px);
+    font-size: clamp(31px, 3.7vw, 40px);
     line-height: 1.08;
     letter-spacing: -0.03em;
-    max-width: 13ch;
+    max-width: none;
 }
 
 h2 {
@@ -141,7 +141,7 @@ h2 {
 }
 
 .note {
-    margin: 16px 0 0;
+    margin: 14px 0 0;
     padding: 13px 15px;
     border-radius: 12px;
     border: 1px solid rgba(30, 58, 138, 0.12);
@@ -171,7 +171,7 @@ h2 {
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    margin: 22px 0 0;
+    margin: 28px 0 0;
     padding: 14px 16px;
     border: 1px solid rgba(30, 58, 138, 0.12);
     border-radius: 14px;
@@ -212,7 +212,7 @@ h2 {
     align-items: flex-start;
     justify-content: flex-start;
     gap: 16px;
-    margin: 18px 0 0;
+    margin: 15px 0 0;
     padding: 15px 17px;
     border-radius: 14px;
     border: 1px solid var(--line);
@@ -310,10 +310,12 @@ h2 {
 
 .sources-root {
     display: grid;
-    gap: 20px;
+    gap: 22px;
 }
 
 .category-card {
+    position: relative;
+    overflow: hidden;
     border: 1px solid var(--line);
     border-radius: 16px;
     padding: 18px;
@@ -327,7 +329,7 @@ h2 {
 }
 
 .category-card p {
-    margin: 0 0 16px;
+    margin: 0 0 18px;
     color: #5d6777;
     font-size: 14px;
 }
@@ -337,7 +339,7 @@ h2 {
     align-items: center;
     justify-content: space-between;
     gap: 14px;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
 }
 
 .category-title {
@@ -345,8 +347,16 @@ h2 {
 }
 
 .category-card-authorities {
-    border-color: rgba(154, 52, 18, 0.14);
-    background: linear-gradient(180deg, rgba(255, 250, 245, 0.98) 0%, #ffffff 100%);
+    border-color: rgba(154, 52, 18, 0.1);
+    background: linear-gradient(180deg, rgba(255, 252, 248, 0.76) 0%, #ffffff 100%);
+}
+
+.category-card-authorities::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(154, 52, 18, 0.46), rgba(154, 52, 18, 0.16) 72%, rgba(154, 52, 18, 0));
 }
 
 .category-card-authorities .category-title {
@@ -388,15 +398,15 @@ h2 {
 .sources-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 10px;
+    gap: 12px;
 }
 
 .pill {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    min-height: 24px;
-    padding: 0 10px;
+    min-height: 22px;
+    padding: 0 9px;
     border: 1px solid transparent;
     border-radius: 999px;
     font-size: 11px;
@@ -409,18 +419,19 @@ h2 {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 4px;
+    gap: 12px;
+    margin-bottom: 5px;
 }
 
 .source-name {
     display: inline-block;
+    line-height: 1.35;
 }
 
 .source-badges {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
     flex-wrap: wrap;
 }
 
@@ -435,13 +446,13 @@ h2 {
 
 .pill-format {
     color: #1d4ed8;
-    background: rgba(219, 234, 254, 0.64);
+    background: rgba(219, 234, 254, 0.56);
     border-color: rgba(30, 58, 138, 0.12);
 }
 
 .pill-authorities {
     color: var(--brand-orange);
-    background: rgba(254, 242, 232, 0.84);
+    background: rgba(254, 242, 232, 0.72);
     border-color: rgba(154, 52, 18, 0.1);
 }
 
@@ -489,7 +500,9 @@ h2 {
 }
 
 .actions-card .button-danger {
-    background: rgba(255, 255, 255, 0.88);
+    background: rgba(255, 255, 255, 0.72);
+    color: #a24a5e;
+    border-color: rgba(190, 72, 93, 0.14);
     box-shadow: none;
 }
 
@@ -502,9 +515,15 @@ h2 {
     }
 
     .category-card-authorities .source-card:has(input:checked) {
-        border-color: rgba(154, 52, 18, 0.22);
-        background: linear-gradient(180deg, rgba(254, 242, 232, 0.8) 0%, #ffffff 100%);
-        box-shadow: 0 10px 24px rgba(154, 52, 18, 0.08);
+        border-color: rgba(154, 52, 18, 0.16);
+        background: linear-gradient(180deg, rgba(254, 242, 232, 0.56) 0%, #ffffff 100%);
+        box-shadow: 0 8px 20px rgba(154, 52, 18, 0.06);
+    }
+}
+
+@media (min-width: 641px) {
+    .hero-card h1 {
+        white-space: nowrap;
     }
 }
 
@@ -572,5 +591,6 @@ h2 {
 
     h1 {
         max-width: none;
+        white-space: normal;
     }
 }
