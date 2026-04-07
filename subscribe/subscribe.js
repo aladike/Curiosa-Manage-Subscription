@@ -6,6 +6,7 @@
     const form = document.getElementById("subscribe-form");
     const emailInput = document.getElementById("email");
     const inviteCodeInput = document.getElementById("invite-code");
+    const trapFieldInput = document.getElementById("trap-field");
     const submittedAtInput = document.getElementById("submitted-at");
     const submitButton = document.getElementById("submit-button");
     const statusMessage = document.getElementById("status-message");
@@ -30,6 +31,9 @@
         submitButton.disabled = isBusy;
         emailInput.disabled = isBusy;
         inviteCodeInput.disabled = isBusy;
+        if (trapFieldInput) {
+            trapFieldInput.disabled = isBusy;
+        }
     }
 
     function normalizeManageUrl(rawUrl) {
@@ -70,6 +74,7 @@
                 body: JSON.stringify({
                     email,
                     inviteCode,
+                    subscriptionHint: trapFieldInput ? trapFieldInput.value : "",
                     submittedAt: Number(submittedAtInput.value) || Date.now(),
                 }),
             });
