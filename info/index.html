@@ -130,11 +130,11 @@
         }
 
         main {
-            padding: 42px 0 0;
+            padding: 18px 0 0;
         }
 
         .hero {
-            padding: 34px 0 38px;
+            padding: 18px 0 32px;
         }
 
         .badge {
@@ -181,7 +181,7 @@
         }
 
         .section {
-            padding: 38px 0;
+            padding: 26px 0;
         }
 
         .section-heading {
@@ -397,12 +397,19 @@
             line-height: 1.55;
         }
 
-        .chip-row,
-        .signal-row {
+        .chip-row {
             display: flex;
             align-items: center;
             gap: 5px;
             flex-wrap: wrap;
+            margin-top: 7px;
+        }
+
+        .signal-row {
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
+            flex-wrap: nowrap;
             margin-top: 7px;
         }
 
@@ -461,6 +468,8 @@
             color: #374151;
             font-size: 12px;
             line-height: 1.45;
+            flex: 1;
+            min-width: 0;
         }
 
         .meta {
@@ -527,6 +536,10 @@
 
         .email-preview-footer span:last-child {
             white-space: nowrap;
+        }
+
+        #access.section {
+            padding-top: 14px;
         }
 
         .access-panel {
