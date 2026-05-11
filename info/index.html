@@ -754,9 +754,9 @@
             <span class="badge">Research project</span>
             <h1 id="hero-title">Regulatory monitoring for data protection and digital law</h1>
             <p class="hero-copy">
-                Curiosa is an automated system for tracking and prioritising developments across GDPR, AI Act,
-                and related frameworks — delivering structured daily and weekly briefings for compliance and
-                legal professionals.
+                Curiosa is an automated research system for tracking and prioritising developments across GDPR,
+                AI Act, and related frameworks. It collects updates from regulators, authorities, and legal
+                sources daily — and delivers them as structured briefings for compliance and legal professionals.
             </p>
         </section>
 
@@ -768,17 +768,29 @@
                 <article class="feature-card">
                     <span class="feature-icon" aria-hidden="true"><i class="ti ti-building-bank"></i></span>
                     <h3>Regulatory authorities</h3>
-                    <p>DPAs, EU institutions, and national bodies across Europe and beyond.</p>
+                    <p>
+                        News titles and sources are always preserved as original — no rewriting, no paraphrasing.
+                        Only the summary is AI-generated: a concise, factual extract with minimal interpretation.
+                    </p>
                 </article>
                 <article class="feature-card">
                     <span class="feature-icon" aria-hidden="true"><i class="ti ti-brain"></i></span>
                     <h3>AI-assisted ranking</h3>
-                    <p>Each item is summarised, classified, and scored for compliance relevance.</p>
+                    <p>
+                        Each item is processed through a pipeline of 12 prompts that structure, classify, and
+                        summarise content with minimal creativity. Ranking combines AI priority signals with
+                        rule-based metrics across five principles: authority weight, signal type (Action / Watch /
+                        Monitor / FYI), source diversity cap, AI priority score with confidence, and tier
+                        partitioning into high and low relevance.
+                    </p>
                 </article>
                 <article class="feature-card">
                     <span class="feature-icon" aria-hidden="true"><i class="ti ti-adjustments-horizontal"></i></span>
                     <h3>Source personalisation</h3>
-                    <p>Choose which sources to follow. Manage delivery settings at any time.</p>
+                    <p>
+                        Choose which sources to follow. Manage delivery settings at any time. Email addresses are
+                        stored in a database, never shared or sold, and protected at rest.
+                    </p>
                 </article>
             </div>
         </section>
@@ -814,7 +826,7 @@
 
         <section class="page-shell section" aria-labelledby="example-title">
             <div class="section-heading">
-                <h2 id="example-title">Example briefing — 09 May 2026</h2>
+                <h2 id="example-title">Example briefing — real output, sources blurred</h2>
             </div>
             <div class="email-preview" aria-label="Illustrative Curiosa briefing preview">
                 <div class="email-header">
@@ -853,7 +865,10 @@
                     </div>
                     <div class="signal-row">
                         <span class="signal-badge signal-weight-red">Action</span>
-                        <span class="signal-text">Bestehende Datentransfervereinbarungen mit Drittlandanbietern prüfen.</span>
+                        <span class="signal-text">
+                            Bestehende Datentransfervereinbarungen mit Drittlandanbietern auf Art. 44 ff.
+                            DSGVO-Konformität prüfen — insbesondere bei Anbietern mit Russland-Bezug.
+                        </span>
                     </div>
                     <div class="meta"><span class="blur-meta">Quelle und Link verborgen</span></div>
                 </article>
@@ -875,7 +890,10 @@
                     </div>
                     <div class="signal-row">
                         <span class="signal-badge signal-weight-yellow">Watch</span>
-                        <span class="signal-text">Ausgang der Beschwerde beobachten — könnte Auswirkungen auf Auskunftspflichten haben.</span>
+                        <span class="signal-text">
+                            Ausgang der Beschwerde beobachten — mögliche Auswirkungen auf Auskunftspflichten und
+                            technische Infrastruktur für Betroffenenanfragen nach Art. 15 DSGVO.
+                        </span>
                     </div>
                     <div class="meta"><span class="blur-meta">Quelle und Link verborgen</span></div>
                 </article>
@@ -937,8 +955,9 @@
             <div class="access-panel">
                 <h2 id="access-title">Invite-only access</h2>
                 <p class="section-copy">
-                    Curiosa is a private research project. Subscriptions are available by invitation only.
-                    Already have a code? Use Activate.
+                    Curiosa is a private research project. Access is by invitation only. If you are a compliance
+                    professional, lawyer, or researcher working with data protection or digital regulation, you are
+                    welcome to request access.
                 </p>
                 <div class="access-actions">
                     <button class="button button-outline" type="button" data-open-access>Request access</button>
@@ -995,12 +1014,18 @@
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
         // ── EmailJS config — fill these in before deploying ──
         const EMAILJS_PUBLIC_KEY   = '2L7XVVUGS0yNjHoJk';
         const EMAILJS_SERVICE_ID   = 'service_ulaent6';
         const EMAILJS_TEMPLATE_ID  = 'template_35ocq9r';
+        const emailJsConfig = {
+            publicKey: '2L7XVVUGS0yNjHoJk',
+            serviceId: 'service_ulaent6',
+            templateId: 'template_35ocq9r',
+            sdkUrl: 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js',
+        };
+        let emailJsLoadPromise = null;
 
         document.addEventListener('DOMContentLoaded', () => {
             const form = document.getElementById('access-form');
@@ -1038,11 +1063,33 @@
                 sendButton.disabled = isBusy;
             }
 
+            function loadEmailJs() {
+                if (window.emailjs) {
+                    return Promise.resolve(window.emailjs);
+                }
+
+                if (!emailJsLoadPromise) {
+                    emailJsLoadPromise = new Promise((resolve, reject) => {
+                        const script = document.createElement('script');
+                        script.src = emailJsConfig.sdkUrl;
+                        script.onload = () => resolve(window.emailjs);
+                        script.onerror = () => reject(new Error('emailjs_unavailable'));
+                        document.head.appendChild(script);
+                    });
+                }
+
+                return emailJsLoadPromise;
+            }
+
             setSubmittedAt();
 
-            if (window.emailjs) {
-                window.emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
-            }
+            loadEmailJs()
+                .then((client) => {
+                    if (client) {
+                        client.init({ publicKey: emailJsConfig.publicKey });
+                    }
+                })
+                .catch(() => {});
 
             openButtons.forEach((button) => {
                 button.addEventListener('click', () => {
@@ -1076,15 +1123,16 @@
 
                 setBusy(true);
                 try {
-                    if (!window.emailjs) {
+                    const client = await loadEmailJs();
+                    if (!client) {
                         throw new Error('emailjs_unavailable');
                     }
 
-                    await window.emailjs.send(
-                        EMAILJS_SERVICE_ID,
-                        EMAILJS_TEMPLATE_ID,
+                    await client.send(
+                        emailJsConfig.serviceId,
+                        emailJsConfig.templateId,
                         payload,
-                        { publicKey: EMAILJS_PUBLIC_KEY },
+                        { publicKey: emailJsConfig.publicKey },
                     );
 
                     form.reset();
