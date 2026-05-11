@@ -16,6 +16,16 @@
     </script>
 
     <main class="page-shell">
+        <p style="margin: 0 0 18px;">
+            <a
+                href="../info/"
+                style="font-size: 13px; color: #64748b; text-decoration: none;"
+                referrerpolicy="no-referrer"
+            >
+                ← Curiosa
+            </a>
+        </p>
+
         <section class="hero-card">
             <p class="eyebrow">Private Invitation</p>
             <h1>Activate your Curiosa subscription</h1>
@@ -78,6 +88,55 @@
             </form>
         </section>
 
+        <section id="request-access-card" class="card">
+            <p class="eyebrow">No invite code?</p>
+            <h2 style="font-size: 20px; margin-bottom: 8px;">Request access</h2>
+            <p class="intro" style="font-size: 15px; margin-bottom: 20px;">
+                Leave your name and email. If there is capacity, you will receive an invite code directly.
+            </p>
+
+            <form id="request-form" novalidate>
+                <input id="req-submitted-at" name="submittedAt" type="hidden" value="">
+                <div class="trap-field" aria-hidden="true">
+                    <label for="req-trap">Leave this field blank</label>
+                    <input
+                        id="req-trap"
+                        name="subscription_hint"
+                        type="text"
+                        tabindex="-1"
+                        autocomplete="off"
+                        data-lpignore="true"
+                        data-1p-ignore="true"
+                    >
+                </div>
+                <div class="field-grid">
+                    <label class="field">
+                        <span>Name</span>
+                        <input id="req-name" name="name" type="text" autocomplete="name" maxlength="120" required>
+                    </label>
+                    <label class="field">
+                        <span>Email</span>
+                        <input id="req-email" name="email" type="email" autocomplete="email" maxlength="320" required>
+                    </label>
+                </div>
+                <label class="field" style="display: block; margin-top: 12px;">
+                    <span>Brief note (optional)</span>
+                    <textarea
+                        id="req-note"
+                        name="note"
+                        maxlength="1200"
+                        style="width: 100%; margin-top: 4px; min-height: 72px; padding: 8px 10px; border-radius: 8px; border: 1px solid #dbe4ef; font: inherit; resize: vertical;"
+                    ></textarea>
+                </label>
+                <p style="font-size: 13px; color: #64748b; margin: 12px 0 16px; line-height: 1.5;">
+                    This sends a message to the project maintainer only. No marketing, no third-party services,
+                    no automated processing.
+                </p>
+                <button id="req-submit" class="button" type="submit">Send request</button>
+                <p id="req-status" class="status-note is-hidden" role="status" aria-live="polite"></p>
+            </form>
+        </section>
+
         <section id="success-card" class="card success-card is-hidden" aria-live="polite">
             <p class="eyebrow success-eyebrow">Subscription Active</p>
             <h2>Your Curiosa subscription is active</h2>
@@ -101,5 +160,101 @@
         <p class="noscript-note">JavaScript is required to request a Curiosa subscription.</p>
     </noscript>
     <script src="./subscribe.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>
+        const EMAILJS_PUBLIC_KEY = '2L7XVVUGS0yNjHoJk';
+        const EMAILJS_SERVICE_ID = 'service_ulaent6';
+        const EMAILJS_TEMPLATE_ID = 'template_35ocq9r';
+        const emailJsConfig = {
+            publicKey: '2L7XVVUGS0yNjHoJk',
+            serviceId: 'service_ulaent6',
+            templateId: 'template_35ocq9r',
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('request-form');
+            const submittedAtInput = document.getElementById('req-submitted-at');
+            const trapInput = document.getElementById('req-trap');
+            const nameInput = document.getElementById('req-name');
+            const emailInput = document.getElementById('req-email');
+            const noteInput = document.getElementById('req-note');
+            const submitButton = document.getElementById('req-submit');
+            const statusMessage = document.getElementById('req-status');
+            const minimumHumanDelayMs = 3000;
+
+            function setSubmittedAt() {
+                submittedAtInput.value = String(Date.now());
+            }
+
+            function setStatus(message, tone) {
+                statusMessage.textContent = message || '';
+                statusMessage.classList.toggle('is-hidden', !message);
+                statusMessage.classList.toggle('status-note-success', tone === 'success');
+                statusMessage.classList.toggle('status-note-warm', tone === 'warm');
+            }
+
+            function setBusy(isBusy) {
+                submitButton.disabled = isBusy;
+                nameInput.disabled = isBusy;
+                emailInput.disabled = isBusy;
+                noteInput.disabled = isBusy;
+                trapInput.disabled = isBusy;
+            }
+
+            setSubmittedAt();
+
+            if (window.emailjs && emailJsConfig.publicKey) {
+                window.emailjs.init({ publicKey: emailJsConfig.publicKey });
+            }
+
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                setStatus('', '');
+
+                if (trapInput.value.trim()) {
+                    return;
+                }
+
+                const submittedAt = Number(submittedAtInput.value) || Date.now();
+                if (Date.now() - submittedAt < minimumHumanDelayMs) {
+                    return;
+                }
+
+                const payload = {
+                    name: nameInput.value.trim(),
+                    email: emailInput.value.trim(),
+                    note: noteInput.value.trim(),
+                };
+
+                if (!payload.name || !payload.email) {
+                    setStatus('Enter your name and email address.', 'warm');
+                    return;
+                }
+
+                setBusy(true);
+
+                try {
+                    if (!window.emailjs) {
+                        throw new Error('emailjs_unavailable');
+                    }
+
+                    await window.emailjs.send(
+                        emailJsConfig.serviceId,
+                        emailJsConfig.templateId,
+                        payload,
+                        { publicKey: emailJsConfig.publicKey },
+                    );
+
+                    form.reset();
+                    setSubmittedAt();
+                    setStatus('Request sent. You will hear back if an invite is available.', 'success');
+                } catch (_error) {
+                    setStatus('Something went wrong. Please try again later.', 'warm');
+                } finally {
+                    setBusy(false);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
