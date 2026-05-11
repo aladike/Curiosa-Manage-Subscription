@@ -10,7 +10,10 @@
     --brand-orange-soft: #fef2e8;
     --brand-green: #166534;
     --brand-green-soft: #dcfce7;
-    --shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+    --brand-red: #be485d;
+    --brand-red-soft: #fdecef;
+    --shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+    --shadow-soft: 0 10px 24px rgba(15, 23, 42, 0.06);
 }
 
 * {
@@ -22,8 +25,9 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
     color: var(--text);
     background:
-        radial-gradient(circle at top right, rgba(30, 58, 138, 0.12), transparent 26%),
-        linear-gradient(180deg, #f7fbff 0%, var(--bg) 100%);
+        radial-gradient(circle at top right, rgba(30, 58, 138, 0.12), transparent 28%),
+        radial-gradient(circle at top left, rgba(154, 52, 18, 0.05), transparent 22%),
+        linear-gradient(180deg, #f8fbff 0%, #f2f6fb 100%);
 }
 
 .page-shell {
@@ -33,6 +37,8 @@ body {
 
 .hero-card,
 .card {
+    position: relative;
+    overflow: hidden;
     background: var(--card);
     border: 1px solid var(--line);
     border-radius: 16px;
@@ -40,33 +46,64 @@ body {
 }
 
 .hero-card {
-    padding: 28px;
+    padding: 30px;
     margin-bottom: 18px;
+    border-color: rgba(30, 58, 138, 0.14);
+    background: linear-gradient(180deg, rgba(246, 250, 255, 0.98) 0%, #ffffff 100%);
+}
+
+.hero-card::before,
+.success-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 4px;
+    background: linear-gradient(90deg, rgba(30, 58, 138, 0.96), rgba(30, 58, 138, 0.44) 60%, rgba(154, 52, 18, 0.28));
+}
+
+.hero-card::after {
+    content: "";
+    position: absolute;
+    right: -72px;
+    top: -86px;
+    width: 260px;
+    height: 260px;
+    background: radial-gradient(circle, rgba(30, 58, 138, 0.11) 0%, rgba(30, 58, 138, 0) 72%);
+    pointer-events: none;
 }
 
 .card {
     padding: 24px;
+    background: linear-gradient(180deg, rgba(252, 253, 255, 0.98) 0%, #ffffff 100%);
 }
 
 .eyebrow {
-    margin: 0 0 8px;
+    display: inline-flex;
+    align-items: center;
+    margin: 0 0 12px;
+    padding: 6px 11px;
+    border-radius: 999px;
     font-size: 12px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--brand-blue);
     font-weight: 700;
+    background: rgba(219, 234, 254, 0.76);
 }
 
 h1 {
     margin: 0 0 12px;
     font-size: clamp(32px, 4vw, 42px);
     line-height: 1.08;
+    letter-spacing: -0.03em;
+    max-width: 13ch;
 }
 
 h2 {
     margin: 0 0 12px;
     font-size: clamp(28px, 3.6vw, 34px);
     line-height: 1.12;
+    letter-spacing: -0.03em;
 }
 
 .intro,
@@ -74,6 +111,17 @@ h2 {
     margin: 0;
     color: var(--muted);
     line-height: 1.65;
+}
+
+.intro {
+    max-width: 43rem;
+    font-size: 17px;
+    color: #41536b;
+}
+
+.card form {
+    display: grid;
+    gap: 0;
 }
 
 .field-grid {
@@ -99,17 +147,25 @@ h2 {
     padding: 14px 16px;
     font: inherit;
     color: var(--text);
-    background: #fcfdff;
+    background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
 
 .field input:focus {
-    outline: 2px solid rgba(30, 58, 138, 0.14);
+    outline: 2px solid rgba(30, 58, 138, 0.12);
     outline-offset: 1px;
     border-color: rgba(30, 58, 138, 0.42);
+    box-shadow: 0 0 0 4px rgba(219, 234, 254, 0.42);
 }
 
 .note {
     margin-top: 16px;
+    padding: 14px 16px;
+    border: 1px solid rgba(30, 58, 138, 0.12);
+    border-radius: 14px;
+    background: linear-gradient(180deg, rgba(235, 244, 255, 0.92) 0%, rgba(255, 255, 255, 0.98) 100%);
+    color: var(--brand-blue);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
 .trap-field {
@@ -122,10 +178,13 @@ h2 {
 
 .status-note {
     margin: 16px 0 0;
-    padding: 12px 14px;
-    border-radius: 10px;
+    padding: 13px 15px;
+    border: 1px solid rgba(30, 58, 138, 0.12);
+    border-radius: 14px;
     font-size: 14px;
     line-height: 1.55;
+    background: linear-gradient(180deg, rgba(235, 244, 255, 0.92) 0%, rgba(255, 255, 255, 0.98) 100%);
+    color: var(--brand-blue);
 }
 
 .is-hidden {
@@ -133,24 +192,27 @@ h2 {
 }
 
 .status-note-success {
-    background: var(--brand-green-soft);
+    background: linear-gradient(180deg, rgba(220, 252, 231, 0.94) 0%, rgba(255, 255, 255, 0.98) 100%);
     color: var(--brand-green);
+    border-color: rgba(22, 101, 52, 0.16);
 }
 
 .status-note-warm {
-    background: var(--brand-orange-soft);
+    background: linear-gradient(180deg, rgba(254, 242, 232, 0.94) 0%, rgba(255, 255, 255, 0.98) 100%);
     color: var(--brand-orange);
+    border-color: rgba(154, 52, 18, 0.16);
 }
 
 .success-card {
     margin-top: 18px;
     border-color: rgba(22, 101, 52, 0.18);
-    background:
-        linear-gradient(180deg, rgba(220, 252, 231, 0.55) 0%, #ffffff 100%);
+    background: linear-gradient(180deg, rgba(236, 253, 243, 0.92) 0%, #ffffff 100%);
+    box-shadow: var(--shadow-soft);
 }
 
 .success-eyebrow {
     color: var(--brand-green);
+    background: rgba(220, 252, 231, 0.82);
 }
 
 .success-copy {
@@ -164,7 +226,7 @@ h2 {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border: 0;
+    border: 1px solid transparent;
     border-radius: 999px;
     padding: 13px 20px;
     font: inherit;
@@ -172,6 +234,8 @@ h2 {
     color: #fff;
     background: var(--brand-blue);
     cursor: pointer;
+    box-shadow: 0 10px 22px rgba(30, 58, 138, 0.18);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
 
 .button:disabled {
@@ -182,11 +246,22 @@ h2 {
 .noscript-note {
     width: min(760px, calc(100% - 32px));
     margin: 0 auto 24px;
-    padding: 12px 14px;
-    border-radius: 10px;
-    background: var(--brand-orange-soft);
+    padding: 13px 15px;
+    border: 1px solid rgba(154, 52, 18, 0.16);
+    border-radius: 14px;
+    background: linear-gradient(180deg, rgba(254, 242, 232, 0.94) 0%, rgba(255, 255, 255, 0.98) 100%);
     color: var(--brand-orange);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+}
+
+@media (hover: hover) {
+    .field input:hover {
+        border-color: rgba(30, 58, 138, 0.18);
+    }
+
+    .button:not(:disabled):hover {
+        transform: translateY(-1px);
+    }
 }
 
 @media (max-width: 640px) {
@@ -198,5 +273,16 @@ h2 {
     .hero-card,
     .card {
         padding: 20px;
+    }
+
+    .hero-card::after {
+        right: -96px;
+        top: -108px;
+        width: 220px;
+        height: 220px;
+    }
+
+    h1 {
+        max-width: none;
     }
 }

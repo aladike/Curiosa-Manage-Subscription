@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Curiosa Subscribe</title>
+    <link rel="stylesheet" href="./subscribe.css">
+</head>
+<body>
+    <script>
+        window.CURIOSA_SUBSCRIBE_CONFIG = window.CURIOSA_SUBSCRIBE_CONFIG || {
+            apiBaseUrl: "https://bwdddngjubszavoftljo.supabase.co/functions/v1/request-subscription"
+        };
+    </script>
+
+    <main class="page-shell">
+        <section class="hero-card">
+            <p class="eyebrow">Private Invitation</p>
+            <h1>Activate your Curiosa subscription</h1>
+            <p class="intro">
+                Curiosa is a private, invite-only email briefing. Enter your email address and one-time invite
+                code to activate delivery.
+            </p>
+        </section>
+
+        <section id="subscribe-card" class="card">
+            <form id="subscribe-form" novalidate>
+                <input id="submitted-at" name="submitted-at" type="hidden" value="">
+                <div class="field-grid">
+                    <label class="field">
+                        <span>Email</span>
+                        <input
+                            id="email"
+                            name="email"
+                            type="email"
+                            autocomplete="email"
+                            inputmode="email"
+                            autocapitalize="off"
+                            spellcheck="false"
+                            maxlength="320"
+                            required
+                        >
+                    </label>
+                    <label class="field">
+                        <span>One-time invite code</span>
+                        <input
+                            id="invite-code"
+                            name="invite-code"
+                            type="password"
+                            autocomplete="off"
+                            autocapitalize="off"
+                            spellcheck="false"
+                            maxlength="256"
+                            required
+                        >
+                    </label>
+                </div>
+                <div class="trap-field" aria-hidden="true">
+                    <label for="trap-field">Leave this field blank</label>
+                    <input
+                        id="trap-field"
+                        name="subscription_hint"
+                        type="text"
+                        tabindex="-1"
+                        autocomplete="off"
+                        data-lpignore="true"
+                        data-1p-ignore="true"
+                    >
+                </div>
+                <p class="note">
+                    Activation includes Daily and Weekly delivery. After that, you can manage delivery settings,
+                    source preferences, and subscription status from your settings page.
+                </p>
+                <p id="status-message" class="status-note is-hidden" role="status" aria-live="polite"></p>
+                <button id="submit-button" class="button" type="submit">Activate subscription</button>
+            </form>
+        </section>
+
+        <section id="success-card" class="card success-card is-hidden" aria-live="polite">
+            <p class="eyebrow success-eyebrow">Subscription Active</p>
+            <h2>Your Curiosa subscription is active</h2>
+            <p class="success-copy">
+                Open your settings to manage delivery, source preferences, or update subscription status when
+                needed.
+            </p>
+            <a
+                id="manage-link"
+                class="button"
+                href="#"
+                rel="nofollow noreferrer"
+                referrerpolicy="no-referrer"
+            >
+                Open subscription settings
+            </a>
+        </section>
+    </main>
+
+    <noscript>
+        <p class="noscript-note">JavaScript is required to request a Curiosa subscription.</p>
+    </noscript>
+    <script src="./subscribe.js" defer></script>
+</body>
+</html>
