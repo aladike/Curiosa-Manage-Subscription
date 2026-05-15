@@ -289,195 +289,302 @@
         .email-preview {
             overflow: hidden;
             border: 1px solid var(--border-light);
-            border-radius: 14px;
-            background: #F5F7FA;
-            padding: 14px;
+            border-radius: 12px;
+            background: #EEF2F7;
+            padding: 18px;
             box-shadow: var(--shadow);
         }
 
-        .email-header {
-            background: #1e2d45;
-            border-radius: 12px;
-            padding: 18px 20px;
-            margin-bottom: 10px;
+        .email-preview + .email-preview {
+            margin-top: 18px;
+        }
+
+        .email-preview-inner {
+            width: 100%;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .email-header-top {
+            background: #14233B;
+            border-radius: 10px 10px 0 0;
+            padding: 18px 20px 14px;
         }
 
         .email-title {
-            margin: 0 0 5px;
-            font-size: 22px;
-            font-weight: 800;
-            color: #f5f8ff;
-            letter-spacing: -0.018em;
+            margin: 0;
+            font-size: 21px;
+            font-weight: 600;
+            color: #FFFFFF;
+            line-height: 1.2;
+            letter-spacing: -0.015em;
+        }
+
+        .email-title span {
+            color: #A8B5CC;
+            font-weight: 400;
         }
 
         .email-subtitle {
-            margin: 0 0 14px;
+            margin: 4px 0 0;
             font-size: 12px;
-            color: #c7d4ea;
+            color: #A8B5CC;
+        }
+
+        .email-header-pulse {
+            margin-bottom: 16px;
+            border-radius: 0 0 10px 10px;
+            padding: 12px 20px;
+            background: #1B2D49;
         }
 
         .pulse-grid {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 8px;
         }
 
-        .pulse-card {
-            flex: 1;
-            min-width: 0;
-            border: 1px solid rgba(199, 212, 234, 0.18);
-            border-radius: 9px;
-            padding: 9px 10px;
-            background: rgba(255, 255, 255, 0.07);
-        }
-
-        .pulse-label {
-            display: flex;
+        .pulse-category {
+            display: block;
             align-items: center;
-            gap: 7px;
-            color: #f5f8ff;
+            color: #FFFFFF;
             font-size: 12px;
-            font-weight: 800;
-            line-height: 1.25;
+            font-weight: 600;
+            line-height: 1.3;
         }
 
         .pulse-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 999px;
-            flex: 0 0 auto;
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            margin-right: 6px;
+            vertical-align: middle;
         }
 
-        .pulse-sub {
-            margin-top: 5px;
-            color: #c7d4ea;
+        .pulse-sublabel {
+            margin-top: 3px;
+            color: #8aa4be;
             font-size: 11px;
             line-height: 1.35;
+        }
+
+        .trends-section {
+            margin: 0 0 10px;
+            padding: 14px 16px;
+            border: 1px solid #E1E7F0;
+            border-left: 3px solid rgb(27, 95, 165);
+            border-radius: 8px;
+            background: #FFFFFF;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+        }
+
+        .trends-title {
+            margin: 0 0 7px;
+            color: #14233B;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.35;
+        }
+
+        .trend-item {
+            margin: 4px 0;
+            color: #4B5563;
+            font-size: 13px;
+            line-height: 1.45;
+        }
+
+        .trend-item strong {
+            color: #14233B;
+        }
+
+        .trend-delta {
+            display: inline-block;
+            margin-left: 4px;
+            color: rgb(27, 95, 165);
+            font-weight: 600;
+        }
+
+        .news-source-mask.trend-source-mask {
+            width: 230px;
+            max-width: 100%;
         }
 
         .news-item {
             background: #fff;
-            border: 1px solid #E5E7EB;
-            border-left: 3px solid #1e3a8a;
-            border-radius: 10px;
-            padding: 13px 15px 10px;
-            margin-bottom: 8px;
-            box-shadow: 0 1px 3px rgba(15,23,42,0.05);
+            border: 1px solid #E1E7F0;
+            border-left: 3px solid rgb(27, 95, 165);
+            border-radius: 8px;
+            padding: 16px 18px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 2px rgba(15,23,42,0.04);
         }
 
-        .news-heading {
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
+        .news-item-last {
+            margin-bottom: 0;
+        }
+
+        .news-kicker {
             margin-bottom: 7px;
+            color: #6B7280;
+            font-size: 12px;
+            line-height: 1.5;
         }
 
         .news-index {
-            flex: 0 0 auto;
-            font-size: 11px;
-            font-weight: 600;
-            color: #1e3a8a;
-            background: rgba(30,58,138,0.1);
-            padding: 1px 6px;
+            display: inline-block;
+            margin-right: 6px;
+            padding: 1px 5px;
             border-radius: 4px;
-        }
-
-        .news-title {
-            margin: 0;
-            font-size: 15px;
-            font-weight: 600;
-            color: #112764;
-            letter-spacing: -0.006em;
-            line-height: 1.35;
-        }
-
-        .news-content {
-            margin: 0 0 8px;
-            font-size: 13px;
-            color: #374151;
-            line-height: 1.55;
-        }
-
-        .chip-row {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            flex-wrap: wrap;
-            margin-top: 7px;
-        }
-
-        .signal-row {
-            display: flex;
-            align-items: baseline;
-            gap: 5px;
-            flex-wrap: nowrap;
-            margin-top: 7px;
-        }
-
-        .chip-pill {
-            background: #F5F6F8;
-            color: #5A6270;
-            border: 1px solid #E4E7EC;
-            border-radius: 6px;
-            padding: 2px 7px;
+            background: #F0F2F5;
+            color: #9CA3AF;
+            font-family: "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
             font-size: 10px;
-            line-height: 1.35;
+            line-height: 1.3;
+            letter-spacing: 0.04em;
+            vertical-align: middle;
         }
 
-        .chip-pill-authority {
-            background: #F5EFF9;
-            border-color: #C9ADDF;
-            color: #5B2D8E;
+        .news-source-mask {
+            display: inline-block;
+            width: 128px;
+            max-width: 34vw;
+            height: 12px;
+            border-radius: 4px;
+            background: #DCE4EF;
+            filter: blur(3.5px);
+            vertical-align: middle;
+            user-select: none;
         }
 
-        .chip-pill-accent {
+        .kicker-divider {
+            display: inline-block;
+            margin: 0 8px;
+            color: #D1D9E3;
+            font-weight: 300;
+            vertical-align: middle;
+        }
+
+        .chip-kicker {
+            display: inline-block;
+            padding: 2px 7px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 500;
+            line-height: 1.3;
+            vertical-align: middle;
+        }
+
+        .chip-kicker-accent {
             background: #E4EEFF;
-            border-color: #AFC3E6;
             color: #2F4F80;
         }
 
-        .signal-badge {
-            background: #eef3ff;
-            border: 1px solid #d8deea;
-            color: #35538c;
-            font-size: 10px;
-            padding: 2px 7px;
-            border-radius: 5px;
-            font-weight: 700;
-            line-height: 1.35;
-        }
-
-        .signal-weight-red {
-            background: #FEE2E0;
-            border-color: #F87171;
-            color: #B91C1C;
-        }
-
-        .signal-weight-yellow {
-            background: #FEF9C3;
-            border-color: #FDE047;
-            color: #854D0E;
-        }
-
-        .signal-weight-orange {
+        .chip-kicker-authority {
             background: #FFEDD5;
-            border-color: #FB923C;
-            color: #9A3412;
+            color: #7C2D12;
+        }
+
+        .news-title {
+            margin: 0 0 6px;
+            color: #19335C;
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.35;
+            letter-spacing: -0.006em;
+        }
+
+        .news-deck,
+        .ai-extra {
+            margin: 0 0 10px;
+            color: #2E3340;
+            font-size: 14px;
+            line-height: 1.55;
+        }
+
+        .ai-extra {
+            color: #4B5563;
+            margin-top: -2px;
+        }
+
+        .signal-row {
+            margin-bottom: 10px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .signal-badge {
+            display: inline-block;
+            margin-right: 4px;
+            padding: 1px 5px;
+            border: 1px solid transparent;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            line-height: 1.4;
+            text-transform: uppercase;
+            vertical-align: 0;
+        }
+
+        .signal-action {
+            background: #FEE2E2;
+            border-color: #FECACA;
+            color: #991B1B;
+        }
+
+        .signal-watch {
+            background: #FEFCE8;
+            border-color: #FEF08A;
+            color: #713F12;
+        }
+
+        .signal-fyi {
+            background: #F1F5F9;
+            border-color: #E2E8F0;
+            color: #475569;
         }
 
         .signal-text {
-            color: #374151;
-            font-size: 12px;
-            line-height: 1.45;
-            flex: 1;
-            min-width: 0;
+            color: #6B7280;
         }
 
-        .meta {
+        .meta-row {
+            color: #888;
             font-size: 11px;
-            color: #64748b;
-            border-top: 1px solid #E2E8F0;
-            padding-top: 7px;
-            margin-top: 7px;
+            line-height: 1.7;
+        }
+
+        .meta-date,
+        .meta-score {
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        .meta-divider {
+            margin: 0 6px;
+            color: #C8C8C8;
+        }
+
+        .chip-tag {
+            display: inline-block;
+            margin-right: 4px;
+            padding: 1px 7px 1px 5px;
+            border: 0.5px solid #C4CFD9;
+            border-radius: 20px;
+            background: transparent;
+            color: #7A8CA0;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .tag-icon {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            margin-right: 2px;
+            opacity: 0.65;
+            vertical-align: middle;
         }
 
         .blur-meta {
@@ -523,20 +630,41 @@
             pointer-events: none;
         }
 
-        .email-preview-footer {
-            display: flex;
-            justify-content: space-between;
-            gap: 14px;
-            margin-top: 12px;
-            padding: 0 2px;
-            color: #64748b;
-            font-size: 11px;
-            line-height: 1.45;
+        .preview-obscured {
+            position: relative;
+            overflow: hidden;
+            user-select: none;
         }
 
-        .email-preview-footer span:last-child {
-            white-space: nowrap;
+        .preview-obscured .news-title,
+        .preview-obscured .news-deck,
+        .preview-obscured .signal-row,
+        .preview-obscured .meta-row {
+            pointer-events: none;
         }
+
+        .preview-obscured-soft .news-title,
+        .preview-obscured-soft .news-deck,
+        .preview-obscured-soft .signal-row,
+        .preview-obscured-soft .meta-row {
+            filter: blur(2.3px);
+            opacity: 0.58;
+        }
+
+        .preview-obscured-strong {
+            max-height: 172px;
+            -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 54%, transparent 100%);
+            mask-image: linear-gradient(180deg, #000 0%, #000 54%, transparent 100%);
+        }
+
+        .preview-obscured-strong .news-title,
+        .preview-obscured-strong .news-deck,
+        .preview-obscured-strong .signal-row,
+        .preview-obscured-strong .meta-row {
+            filter: blur(4px);
+            opacity: 0.36;
+        }
+
 
         #access.section {
             padding-top: 14px;
@@ -730,17 +858,16 @@
                 flex-direction: column;
             }
 
-            .pulse-grid,
-            .email-preview-footer,
+            .pulse-grid {
+                text-align: center;
+            }
+
+            .email-preview {
+                padding: 12px;
+            }
+
             .footer-inner {
                 flex-direction: column;
-            }
-
-            .email-preview-footer span:last-child {
-                white-space: normal;
-            }
-
-            .footer-inner {
                 align-items: flex-start;
             }
 
@@ -919,127 +1046,200 @@
 
         <section class="page-shell section" aria-labelledby="example-title">
             <div class="section-heading">
-                <h2 id="example-title">Example briefing — real output, sources blurred</h2>
+                <h2 id="example-title">Example daily</h2>
             </div>
             <div class="email-preview" aria-label="Illustrative Curiosa briefing preview">
-                <div class="email-header">
-                    <p class="email-title">Curiosa Daily Briefing</p>
-                    <p class="email-subtitle">Freitag, 09 Mai 2026 · 18 Meldungen</p>
-                    <div class="pulse-grid">
-                        <div class="pulse-card">
-                            <div class="pulse-label"><span class="pulse-dot" style="background:#A855F7"></span>Enforcement</div>
-                            <div class="pulse-sub">Transfer · 100 Mio. € Bußgeld</div>
-                        </div>
-                        <div class="pulse-card">
-                            <div class="pulse-label"><span class="pulse-dot" style="background:#2DD4BF"></span>Rechte &amp; Zugang</div>
-                            <div class="pulse-sub">DSGVO-Zugang hinter Paywall</div>
-                        </div>
-                        <div class="pulse-card">
-                            <div class="pulse-label"><span class="pulse-dot" style="background:#FBBF24"></span>Sicherheit</div>
-                            <div class="pulse-sub">Linux · CVE-2026-31431</div>
+                <div class="email-preview-inner">
+                    <div class="email-header-top">
+                        <p class="email-title">Curiosa <span>— Daily Briefing</span></p>
+                        <p class="email-subtitle">Samstag, 28 März 2026 · 12 Meldungen</p>
+                    </div>
+                    <div class="email-header-pulse">
+                        <div class="pulse-grid">
+                            <div>
+                                <div class="pulse-category"><span class="pulse-dot" style="background:#A855F7"></span>Aufsicht</div>
+                                <div class="pulse-sublabel">BW · Stellenkürzungen</div>
+                            </div>
+                            <div>
+                                <div class="pulse-category"><span class="pulse-dot" style="background:#2DD4BF"></span>Sicherheit</div>
+                                <div class="pulse-sublabel">Signal · Backdoor</div>
+                            </div>
+                            <div>
+                                <div class="pulse-category"><span class="pulse-dot" style="background:#FBBF24"></span>Technologie</div>
+                                <div class="pulse-sublabel">OpenAI · Regulierung</div>
+                            </div>
                         </div>
                     </div>
+
+                    <article class="news-item">
+                        <div class="news-kicker">
+                            <span class="news-index">01</span>
+                            <span class="news-source-mask" aria-label="Source hidden"></span>
+                            <span class="kicker-divider">|</span><span class="chip-kicker chip-kicker-authority">Behörden</span>
+                        </div>
+                        <h3 class="news-title">Datenschutzkonferenz erarbeitet Handlungsempfehlungen für die Digitalisierung der Verwaltung</h3>
+                        <div class="news-deck">Die Datenschutzkonferenz bündelt Empfehlungen für digitale Verwaltungsverfahren. Im Fokus stehen Registerzugriffe, Identitätsprüfung und Datenaustausch mit möglichst klaren Zweckbindungen und datensparsamen Standards.</div>
+                        <div class="signal-row">
+                            <span class="signal-badge signal-watch">Watch</span><span class="signal-text">Öffentliche Stellen und IT-Dienstleister sollten die Empfehlungen in laufenden Digitalisierungsprojekten gegenprüfen.</span>
+                        </div>
+                        <div class="meta-row">
+                            <span class="meta-date">📅 28.03.2026</span>
+                            <span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Datenschutzkonferenz</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Verwaltung</span>
+                        </div>
+                    </article>
+
+                    <article class="news-item">
+                        <div class="news-kicker">
+                            <span class="news-index">02</span>
+                            <span class="news-source-mask" aria-label="Source hidden"></span>
+                            <span class="kicker-divider">|</span><span class="chip-kicker chip-kicker-authority">Behörden</span>
+                        </div>
+                        <h3 class="news-title">Datenschutz in der Schule – Ergebnisse zu kostenlosen Online-Diensten</h3>
+                        <div class="news-deck">Eine Aufsichtsbehörde fasst Prüfergebnisse zu kostenfreien Schul- und Kollaborationstools zusammen. Besonders kritisch sind intransparente Datenflüsse, Profilbildung und fehlende Einflussmöglichkeiten für Schulen und Schulträger.</div>
+                        <div class="signal-row">
+                            <span class="signal-badge signal-watch">Watch</span><span class="signal-text">Schulen und Schulträger sollten kostenlose Classroom- und Kollaborationstools erneut datenschutzrechtlich bewerten.</span>
+                        </div>
+                        <div class="meta-row">
+                            <span class="meta-date">📅 28.03.2026</span>
+                            <span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Schule</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Online-Dienste</span>
+                        </div>
+                    </article>
+
+                    <article class="news-item preview-obscured preview-obscured-soft">
+                        <div class="news-kicker">
+                            <span class="news-index">03</span>
+                            <span class="news-source-mask" aria-label="Source hidden"></span>
+                            <span class="kicker-divider">|</span><span class="chip-kicker chip-kicker-accent">Sicherheit</span>
+                        </div>
+                        <h3 class="news-title">Attackers are exploiting RCE vulnerability in BIG-IP APM systems (CVE-2025-53521)</h3>
+                        <div class="news-deck">Angreifer nutzen eine kritische Schwachstelle in BIG-IP-APM-Systemen bereits aktiv aus. Betroffen sind internetexponierte Installationen, bei denen Remote Code Execution und anschließende Persistenz möglich sind.</div>
+                        <div class="signal-row">
+                            <span class="signal-badge signal-action">Action</span><span class="signal-text">Internet-facing APM-Instanzen sollten sofort auf Patch-Stand, Exposure und mögliche Kompromittierung geprüft werden.</span>
+                        </div>
+                        <div class="meta-row">
+                            <span class="meta-date">📅 28.03.2026</span>
+                            <span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Übersetzt</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>BIG-IP</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>RCE</span>
+                        </div>
+                    </article>
+
+                    <article class="news-item news-item-last preview-obscured preview-obscured-strong">
+                        <div class="news-kicker">
+                            <span class="news-index">04</span>
+                            <span class="news-source-mask" aria-label="Source hidden"></span>
+                            <span class="kicker-divider">|</span><span class="chip-kicker chip-kicker-accent">Recht</span>
+                        </div>
+                        <h3 class="news-title">Österreich zieht Reißleine: Social-Media-Verbot für unter 14-Jährige kommt</h3>
+                        <div class="news-deck">Österreich will die Nutzung sozialer Medien für Kinder unter 14 Jahren regulatorisch begrenzen. Die Debatte verbindet Jugendschutz, Altersverifikation und Plattformverantwortung deutlich stärker als bisher.</div>
+                        <div class="signal-row">
+                            <span class="signal-badge signal-watch">Watch</span><span class="signal-text">Plattformteams und Datenschutzverantwortliche sollten die österreichische Linie als mögliches Regulierungsmodell beobachten.</span>
+                        </div>
+                        <div class="meta-row">
+                            <span class="meta-date">📅 28.03.2026</span>
+                            <span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Jugendschutz</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Social Media</span>
+                        </div>
+                    </article>
+
                 </div>
+            </div>
+        </section>
 
-                <article class="news-item">
-                    <div class="news-heading">
-                        <span class="news-index">01</span>
-                        <h3 class="news-title">Yango erhält 100 Millionen Euro Bußgeld wegen unzulässiger Datentransfers nach Russland</h3>
+        <section class="page-shell section" aria-labelledby="weekly-example-title">
+            <div class="section-heading">
+                <h2 id="weekly-example-title">Example weekly</h2>
+            </div>
+            <div class="email-preview" aria-label="Illustrative Curiosa weekly digest preview">
+                <div class="email-preview-inner">
+                    <div class="email-header-top">
+                        <p class="email-title">Curiosa <span>— Weekly Briefing</span></p>
+                        <p class="email-subtitle">09.05.2026 - 15.05.2026 · 5 Meldungen</p>
                     </div>
-                    <p class="news-content">
-                        Die niederländische Datenschutzbehörde verhängte ein Bußgeld von 100 Mio. Euro gegen
-                        MLU B.V., Betreiber des Fahrdienstes Yango, wegen unzulässiger Übermittlung
-                        personenbezogener Daten nach Russland unter Verstoß gegen Kapitel V DSGVO.
-                    </p>
-                    <div class="chip-row">
-                        <span class="chip-pill chip-pill-authority">🔖 Enforcement</span>
-                        <span class="chip-pill">Drittlandtransfer</span>
-                        <span class="chip-pill">Art. 44 DSGVO</span>
-                    </div>
-                    <div class="signal-row">
-                        <span class="signal-badge signal-weight-red">Action</span>
-                        <span class="signal-text">
-                            Bestehende Datentransfervereinbarungen mit Drittlandanbietern auf Art. 44 ff.
-                            DSGVO-Konformität prüfen — insbesondere bei Anbietern mit Russland-Bezug.
-                        </span>
-                    </div>
-                    <div class="meta"><span class="blur-meta">Quelle und Link verborgen</span></div>
-                </article>
-
-                <article class="news-item">
-                    <div class="news-heading">
-                        <span class="news-index">02</span>
-                        <h3 class="news-title">LinkedIn sperrt DSGVO-Auskunftsrecht hinter Bezahlschranke</h3>
-                    </div>
-                    <p class="news-content">
-                        noyb hat eine DSGVO-Beschwerde eingereicht, nachdem LinkedIn Nutzer zur Zahlung eines
-                        Abonnements verpflichtete, um ihr Auskunftsrecht auszuüben — mit direkten Fragen zu
-                        Art. 12 und 15 DSGVO.
-                    </p>
-                    <div class="chip-row">
-                        <span class="chip-pill chip-pill-accent">🔖 Recht</span>
-                        <span class="chip-pill">Art. 15 DSGVO</span>
-                        <span class="chip-pill">Beschwerde</span>
-                    </div>
-                    <div class="signal-row">
-                        <span class="signal-badge signal-weight-yellow">Watch</span>
-                        <span class="signal-text">
-                            Ausgang der Beschwerde beobachten — mögliche Auswirkungen auf Auskunftspflichten und
-                            technische Infrastruktur für Betroffenenanfragen nach Art. 15 DSGVO.
-                        </span>
-                    </div>
-                    <div class="meta"><span class="blur-meta">Quelle und Link verborgen</span></div>
-                </article>
-
-                <article class="news-item">
-                    <div class="news-heading">
-                        <span class="news-index">03</span>
-                        <div style="flex:1">
-                            <span class="blur-line blur-title"></span>
-                            <span class="blur-line" style="width:52%"></span>
+                    <div class="email-header-pulse">
+                        <div class="pulse-grid">
+                            <div>
+                                <div class="pulse-category"><span class="pulse-dot" style="background:#A855F7"></span>Aufsicht</div>
+                                <div class="pulse-sublabel">BW · Stellenkürzungen</div>
+                            </div>
+                            <div>
+                                <div class="pulse-category"><span class="pulse-dot" style="background:#2DD4BF"></span>Sicherheit</div>
+                                <div class="pulse-sublabel">Signal · Backdoor</div>
+                            </div>
+                            <div>
+                                <div class="pulse-category"><span class="pulse-dot" style="background:#FBBF24"></span>Technologie</div>
+                                <div class="pulse-sublabel">OpenAI · Regulierung</div>
+                            </div>
                         </div>
                     </div>
-                    <p class="news-content" aria-hidden="true">
-                        <span class="blur-line blur-content" style="width:100%"></span>
-                        <span class="blur-line blur-content" style="width:70%"></span>
-                    </p>
-                    <div class="chip-row">
-                        <span class="chip-pill chip-pill-authority">🔖 Behörden</span>
-                        <span class="chip-pill">Art. 33 DSGVO</span>
-                    </div>
-                    <div class="signal-row">
-                        <span class="signal-badge signal-weight-yellow">Watch</span>
-                        <span class="blur-signal"></span>
-                    </div>
-                    <div class="meta"><span class="blur-meta">Quelle und Link verborgen</span></div>
-                </article>
 
-                <article class="news-item">
-                    <div class="news-heading">
-                        <span class="news-index">04</span>
-                        <div style="flex:1">
-                            <span class="blur-line" style="width:82%"></span>
-                            <span class="blur-line" style="width:44%"></span>
+                    <div class="trends-section">
+                        <div class="trends-title">🏛️ Aufsichtsbehörden dieser Woche</div>
+                        <div class="trend-item"><strong>Gesamtvolumen:</strong> 3 Nachrichten (60.0%) <span class="trend-delta">↘ -2</span></div>
+                        <div class="trend-item"><strong>Top 2 aktivsten Behörden:</strong> <span class="news-source-mask trend-source-mask" aria-label="Sources hidden"></span></div>
+                    </div>
+
+                    <article class="news-item">
+                        <div class="news-kicker">
+                            <span class="news-index">01</span>
+                            <span class="news-source-mask" aria-label="Source hidden"></span>
+                            <span class="kicker-divider">|</span><span class="chip-kicker chip-kicker-authority">Behörden</span>
                         </div>
-                    </div>
-                    <p class="news-content" aria-hidden="true">
-                        <span class="blur-line blur-content" style="width:100%"></span>
-                        <span class="blur-line blur-content" style="width:63%"></span>
-                    </p>
-                    <div class="chip-row">
-                        <span class="chip-pill chip-pill-accent">🔖 Sicherheit</span>
-                        <span class="chip-pill">CVE-2026-31431</span>
-                    </div>
-                    <div class="signal-row">
-                        <span class="signal-badge signal-weight-orange">Monitor</span>
-                        <span class="blur-signal"></span>
-                    </div>
-                    <div class="meta"><span class="blur-meta">Quelle und Link verborgen</span></div>
-                </article>
+                        <h3 class="news-title">CNIL publishes new guidance on AI transparency</h3>
+                        <div class="news-deck">The CNIL has released guidance on how organisations should explain AI-supported decisions to users.</div>
+                        <div class="signal-row">
+                            <span class="signal-badge signal-watch">Watch</span><span class="signal-text">Prüfen, ob bestehende Transparenztexte für KI-gestützte Prozesse reichen.</span>
+                        </div>
+                        <div class="meta-row">
+                            <span class="meta-date">📅 Monday, 09.05.2026</span><span class="meta-divider">·</span><span class="meta-score">📊 95 pts</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>AI</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Transparenz</span>
+                        </div>
+                    </article>
 
-                <div class="email-preview-footer">
-                    <span>Das vollständige Briefing enthält Quellen, Links und KI-Analyse für alle 18 Meldungen</span>
-                    <span>Verwalten · Abmelden</span>
+                    <article class="news-item">
+                        <div class="news-kicker">
+                            <span class="news-index">02</span>
+                            <span class="news-source-mask" aria-label="Source hidden"></span>
+                            <span class="kicker-divider">|</span><span class="chip-kicker chip-kicker-authority">Enforcement</span>
+                        </div>
+                        <h3 class="news-title">Belgium GBA fines company €5 million for data breach</h3>
+                        <div class="news-deck">The Belgian authority fined a retailer after a breach exposed customer data and weak internal controls.</div>
+                        <div class="signal-row">
+                            <span class="signal-badge signal-action">Action</span><span class="signal-text">Sicherheitskontrollen und Incident-Playbooks mit Blick auf Bußgeldrisiken nachschärfen.</span>
+                        </div>
+                        <div class="meta-row">
+                            <span class="meta-date">📅 Tuesday, 10.05.2026</span><span class="meta-divider">·</span><span class="meta-score">📊 92 pts</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Bußgeld</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Datenpanne</span>
+                        </div>
+                    </article>
+
+                    <article class="news-item preview-obscured preview-obscured-soft">
+                        <div class="news-kicker">
+                            <span class="news-index">03</span>
+                            <span class="news-source-mask" aria-label="Source hidden"></span>
+                            <span class="kicker-divider">|</span><span class="chip-kicker chip-kicker-authority">Behörden</span>
+                        </div>
+                        <h3 class="news-title">Netherlands AP updates cookie consent guidelines</h3>
+                        <div class="news-deck">The AP reiterates that manipulative cookie banners and pre-ticked choices remain non-compliant.</div>
+                        <div class="signal-row">
+                            <span class="signal-badge signal-watch">Watch</span><span class="signal-text">Bestehende Consent-Banner gegen die strengere Lesart prüfen.</span>
+                        </div>
+                        <div class="meta-row">
+                            <span class="meta-date">📅 Wednesday, 11.05.2026</span><span class="meta-divider">·</span><span class="meta-score">📊 88 pts</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Cookies</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Consent</span>
+                        </div>
+                    </article>
+
+                    <article class="news-item news-item-last preview-obscured preview-obscured-strong">
+                        <div class="news-kicker">
+                            <span class="news-index">04</span>
+                            <span class="news-source-mask" aria-label="Source hidden"></span>
+                            <span class="kicker-divider">|</span><span class="chip-kicker chip-kicker-accent">Recht</span>
+                        </div>
+                        <h3 class="news-title">Meta faces €1.2 billion fine for data transfers</h3>
+                        <div class="news-deck">The dispute around EU-US transfers continues to shape platform risk, enforcement and remediation expectations.</div>
+                        <div class="signal-row">
+                            <span class="signal-badge signal-watch">Watch</span><span class="signal-text">Internationale Datentransfers bleiben ein Dauerbrenner für Plattformen.</span>
+                        </div>
+                        <div class="meta-row">
+                            <span class="meta-date">📅 Thursday, 12.05.2026</span><span class="meta-divider">·</span><span class="meta-score">📊 85 pts</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Meta</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Transfers</span>
+                        </div>
+                    </article>
+
                 </div>
             </div>
         </section>
