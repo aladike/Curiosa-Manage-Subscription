@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer">
+    <title>Curiosa Analytics Dashboard</title>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text: #101828;
+            --muted: #475569;
+            --line: #dbe4ef;
+            --brand: #1e2d45;
+            --blue: #1e3a8a;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: var(--text);
+            background: linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+        }
+
+        .shell {
+            width: min(820px, calc(100% - 32px));
+            min-height: 100vh;
+            margin: 0 auto;
+            display: grid;
+            align-content: center;
+            gap: 24px;
+            padding: 40px 0;
+        }
+
+        .brand {
+            color: var(--brand);
+            font-size: 20px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .brand span { color: var(--blue); }
+
+        h1 {
+            margin: 0;
+            color: var(--brand);
+            font-size: clamp(34px, 6vw, 56px);
+            line-height: 1;
+            letter-spacing: 0;
+        }
+
+        .panel {
+            padding: 22px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--surface);
+        }
+
+        .panel p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 17px;
+            line-height: 1.6;
+        }
+
+        .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .links a {
+            display: inline-flex;
+            align-items: center;
+            min-height: 38px;
+            padding: 8px 12px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            color: var(--brand);
+            background: #ffffff;
+            font-weight: 700;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <main class="shell">
+        <a class="brand" href="../">Curio<span>sa</span></a>
+        <h1>Curiosa Analytics Dashboard</h1>
+        <section class="panel" aria-label="Dashboard status">
+            <p>Coming soon. This placeholder contains no analytics data, subscriber data, credentials, or generated news content.</p>
+        </section>
+        <nav class="links" aria-label="Curiosa public routes">
+            <a href="../">Curiosa</a>
+            <a href="../subscribe/">Subscribe</a>
+            <a href="../subscription-configuration/">Subscription Configuration</a>
+        </nav>
+    </main>
+</body>
+</html>

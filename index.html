@@ -3,92 +3,1281 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Curiosa Manage Subscription</title>
-    <link rel="stylesheet" href="./styles.css">
+    <meta name="referrer" content="no-referrer">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Curiosa</title>
+    <meta name="description" content="Curiosa is a private research project for regulatory monitoring in data protection and digital law.">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+    <style>
+        :root {
+            --primary-navy: #1e2d45;
+            --brand-blue: #1e3a8a;
+            --text-primary: #101828;
+            --text-secondary: #374151;
+            --text-muted: #64748b;
+            --border-light: #E5E7EB;
+            --background: #F8FAFC;
+            --surface: #ffffff;
+            --soft-blue: #eef3ff;
+            --soft-line: #d8deea;
+            --success: #166534;
+            --success-bg: #dcfce7;
+            --error: #9A3412;
+            --error-bg: #FFEDD5;
+            --shadow: 0 16px 42px rgba(15, 23, 42, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: var(--text-primary);
+            background:
+                radial-gradient(circle at top right, rgba(30, 58, 138, 0.1), transparent 32%),
+                linear-gradient(180deg, #ffffff 0%, var(--background) 48%, #f2f6fb 100%);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input,
+        textarea {
+            font: inherit;
+        }
+
+        .page-shell {
+            width: min(760px, calc(100% - 36px));
+            margin: 0 auto;
+        }
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            border-bottom: 1px solid rgba(229, 231, 235, 0.8);
+            background: rgba(248, 250, 252, 0.88);
+            backdrop-filter: blur(16px);
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            min-height: 66px;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 0;
+            color: var(--primary-navy);
+        }
+
+        .logo-accent {
+            color: var(--brand-blue);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .nav-link,
+        .nav-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 36px;
+            border-radius: 999px;
+            padding: 8px 12px;
+            border: 1px solid transparent;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .nav-link:hover,
+        .nav-button:hover {
+            color: var(--brand-blue);
+            background: rgba(30, 58, 138, 0.06);
+        }
+
+        .nav-link-primary {
+            color: #ffffff;
+            background: var(--primary-navy);
+            border-color: var(--primary-navy);
+        }
+
+        .nav-link-primary:hover {
+            color: #ffffff;
+            background: var(--brand-blue);
+        }
+
+        main {
+            padding: 18px 0 0;
+        }
+
+        .hero {
+            padding: 18px 0 32px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(30, 58, 138, 0.14);
+            border-radius: 999px;
+            padding: 7px 12px;
+            color: var(--brand-blue);
+            background: rgba(238, 243, 255, 0.82);
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        h1,
+        h2,
+        h3,
+        p {
+            margin-top: 0;
+        }
+
+        h1 {
+            margin-bottom: 16px;
+            max-width: 700px;
+            color: var(--primary-navy);
+            font-size: clamp(40px, 7vw, 64px);
+            line-height: 0.98;
+            letter-spacing: 0;
+        }
+
+        .hero .badge {
+            margin-bottom: 18px;
+        }
+
+        .hero-copy {
+            max-width: 700px;
+            margin-bottom: 0;
+            color: var(--text-secondary);
+            font-size: 18px;
+            line-height: 1.68;
+        }
+
+        .section {
+            padding: 26px 0;
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .section-heading h2 {
+            margin-bottom: 0;
+            color: var(--primary-navy);
+            font-size: 26px;
+            line-height: 1.18;
+            letter-spacing: 0;
+        }
+
+        .section-heading p,
+        .section-copy {
+            margin-bottom: 0;
+            color: var(--text-muted);
+            line-height: 1.65;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .feature-card,
+        .delivery-card,
+        .access-panel {
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.86);
+            box-shadow: 0 10px 26px rgba(15, 23, 42, 0.05);
+        }
+
+        .feature-card {
+            padding: 18px 16px;
+        }
+
+        .feature-icon,
+        .delivery-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border: 1px solid rgba(30, 58, 138, 0.12);
+            border-radius: 10px;
+            color: var(--brand-blue);
+            background: rgba(238, 243, 255, 0.9);
+            font-size: 22px;
+        }
+
+        .feature-card h3,
+        .delivery-card h3 {
+            margin: 14px 0 8px;
+            color: var(--primary-navy);
+            font-size: 17px;
+            line-height: 1.25;
+        }
+
+        .feature-card p,
+        .delivery-card p {
+            margin-bottom: 0;
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .delivery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .delivery-card {
+            padding: 20px;
+        }
+
+        .delivery-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+        }
+
+        .delivery-badge {
+            display: inline-flex;
+            align-items: center;
+            min-height: 28px;
+            border-radius: 999px;
+            padding: 5px 10px;
+            color: var(--brand-blue);
+            background: var(--soft-blue);
+            border: 1px solid var(--soft-line);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .email-preview {
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+            border-radius: 14px;
+            background: #F5F7FA;
+            padding: 14px;
+            box-shadow: var(--shadow);
+        }
+
+        .email-header {
+            background: #1e2d45;
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin-bottom: 10px;
+        }
+
+        .email-title {
+            margin: 0 0 5px;
+            font-size: 22px;
+            font-weight: 800;
+            color: #f5f8ff;
+            letter-spacing: -0.018em;
+        }
+
+        .email-subtitle {
+            margin: 0 0 14px;
+            font-size: 12px;
+            color: #c7d4ea;
+        }
+
+        .pulse-grid {
+            display: flex;
+            gap: 8px;
+        }
+
+        .pulse-card {
+            flex: 1;
+            min-width: 0;
+            border: 1px solid rgba(199, 212, 234, 0.18);
+            border-radius: 9px;
+            padding: 9px 10px;
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .pulse-label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: #f5f8ff;
+            font-size: 12px;
+            font-weight: 800;
+            line-height: 1.25;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            flex: 0 0 auto;
+        }
+
+        .pulse-sub {
+            margin-top: 5px;
+            color: #c7d4ea;
+            font-size: 11px;
+            line-height: 1.35;
+        }
+
+        .news-item {
+            background: #fff;
+            border: 1px solid #E5E7EB;
+            border-left: 3px solid #1e3a8a;
+            border-radius: 10px;
+            padding: 13px 15px 10px;
+            margin-bottom: 8px;
+            box-shadow: 0 1px 3px rgba(15,23,42,0.05);
+        }
+
+        .news-heading {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 7px;
+        }
+
+        .news-index {
+            flex: 0 0 auto;
+            font-size: 11px;
+            font-weight: 600;
+            color: #1e3a8a;
+            background: rgba(30,58,138,0.1);
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        .news-title {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 600;
+            color: #112764;
+            letter-spacing: -0.006em;
+            line-height: 1.35;
+        }
+
+        .news-content {
+            margin: 0 0 8px;
+            font-size: 13px;
+            color: #374151;
+            line-height: 1.55;
+        }
+
+        .chip-row {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-wrap: wrap;
+            margin-top: 7px;
+        }
+
+        .signal-row {
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
+            flex-wrap: nowrap;
+            margin-top: 7px;
+        }
+
+        .chip-pill {
+            background: #F5F6F8;
+            color: #5A6270;
+            border: 1px solid #E4E7EC;
+            border-radius: 6px;
+            padding: 2px 7px;
+            font-size: 10px;
+            line-height: 1.35;
+        }
+
+        .chip-pill-authority {
+            background: #F5EFF9;
+            border-color: #C9ADDF;
+            color: #5B2D8E;
+        }
+
+        .chip-pill-accent {
+            background: #E4EEFF;
+            border-color: #AFC3E6;
+            color: #2F4F80;
+        }
+
+        .signal-badge {
+            background: #eef3ff;
+            border: 1px solid #d8deea;
+            color: #35538c;
+            font-size: 10px;
+            padding: 2px 7px;
+            border-radius: 5px;
+            font-weight: 700;
+            line-height: 1.35;
+        }
+
+        .signal-weight-red {
+            background: #FEE2E0;
+            border-color: #F87171;
+            color: #B91C1C;
+        }
+
+        .signal-weight-yellow {
+            background: #FEF9C3;
+            border-color: #FDE047;
+            color: #854D0E;
+        }
+
+        .signal-weight-orange {
+            background: #FFEDD5;
+            border-color: #FB923C;
+            color: #9A3412;
+        }
+
+        .signal-text {
+            color: #374151;
+            font-size: 12px;
+            line-height: 1.45;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .meta {
+            font-size: 11px;
+            color: #64748b;
+            border-top: 1px solid #E2E8F0;
+            padding-top: 7px;
+            margin-top: 7px;
+        }
+
+        .blur-meta {
+            filter: blur(4px);
+            user-select: none;
+            color: transparent;
+            background: #E2E8F0;
+            border-radius: 3px;
+            display: inline-block;
+            width: 160px;
+            height: 12px;
+        }
+
+        .blur-line {
+            display: block;
+            height: 14px;
+            background: #E2E8F0;
+            border-radius: 4px;
+            filter: blur(3px);
+            user-select: none;
+        }
+
+        .blur-line + .blur-line {
+            margin-top: 6px;
+        }
+
+        .blur-title {
+            width: 78%;
+        }
+
+        .blur-content {
+            height: 12px;
+        }
+
+        .blur-signal {
+            display: inline-block;
+            width: min(390px, 100%);
+            height: 12px;
+            border-radius: 4px;
+            background: #E2E8F0;
+            filter: blur(3.5px);
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .email-preview-footer {
+            display: flex;
+            justify-content: space-between;
+            gap: 14px;
+            margin-top: 12px;
+            padding: 0 2px;
+            color: #64748b;
+            font-size: 11px;
+            line-height: 1.45;
+        }
+
+        .email-preview-footer span:last-child {
+            white-space: nowrap;
+        }
+
+        #access.section {
+            padding-top: 14px;
+        }
+
+        .access-panel {
+            padding: 24px;
+        }
+
+        .access-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+            border-radius: 999px;
+            padding: 10px 17px;
+            font-weight: 800;
+            font-size: 14px;
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+
+        .button-outline {
+            color: var(--brand-blue);
+            background: #ffffff;
+            border-color: rgba(30, 58, 138, 0.22);
+        }
+
+        .button-outline:hover {
+            background: var(--soft-blue);
+        }
+
+        .button-dark {
+            color: #ffffff;
+            background: var(--primary-navy);
+            border-color: var(--primary-navy);
+        }
+
+        .button-dark:hover {
+            background: var(--brand-blue);
+        }
+
+        .access-form {
+            display: none;
+            margin-top: 22px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .access-form.is-open {
+            display: block;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .field {
+            display: grid;
+            gap: 7px;
+            color: var(--text-primary);
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .field-full {
+            grid-column: 1 / -1;
+        }
+
+        .field input,
+        .field textarea {
+            width: 100%;
+            border: 1px solid var(--border-light);
+            border-radius: 9px;
+            padding: 12px 13px;
+            color: var(--text-primary);
+            background: #ffffff;
+        }
+
+        .field textarea {
+            min-height: 104px;
+            resize: vertical;
+        }
+
+        .field input:focus,
+        .field textarea:focus {
+            outline: 3px solid rgba(30, 58, 138, 0.12);
+            border-color: rgba(30, 58, 138, 0.36);
+        }
+
+        .form-note {
+            margin: 12px 0 0;
+            color: var(--text-muted);
+            font-size: 12px;
+            line-height: 1.55;
+        }
+
+        .form-status {
+            display: none;
+            margin: 14px 0 0;
+            border-radius: 9px;
+            padding: 11px 12px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .form-status.is-visible {
+            display: block;
+        }
+
+        .form-status-success {
+            color: var(--success);
+            background: var(--success-bg);
+            border: 1px solid rgba(22, 101, 52, 0.16);
+        }
+
+        .form-status-error {
+            color: var(--error);
+            background: var(--error-bg);
+            border: 1px solid rgba(154, 52, 18, 0.18);
+        }
+
+        .trap-field {
+            position: absolute;
+            left: -9999px;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
+
+        .site-footer {
+            margin-top: 42px;
+            border-top: 1px solid var(--border-light);
+            padding: 26px 0 34px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .footer-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .footer-links {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .footer-links a:hover {
+            color: var(--brand-blue);
+        }
+
+        @media (max-width: 720px) {
+            .nav {
+                align-items: flex-start;
+                flex-direction: column;
+                padding: 14px 0;
+            }
+
+            .nav-links {
+                justify-content: flex-start;
+            }
+
+            main {
+                padding-top: 26px;
+            }
+
+            .feature-grid,
+            .delivery-grid,
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-heading {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .pulse-grid,
+            .email-preview-footer,
+            .footer-inner {
+                flex-direction: column;
+            }
+
+            .email-preview-footer span:last-child {
+                white-space: normal;
+            }
+
+            .footer-inner {
+                align-items: flex-start;
+            }
+
+            .footer-links {
+                justify-content: flex-start;
+            }
+        }
+
+        .will-animate {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity 0.55s ease, transform 0.55s ease;
+        }
+
+        .will-animate.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feat-grid .feat:nth-child(1),
+        .feature-grid .feature-card:nth-child(1) { transition-delay: 0ms; }
+        .feat-grid .feat:nth-child(2),
+        .feature-grid .feature-card:nth-child(2) { transition-delay: 70ms; }
+        .feat-grid .feat:nth-child(3),
+        .feature-grid .feature-card:nth-child(3) { transition-delay: 140ms; }
+        .feat-grid .feat:nth-child(4),
+        .feature-grid .feature-card:nth-child(4) { transition-delay: 210ms; }
+        .feat-grid .feat:nth-child(5),
+        .feature-grid .feature-card:nth-child(5) { transition-delay: 280ms; }
+        .feat-grid .feat:nth-child(6),
+        .feature-grid .feature-card:nth-child(6) { transition-delay: 350ms; }
+
+        .del-row .del:nth-child(1),
+        .delivery-grid .delivery-card:nth-child(1) { transition-delay: 0ms; }
+        .del-row .del:nth-child(2),
+        .delivery-grid .delivery-card:nth-child(2) { transition-delay: 80ms; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .will-animate {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+        }
+
+        @media (hover: hover) {
+            .feat,
+            .feature-card {
+                transition: transform 0.2s ease, box-shadow 0.2s ease,
+                            border-color 0.2s ease;
+            }
+            .feat:hover,
+            .feature-card:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+                border-color: #B5D4F4;
+            }
+            .del,
+            .delivery-card {
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+            }
+            .del:hover,
+            .delivery-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 16px rgba(15, 23, 42, 0.07);
+            }
+        }
+    </style>
 </head>
 <body>
-    <script>
-        window.CURIOSA_MANAGE_CONFIG = window.CURIOSA_MANAGE_CONFIG || {
-            apiBaseUrl: "https://bwdddngjubszavoftljo.supabase.co/functions/v1/manage-subscription"
-        };
-    </script>
-
-    <header style="border-bottom: 1px solid #E5E7EB; margin-bottom: 0; background: rgba(248,250,252,0.95); position: sticky; top: 0; z-index: 20;">
-        <div style="width: min(920px, calc(100% - 32px)); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; min-height: 54px; gap: 16px;">
-            <a href="./info/" style="font-size: 17px; font-weight: 800; color: #1e2d45; text-decoration: none; letter-spacing: -0.01em; flex-shrink: 0;">
-                Curio<span style="color: #1e3a8a;">sa</span>
-            </a>
-            <a href="./info/" style="font-size: 12px; color: #374151; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; padding: 6px 12px; border-radius: 8px; border: 1px solid #E5E7EB; background: #ffffff; white-space: nowrap;" referrerpolicy="no-referrer">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-                About Curiosa
-            </a>
+    <header class="site-header">
+        <div class="page-shell nav">
+            <a class="logo" href="#top" aria-label="Curiosa home">Curio<span class="logo-accent">sa</span></a>
+            <nav class="nav-links" aria-label="Main navigation">
+                <a class="nav-link" href="#how-it-works">How it works</a>
+                <button class="nav-button" type="button" data-open-access>Request access</button>
+                <a class="nav-link" href="./subscription-configuration/">Settings</a>
+                <a class="nav-link" href="./dashboard/">Dashboard</a>
+                <a class="nav-link nav-link-primary" href="./subscribe/">Activate</a>
+            </nav>
         </div>
     </header>
 
-    <main class="page-shell">
-        <section class="hero-card">
-            <p class="eyebrow">Curiosa Settings</p>
-            <h1>Manage your Curiosa subscription</h1>
-            <p class="intro">
-                Adjust delivery and source preferences for your Curiosa briefings.
+    <main id="top">
+        <section class="page-shell hero" aria-labelledby="hero-title">
+            <span class="badge">Research project</span>
+            <h1 id="hero-title">Regulatory monitoring for data protection and digital law</h1>
+            <p class="hero-copy">
+                Curiosa is an automated research system for tracking and prioritising developments across GDPR,
+                AI Act, and related frameworks. It collects updates from regulators, authorities, and legal
+                sources daily — and delivers them as structured briefings for compliance and legal professionals.
             </p>
-            <div id="top-actions" class="top-actions is-hidden">
-                <span id="subscription-status-pill" class="status-pill"></span>
-                <div class="top-action-buttons">
-                    <button id="unsubscribe-button" class="button button-danger is-hidden" type="button">Unsubscribe</button>
-                    <button id="resubscribe-button" class="button button-success-soft is-hidden" type="button">Resubscribe</button>
+        </section>
+
+        <section id="how-it-works" class="page-shell section" aria-labelledby="features-title">
+            <div class="section-heading">
+                <h2 id="features-title">How it works</h2>
+            </div>
+            <div class="feature-grid">
+                <article class="feature-card">
+                    <span class="feature-icon" aria-hidden="true"><i class="ti ti-building-bank"></i></span>
+                    <h3>Regulatory authorities</h3>
+                    <p>
+                        82 sources — 37 public authorities and 45 media and legal outlets across Europe and beyond.
+                    </p>
+                </article>
+                <article class="feature-card">
+                    <span class="feature-icon" aria-hidden="true"><i class="ti ti-brain"></i></span>
+                    <h3>AI-assisted ranking</h3>
+                    <p>
+                        12-prompt pipeline ranks each item by authority weight, signal type, source diversity, AI
+                        priority score, and tier.
+                    </p>
+                </article>
+                <article class="feature-card">
+                    <span class="feature-icon" aria-hidden="true"><i class="ti ti-adjustments-horizontal"></i></span>
+                    <h3>Source personalisation</h3>
+                    <p>
+                        Choose which sources to follow. Manage daily and weekly delivery settings at any time.
+                    </p>
+                </article>
+                <article class="feature-card">
+                    <span class="feature-icon" aria-hidden="true"><i class="ti ti-text-size"></i></span>
+                    <h3>Original titles and sources</h3>
+                    <p>
+                        Titles and sources are never rewritten. Only the summary is AI-generated — concise and
+                        factual.
+                    </p>
+                </article>
+                <article class="feature-card">
+                    <span class="feature-icon" aria-hidden="true"><i class="ti ti-tag"></i></span>
+                    <h3>Action signals</h3>
+                    <p>
+                        Every item is labelled: Action, Watch, Monitor, or FYI — based on relevance to compliance
+                        work.
+                    </p>
+                </article>
+                <article class="feature-card">
+                    <span class="feature-icon" aria-hidden="true"><i class="ti ti-lock"></i></span>
+                    <h3>Privacy by default</h3>
+                    <p>
+                        Email addresses are stored in a database only, never shared or sold, and protected at rest.
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <section class="page-shell section" aria-labelledby="delivery-title">
+            <div class="section-heading">
+                <h2 id="delivery-title">Delivery formats</h2>
+            </div>
+            <div class="delivery-grid">
+                <article class="delivery-card">
+                    <div class="delivery-top">
+                        <span class="delivery-icon" aria-hidden="true"><i class="ti ti-sun"></i></span>
+                        <span class="delivery-badge">Every morning</span>
+                    </div>
+                    <h3>Daily briefing</h3>
+                    <p>
+                        All relevant items from the past 24 hours, ranked by priority — enforcement decisions,
+                        authority updates, legal commentary.
+                    </p>
+                </article>
+                <article class="delivery-card">
+                    <div class="delivery-top">
+                        <span class="delivery-icon" aria-hidden="true"><i class="ti ti-calendar-week"></i></span>
+                        <span class="delivery-badge">Monday</span>
+                    </div>
+                    <h3>Weekly digest</h3>
+                    <p>
+                        Top stories of the week in a compact format — structured review without the daily volume.
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <section class="page-shell section" aria-labelledby="example-title">
+            <div class="section-heading">
+                <h2 id="example-title">Example briefing — real output, sources blurred</h2>
+            </div>
+            <div class="email-preview" aria-label="Illustrative Curiosa briefing preview">
+                <div class="email-header">
+                    <p class="email-title">Curiosa Daily Briefing</p>
+                    <p class="email-subtitle">Freitag, 09 Mai 2026 · 18 Meldungen</p>
+                    <div class="pulse-grid">
+                        <div class="pulse-card">
+                            <div class="pulse-label"><span class="pulse-dot" style="background:#A855F7"></span>Enforcement</div>
+                            <div class="pulse-sub">Transfer · 100 Mio. € Bußgeld</div>
+                        </div>
+                        <div class="pulse-card">
+                            <div class="pulse-label"><span class="pulse-dot" style="background:#2DD4BF"></span>Rechte &amp; Zugang</div>
+                            <div class="pulse-sub">DSGVO-Zugang hinter Paywall</div>
+                        </div>
+                        <div class="pulse-card">
+                            <div class="pulse-label"><span class="pulse-dot" style="background:#FBBF24"></span>Sicherheit</div>
+                            <div class="pulse-sub">Linux · CVE-2026-31431</div>
+                        </div>
+                    </div>
+                </div>
+
+                <article class="news-item">
+                    <div class="news-heading">
+                        <span class="news-index">01</span>
+                        <h3 class="news-title">Yango erhält 100 Millionen Euro Bußgeld wegen unzulässiger Datentransfers nach Russland</h3>
+                    </div>
+                    <p class="news-content">
+                        Die niederländische Datenschutzbehörde verhängte ein Bußgeld von 100 Mio. Euro gegen
+                        MLU B.V., Betreiber des Fahrdienstes Yango, wegen unzulässiger Übermittlung
+                        personenbezogener Daten nach Russland unter Verstoß gegen Kapitel V DSGVO.
+                    </p>
+                    <div class="chip-row">
+                        <span class="chip-pill chip-pill-authority">🔖 Enforcement</span>
+                        <span class="chip-pill">Drittlandtransfer</span>
+                        <span class="chip-pill">Art. 44 DSGVO</span>
+                    </div>
+                    <div class="signal-row">
+                        <span class="signal-badge signal-weight-red">Action</span>
+                        <span class="signal-text">
+                            Bestehende Datentransfervereinbarungen mit Drittlandanbietern auf Art. 44 ff.
+                            DSGVO-Konformität prüfen — insbesondere bei Anbietern mit Russland-Bezug.
+                        </span>
+                    </div>
+                    <div class="meta"><span class="blur-meta">Quelle und Link verborgen</span></div>
+                </article>
+
+                <article class="news-item">
+                    <div class="news-heading">
+                        <span class="news-index">02</span>
+                        <h3 class="news-title">LinkedIn sperrt DSGVO-Auskunftsrecht hinter Bezahlschranke</h3>
+                    </div>
+                    <p class="news-content">
+                        noyb hat eine DSGVO-Beschwerde eingereicht, nachdem LinkedIn Nutzer zur Zahlung eines
+                        Abonnements verpflichtete, um ihr Auskunftsrecht auszuüben — mit direkten Fragen zu
+                        Art. 12 und 15 DSGVO.
+                    </p>
+                    <div class="chip-row">
+                        <span class="chip-pill chip-pill-accent">🔖 Recht</span>
+                        <span class="chip-pill">Art. 15 DSGVO</span>
+                        <span class="chip-pill">Beschwerde</span>
+                    </div>
+                    <div class="signal-row">
+                        <span class="signal-badge signal-weight-yellow">Watch</span>
+                        <span class="signal-text">
+                            Ausgang der Beschwerde beobachten — mögliche Auswirkungen auf Auskunftspflichten und
+                            technische Infrastruktur für Betroffenenanfragen nach Art. 15 DSGVO.
+                        </span>
+                    </div>
+                    <div class="meta"><span class="blur-meta">Quelle und Link verborgen</span></div>
+                </article>
+
+                <article class="news-item">
+                    <div class="news-heading">
+                        <span class="news-index">03</span>
+                        <div style="flex:1">
+                            <span class="blur-line blur-title"></span>
+                            <span class="blur-line" style="width:52%"></span>
+                        </div>
+                    </div>
+                    <p class="news-content" aria-hidden="true">
+                        <span class="blur-line blur-content" style="width:100%"></span>
+                        <span class="blur-line blur-content" style="width:70%"></span>
+                    </p>
+                    <div class="chip-row">
+                        <span class="chip-pill chip-pill-authority">🔖 Behörden</span>
+                        <span class="chip-pill">Art. 33 DSGVO</span>
+                    </div>
+                    <div class="signal-row">
+                        <span class="signal-badge signal-weight-yellow">Watch</span>
+                        <span class="blur-signal"></span>
+                    </div>
+                    <div class="meta"><span class="blur-meta">Quelle und Link verborgen</span></div>
+                </article>
+
+                <article class="news-item">
+                    <div class="news-heading">
+                        <span class="news-index">04</span>
+                        <div style="flex:1">
+                            <span class="blur-line" style="width:82%"></span>
+                            <span class="blur-line" style="width:44%"></span>
+                        </div>
+                    </div>
+                    <p class="news-content" aria-hidden="true">
+                        <span class="blur-line blur-content" style="width:100%"></span>
+                        <span class="blur-line blur-content" style="width:63%"></span>
+                    </p>
+                    <div class="chip-row">
+                        <span class="chip-pill chip-pill-accent">🔖 Sicherheit</span>
+                        <span class="chip-pill">CVE-2026-31431</span>
+                    </div>
+                    <div class="signal-row">
+                        <span class="signal-badge signal-weight-orange">Monitor</span>
+                        <span class="blur-signal"></span>
+                    </div>
+                    <div class="meta"><span class="blur-meta">Quelle und Link verborgen</span></div>
+                </article>
+
+                <div class="email-preview-footer">
+                    <span>Das vollständige Briefing enthält Quellen, Links und KI-Analyse für alle 18 Meldungen</span>
+                    <span>Verwalten · Abmelden</span>
                 </div>
             </div>
-            <div id="flow-banner" class="flow-banner is-hidden" role="status" aria-live="polite">
-                <div class="flow-banner-copy">
-                    <strong id="flow-banner-title"></strong>
-                    <p id="flow-banner-text"></p>
+        </section>
+
+        <section id="access" class="page-shell section" aria-labelledby="access-title">
+            <div class="access-panel">
+                <h2 id="access-title">Invite-only access</h2>
+                <p class="section-copy">
+                    Curiosa is a private research project. Access is by invitation only. If you are a compliance
+                    professional, lawyer, or researcher working with data protection or digital regulation, you are
+                    welcome to request access.
+                </p>
+                <div class="access-actions">
+                    <button class="button button-outline" type="button" data-open-access>Request access</button>
+                    <a class="button button-dark" href="./subscribe/">Activate</a>
                 </div>
-            </div>
-            <p id="legacy-note" class="note note-warm is-hidden">
-                Your account is still using legacy YAML-based daily preferences. Saving here will switch you to the new
-                DB-managed settings.
-            </p>
-            <p id="status-message" class="note is-hidden" role="status" aria-live="polite"></p>
-        </section>
 
-        <section class="card">
-            <div class="card-heading">
-                <h2>Subscription settings</h2>
-                <p>Choose which digests Curiosa should send you.</p>
+                <form id="access-form" class="access-form" aria-label="Request access form">
+                    <input id="submitted-at" name="submittedAt" type="hidden" value="">
+                    <div class="trap-field" aria-hidden="true">
+                        <label for="subscription-hint">Leave this field blank</label>
+                        <input
+                            id="subscription-hint"
+                            name="subscription_hint"
+                            type="text"
+                            tabindex="-1"
+                            autocomplete="off"
+                            data-lpignore="true"
+                            data-1p-ignore="true"
+                        >
+                    </div>
+                    <div class="form-grid">
+                        <label class="field">
+                            <span>Name</span>
+                            <input id="name" name="name" type="text" autocomplete="name" maxlength="120" required>
+                        </label>
+                        <label class="field">
+                            <span>Email</span>
+                            <input id="email" name="email" type="email" autocomplete="email" maxlength="320" required>
+                        </label>
+                        <label class="field field-full">
+                            <span>Brief note</span>
+                            <textarea id="note" name="note" maxlength="1200" placeholder="Optional"></textarea>
+                        </label>
+                    </div>
+                    <p class="form-note">
+                        This sends a message to the project maintainer only. No marketing, no third-party services,
+                        no automated processing.
+                    </p>
+                    <div class="access-actions">
+                        <button id="send-button" class="button button-dark" type="submit">Send request</button>
+                    </div>
+                    <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
+                </form>
             </div>
-            <div class="toggle-grid">
-                <label class="toggle-card">
-                    <input type="checkbox" id="daily-enabled">
-                    <span>
-                        <strong>Daily briefing</strong>
-                        <small>Receive the daily Curiosa email.</small>
-                    </span>
-                </label>
-                <label class="toggle-card">
-                    <input type="checkbox" id="weekly-enabled">
-                    <span>
-                        <strong>Weekly digest</strong>
-                        <small>Receive the weekly Curiosa roundup.</small>
-                    </span>
-                </label>
-            </div>
-        </section>
-
-        <section class="card">
-            <div class="card-heading">
-                <h2>Sources by category</h2>
-                <p>These source selections affect the daily briefing only.</p>
-            </div>
-            <div id="sources-root" class="sources-root"></div>
-        </section>
-
-        <section class="actions-card">
-            <button id="save-button" class="button button-primary" type="button">Save changes</button>
-            <button id="reset-button" class="button button-danger" type="button">Reset settings</button>
         </section>
     </main>
 
-    <script src="./app.js" defer></script>
+    <footer class="site-footer">
+        <div class="page-shell footer-inner">
+            <span>Curiosa · Forschungsprojekt · 2026</span>
+            <div class="footer-links">
+                <a href="./subscribe/">Abonnement aktivieren</a>
+                <a href="./subscription-configuration/">Subscription Configuration</a>
+                <a href="./dashboard/">Dashboard</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ── EmailJS config — fill these in before deploying ──
+        const EMAILJS_PUBLIC_KEY   = '2L7XVVUGS0yNjHoJk';
+        const EMAILJS_SERVICE_ID   = 'service_ulaent6';
+        const EMAILJS_TEMPLATE_ID  = 'template_35ocq9r';
+        const emailJsConfig = {
+            publicKey: '2L7XVVUGS0yNjHoJk',
+            serviceId: 'service_ulaent6',
+            templateId: 'template_35ocq9r',
+            sdkUrl: 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js',
+        };
+        let emailJsLoadPromise = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('access-form');
+            const openButtons = document.querySelectorAll('[data-open-access]');
+            const submittedAtInput = document.getElementById('submitted-at');
+            const trapInput = document.getElementById('subscription-hint');
+            const sendButton = document.getElementById('send-button');
+            const statusMessage = document.getElementById('form-status');
+            const minimumHumanDelayMs = 3000;
+
+            function setSubmittedAt() {
+                submittedAtInput.value = String(Date.now());
+            }
+
+            function setStatus(message, tone) {
+                statusMessage.textContent = message || '';
+                statusMessage.classList.toggle('is-visible', Boolean(message));
+                statusMessage.classList.toggle('form-status-success', tone === 'success');
+                statusMessage.classList.toggle('form-status-error', tone === 'error');
+            }
+
+            function openAccessForm() {
+                form.classList.add('is-open');
+                form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            function toggleAccessForm() {
+                const isOpen = form.classList.toggle('is-open');
+                if (isOpen) {
+                    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+
+            function setBusy(isBusy) {
+                sendButton.disabled = isBusy;
+            }
+
+            function loadEmailJs() {
+                if (window.emailjs) {
+                    return Promise.resolve(window.emailjs);
+                }
+
+                if (!emailJsLoadPromise) {
+                    emailJsLoadPromise = new Promise((resolve, reject) => {
+                        const script = document.createElement('script');
+                        script.src = emailJsConfig.sdkUrl;
+                        script.onload = () => resolve(window.emailjs);
+                        script.onerror = () => reject(new Error('emailjs_unavailable'));
+                        document.head.appendChild(script);
+                    });
+                }
+
+                return emailJsLoadPromise;
+            }
+
+            setSubmittedAt();
+
+            loadEmailJs()
+                .then((client) => {
+                    if (client) {
+                        client.init({ publicKey: emailJsConfig.publicKey });
+                    }
+                })
+                .catch(() => {});
+
+            openButtons.forEach((button) => {
+                button.addEventListener('click', () => {
+                    if (button.classList.contains('nav-button')) {
+                        openAccessForm();
+                        return;
+                    }
+                    toggleAccessForm();
+                });
+            });
+
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                setStatus('', '');
+
+                if (trapInput.value.trim()) {
+                    return;
+                }
+
+                const submittedAt = Number(submittedAtInput.value) || Date.now();
+                if (Date.now() - submittedAt < minimumHumanDelayMs) {
+                    return;
+                }
+
+                const formData = new FormData(form);
+                const payload = {
+                    name: String(formData.get('name') || '').trim(),
+                    email: String(formData.get('email') || '').trim(),
+                    note: String(formData.get('note') || '').trim(),
+                };
+
+                setBusy(true);
+                try {
+                    const client = await loadEmailJs();
+                    if (!client) {
+                        throw new Error('emailjs_unavailable');
+                    }
+
+                    await client.send(
+                        emailJsConfig.serviceId,
+                        emailJsConfig.templateId,
+                        payload,
+                        { publicKey: emailJsConfig.publicKey },
+                    );
+
+                    form.reset();
+                    setSubmittedAt();
+                    setStatus('Request sent. You will hear back if an invite is available.', 'success');
+                } catch (_error) {
+                    setStatus('Something went wrong. Please try again later.', 'error');
+                } finally {
+                    setBusy(false);
+                }
+            });
+
+            const heroEl = document.querySelector('.hero');
+            if (heroEl) {
+                heroEl.classList.add('will-animate');
+                setTimeout(() => heroEl.classList.add('is-visible'), 80);
+            }
+
+            const animatables = [
+                '.feat-grid .feat',
+                '.feature-grid .feature-card',
+                '.del-row .del',
+                '.delivery-grid .delivery-card',
+                '.ep-wrap',
+                '.email-preview',
+                '.cta-block',
+                '.access-panel',
+                '.sec-label',
+                '.section-heading',
+            ];
+
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                },
+                { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+            );
+
+            animatables.forEach((selector) => {
+                document.querySelectorAll(selector).forEach((el) => {
+                    el.classList.add('will-animate');
+                    observer.observe(el);
+                });
+            });
+        });
+    </script>
 </body>
 </html>
