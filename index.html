@@ -317,7 +317,7 @@
             font-weight: 600;
             color: #FFFFFF;
             line-height: 1.2;
-            letter-spacing: -0.015em;
+            letter-spacing: 0;
         }
 
         .email-title span {
@@ -437,7 +437,7 @@
             padding: 1px 5px;
             border-radius: 4px;
             background: #F0F2F5;
-            color: #9CA3AF;
+            color: #7A8CA0;
             font-family: "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
             font-size: 10px;
             line-height: 1.3;
@@ -488,18 +488,18 @@
         .news-title {
             margin: 0 0 6px;
             color: #19335C;
-            font-size: 20px;
+            font-size: 21px;
             font-weight: 600;
-            line-height: 1.35;
-            letter-spacing: -0.006em;
+            line-height: 1.34;
+            letter-spacing: 0;
         }
 
         .news-deck,
         .ai-extra {
             margin: 0 0 10px;
             color: #2E3340;
-            font-size: 14px;
-            line-height: 1.55;
+            font-size: 15px;
+            line-height: 1.48;
         }
 
         .ai-extra {
@@ -550,7 +550,7 @@
         }
 
         .meta-row {
-            color: #888;
+            color: #7A8CA0;
             font-size: 11px;
             line-height: 1.7;
         }
@@ -585,6 +585,51 @@
             margin-right: 2px;
             opacity: 0.65;
             vertical-align: middle;
+        }
+
+        .preview-note {
+            margin: 4px 0 0;
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .email-footer {
+            padding: 20px 0 0;
+            text-align: center;
+        }
+
+        .email-footer-row {
+            margin-bottom: 4px;
+        }
+
+        .email-footer-link {
+            color: #19335C;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            text-decoration: underline;
+            text-decoration-color: #C5CBD6;
+            text-underline-offset: 3px;
+        }
+
+        .email-footer-link-unsubscribe {
+            color: #B04040;
+            font-weight: 400;
+            text-decoration-color: #E5BEBE;
+        }
+
+        .email-footer-separator {
+            padding: 0 6px;
+            color: #C5CBD6;
+            font-size: 12px;
+        }
+
+        .email-footer-meta {
+            margin: 0;
+            color: #787E89;
+            font-size: 12px;
+            line-height: 1.5;
         }
 
         .blur-meta {
@@ -1047,6 +1092,7 @@
         <section class="page-shell section" aria-labelledby="example-title">
             <div class="section-heading">
                 <h2 id="example-title">Example daily</h2>
+                <p class="preview-note">Representative public preview; sources and recipient-specific links are hidden.</p>
             </div>
             <div class="email-preview" aria-label="Illustrative Curiosa briefing preview">
                 <div class="email-preview-inner">
@@ -1075,7 +1121,7 @@
                         <div class="news-kicker">
                             <span class="news-index">01</span>
                             <span class="news-source-mask" aria-label="Source hidden"></span>
-                            <span class="kicker-divider">|</span><span class="chip-kicker chip-kicker-authority">Behörden</span>
+                            <span class="kicker-divider">|</span><span class="chip-kicker chip-kicker-authority">Aufsicht</span>
                         </div>
                         <h3 class="news-title">Datenschutzkonferenz erarbeitet Handlungsempfehlungen für die Digitalisierung der Verwaltung</h3>
                         <div class="news-deck">Die Datenschutzkonferenz bündelt Empfehlungen für digitale Verwaltungsverfahren. Im Fokus stehen Registerzugriffe, Identitätsprüfung und Datenaustausch mit möglichst klaren Zweckbindungen und datensparsamen Standards.</div>
@@ -1092,7 +1138,7 @@
                         <div class="news-kicker">
                             <span class="news-index">02</span>
                             <span class="news-source-mask" aria-label="Source hidden"></span>
-                            <span class="kicker-divider">|</span><span class="chip-kicker chip-kicker-authority">Behörden</span>
+                            <span class="kicker-divider">|</span><span class="chip-kicker chip-kicker-authority">Aufsicht</span>
                         </div>
                         <h3 class="news-title">Datenschutz in der Schule – Ergebnisse zu kostenlosen Online-Diensten</h3>
                         <div class="news-deck">Eine Aufsichtsbehörde fasst Prüfergebnisse zu kostenfreien Schul- und Kollaborationstools zusammen. Besonders kritisch sind intransparente Datenflüsse, Profilbildung und fehlende Einflussmöglichkeiten für Schulen und Schulträger.</div>
@@ -1139,6 +1185,16 @@
                         </div>
                     </article>
 
+                    <div class="email-footer" aria-label="Example email footer links">
+                        <div class="email-footer-row">
+                            <a class="email-footer-link" href="./">Curiosa Info</a><span class="email-footer-separator">·</span><a class="email-footer-link" href="./dashboard/">Dashboard</a>
+                        </div>
+                        <div class="email-footer-row">
+                            <a class="email-footer-link" href="./subscription-configuration/">Manage Subscription</a><span class="email-footer-separator">·</span><a class="email-footer-link email-footer-link-unsubscribe" href="./unsubscribe/">Unsubscribe</a>
+                        </div>
+                        <p class="email-footer-meta">Non-commercial newsletter for personal use.</p>
+                    </div>
+
                 </div>
             </div>
         </section>
@@ -1146,12 +1202,13 @@
         <section class="page-shell section" aria-labelledby="weekly-example-title">
             <div class="section-heading">
                 <h2 id="weekly-example-title">Example weekly</h2>
+                <p class="preview-note">Compact digest preview; public examples omit recipient-specific URLs.</p>
             </div>
             <div class="email-preview" aria-label="Illustrative Curiosa weekly digest preview">
                 <div class="email-preview-inner">
                     <div class="email-header-top">
                         <p class="email-title">Curiosa <span>— Weekly Briefing</span></p>
-                        <p class="email-subtitle">09.05.2026 - 15.05.2026 · 5 Meldungen</p>
+                        <p class="email-subtitle">11.05.2026 - 17.05.2026 · 5 Meldungen</p>
                     </div>
                     <div class="email-header-pulse">
                         <div class="pulse-grid">
@@ -1180,7 +1237,7 @@
                         <div class="news-kicker">
                             <span class="news-index">01</span>
                             <span class="news-source-mask" aria-label="Source hidden"></span>
-                            <span class="kicker-divider">|</span><span class="chip-kicker chip-kicker-authority">Behörden</span>
+                            <span class="kicker-divider">|</span><span class="chip-kicker chip-kicker-authority">Aufsicht</span>
                         </div>
                         <h3 class="news-title">CNIL publishes new guidance on AI transparency</h3>
                         <div class="news-deck">The CNIL has released guidance on how organisations should explain AI-supported decisions to users.</div>
@@ -1188,7 +1245,7 @@
                             <span class="signal-badge signal-watch">Watch</span><span class="signal-text">Prüfen, ob bestehende Transparenztexte für KI-gestützte Prozesse reichen.</span>
                         </div>
                         <div class="meta-row">
-                            <span class="meta-date">📅 Monday, 09.05.2026</span><span class="meta-divider">·</span><span class="meta-score">📊 95 pts</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>AI</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Transparenz</span>
+                            <span class="meta-date">📅 Monday, 11.05.2026</span><span class="meta-divider">·</span><span class="meta-score">📊 95 pts</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>AI</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Transparenz</span>
                         </div>
                     </article>
 
@@ -1204,7 +1261,7 @@
                             <span class="signal-badge signal-action">Action</span><span class="signal-text">Sicherheitskontrollen und Incident-Playbooks mit Blick auf Bußgeldrisiken nachschärfen.</span>
                         </div>
                         <div class="meta-row">
-                            <span class="meta-date">📅 Tuesday, 10.05.2026</span><span class="meta-divider">·</span><span class="meta-score">📊 92 pts</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Bußgeld</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Datenpanne</span>
+                            <span class="meta-date">📅 Tuesday, 12.05.2026</span><span class="meta-divider">·</span><span class="meta-score">📊 92 pts</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Bußgeld</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Datenpanne</span>
                         </div>
                     </article>
 
@@ -1212,7 +1269,7 @@
                         <div class="news-kicker">
                             <span class="news-index">03</span>
                             <span class="news-source-mask" aria-label="Source hidden"></span>
-                            <span class="kicker-divider">|</span><span class="chip-kicker chip-kicker-authority">Behörden</span>
+                            <span class="kicker-divider">|</span><span class="chip-kicker chip-kicker-authority">Aufsicht</span>
                         </div>
                         <h3 class="news-title">Netherlands AP updates cookie consent guidelines</h3>
                         <div class="news-deck">The AP reiterates that manipulative cookie banners and pre-ticked choices remain non-compliant.</div>
@@ -1220,7 +1277,7 @@
                             <span class="signal-badge signal-watch">Watch</span><span class="signal-text">Bestehende Consent-Banner gegen die strengere Lesart prüfen.</span>
                         </div>
                         <div class="meta-row">
-                            <span class="meta-date">📅 Wednesday, 11.05.2026</span><span class="meta-divider">·</span><span class="meta-score">📊 88 pts</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Cookies</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Consent</span>
+                            <span class="meta-date">📅 Wednesday, 13.05.2026</span><span class="meta-divider">·</span><span class="meta-score">📊 88 pts</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Cookies</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Consent</span>
                         </div>
                     </article>
 
@@ -1236,9 +1293,19 @@
                             <span class="signal-badge signal-watch">Watch</span><span class="signal-text">Internationale Datentransfers bleiben ein Dauerbrenner für Plattformen.</span>
                         </div>
                         <div class="meta-row">
-                            <span class="meta-date">📅 Thursday, 12.05.2026</span><span class="meta-divider">·</span><span class="meta-score">📊 85 pts</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Meta</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Transfers</span>
+                            <span class="meta-date">📅 Thursday, 14.05.2026</span><span class="meta-divider">·</span><span class="meta-score">📊 85 pts</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Meta</span><span class="chip-tag"><svg class="tag-icon" viewBox="0 0 16 16" fill="none"><path d="M2 2h5.5l6.5 6.5-5.5 5.5L2 7.5V2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="5.2" cy="5.2" r="1.1" fill="currentColor"/></svg>Transfers</span>
                         </div>
                     </article>
+
+                    <div class="email-footer" aria-label="Example weekly footer links">
+                        <div class="email-footer-row">
+                            <a class="email-footer-link" href="./">Curiosa Info</a><span class="email-footer-separator">·</span><a class="email-footer-link" href="./dashboard/">Dashboard</a>
+                        </div>
+                        <div class="email-footer-row">
+                            <a class="email-footer-link" href="./subscription-configuration/">Manage Subscription</a><span class="email-footer-separator">·</span><a class="email-footer-link email-footer-link-unsubscribe" href="./unsubscribe/">Unsubscribe</a>
+                        </div>
+                        <p class="email-footer-meta">Non-commercial newsletter for personal use.</p>
+                    </div>
 
                 </div>
             </div>
