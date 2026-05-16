@@ -347,6 +347,7 @@
 
         .chart-frame-volume { height: 160px; }
         .chart-frame-compact { height: 200px; }
+        .chart-frame-topic { height: 240px; }
 
         .site-footer {
             border-top: 1px solid var(--border);
@@ -481,17 +482,17 @@
                 <article class="kpi" style="--accent: #EA580C;">
                     <p class="kpi-label">Regulatory share</p>
                     <p id="kpi-authority" class="kpi-value">0%</p>
-                    <p class="kpi-note">Items from official authorities</p>
+                    <p id="kpi-authority-note" class="kpi-note">Items from official authorities</p>
                 </article>
                 <article class="kpi" style="--accent: #D97706;">
                     <p class="kpi-label">Action signals</p>
                     <p id="kpi-watch-action" class="kpi-value">0</p>
                     <p class="kpi-note">Items marked Action or Watch</p>
                 </article>
-                <article class="kpi" style="--accent: #DC2626;">
+                <article class="kpi" style="--accent: #1B5FA5;">
                     <p class="kpi-label">Signal pressure</p>
                     <p id="kpi-weighted" class="kpi-value">0</p>
-                    <p class="kpi-note">Cumulative AI relevance score</p>
+                    <p id="kpi-weighted-note" class="kpi-note">Cumulative AI relevance score</p>
                 </article>
             </div>
 
@@ -500,7 +501,7 @@
                     <div class="chart-head">
                         <div>
                             <h2 class="chart-title">Daily Briefing Volume</h2>
-                            <p class="chart-subtitle">Items ranked and sent in each daily briefing</p>
+                            <p class="chart-subtitle">Ranked briefing items; visible email cards may be fewer after dedup.</p>
                         </div>
                         <span class="chart-tag">items / day</span>
                     </div>
@@ -514,7 +515,7 @@
                                 <h2 class="chart-title">Priority Classification</h2>
                                 <p class="chart-subtitle">AI label per item: Action -> Watch -> FYI</p>
                             </div>
-                            <span class="chart-tag">stacked</span>
+                            <span class="chart-tag">by action</span>
                         </div>
                         <div class="chart-frame"><canvas id="action-count"></canvas></div>
                     </section>
@@ -524,7 +525,7 @@
                                 <h2 class="chart-title">Signal Pressure</h2>
                                 <p class="chart-subtitle">Weighted relevance; peaks mark high-stakes days</p>
                             </div>
-                            <span class="chart-tag">area</span>
+                            <span class="chart-tag">weighted score</span>
                         </div>
                         <div class="chart-frame"><canvas id="weighted-signal"></canvas></div>
                     </section>
@@ -537,7 +538,7 @@
                                 <h2 class="chart-title">Source Mix</h2>
                                 <p class="chart-subtitle">Regulators vs. media &amp; blogs</p>
                             </div>
-                            <span class="chart-tag">stacked</span>
+                            <span class="chart-tag">by source</span>
                         </div>
                         <div class="chart-frame chart-frame-compact"><canvas id="source-type"></canvas></div>
                     </section>
@@ -547,9 +548,9 @@
                                 <h2 class="chart-title">Topic Activity</h2>
                                 <p class="chart-subtitle">Mentions by theme per day</p>
                             </div>
-                            <span class="chart-tag">line</span>
+                            <span class="chart-tag">topic mentions</span>
                         </div>
-                        <div class="chart-frame chart-frame-compact"><canvas id="topic-mentions"></canvas></div>
+                        <div class="chart-frame chart-frame-topic"><canvas id="topic-mentions"></canvas></div>
                     </section>
                     <section id="content-categories-panel" class="chart-panel">
                         <div class="chart-head">
@@ -557,7 +558,7 @@
                                 <h2 class="chart-title">Content Mix</h2>
                                 <p class="chart-subtitle">Article categories</p>
                             </div>
-                            <span class="chart-tag">stacked</span>
+                            <span class="chart-tag">by category</span>
                         </div>
                         <div class="chart-frame chart-frame-compact"><canvas id="content-categories"></canvas></div>
                     </section>
@@ -592,18 +593,19 @@
             ignore: "#CBD5E1",
             authority: "#EA580C",
             media: "#1B5FA5",
-            unknown: "#CBD5E1",
-            privacy: "#2F4F80",
-            security: "#1B5FA5",
-            legal: "#D97706",
+            unknown: "#94A3B8",
+            privacy: "#059669",
+            security: "#2563EB",
+            legal: "#7C3AED",
             enforcement: "#DC2626",
             incident: "#EA580C",
-            other: "#94A3B8",
+            other: "#64748B",
             navy: "#14233B",
             brand: "#1B2D49",
             volume: "#1B5FA5",
             volumeFill: "rgba(27, 95, 165, 0.18)",
-            category: "#2F4F80",
+            contentSecurity: "#0E7490",
+            fallbackPink: "#BE185D",
         };
 
         const DISPLAY_LABELS = {
@@ -615,29 +617,60 @@
             "Unknown": "Unknown",
             "Authority": "Regulatory bodies",
             "Media / Blog": "Media & blogs",
+            "Media": "Media & blogs",
+            "Blog": "Media & blogs",
         };
 
-        const SERIES_COLORS = {
+        const ACTION_COLORS = {
             "Action": COLORS.action,
             "Watch": COLORS.watch,
             "FYI": COLORS.fyi,
             "Monitor": COLORS.monitor,
             "Ignore": COLORS.ignore,
             "Unknown": COLORS.unknown,
+        };
+
+        const SOURCE_COLORS = {
             "Authority": COLORS.authority,
+            "Regulatory bodies": COLORS.authority,
             "Media / Blog": COLORS.media,
+            "Media": COLORS.media,
+            "Blog": COLORS.media,
+            "Unknown": COLORS.unknown,
+        };
+
+        const TOPIC_COLORS = {
             "Enforcement": COLORS.enforcement,
             "Incident": COLORS.incident,
             "Security": COLORS.security,
             "Legal": COLORS.legal,
             "Privacy / GDPR": COLORS.privacy,
-            "Privacy": COLORS.privacy,
-            "Technology": COLORS.monitor,
-            "Authority / Regulator": COLORS.authority,
             "Other": COLORS.other,
         };
 
-        const FALLBACK_COLORS = ["#1B5FA5", "#2563EB", "#2F4F80", "#D97706", "#EA580C", "#94A3B8"];
+        const CONTENT_COLORS = {
+            "Technology": COLORS.monitor,
+            "Security": COLORS.contentSecurity,
+            "Legal": COLORS.legal,
+            "Authority / Regulator": COLORS.authority,
+            "Authority": COLORS.authority,
+            "Regulator": COLORS.authority,
+            "Enforcement": COLORS.enforcement,
+            "Privacy": COLORS.privacy,
+            "Other": COLORS.other,
+            "Unknown": COLORS.unknown,
+        };
+
+        const FALLBACK_COLORS = [
+            COLORS.monitor,
+            COLORS.action,
+            COLORS.privacy,
+            COLORS.watch,
+            COLORS.legal,
+            COLORS.contentSecurity,
+            COLORS.fallbackPink,
+            COLORS.other,
+        ];
 
         const elements = {
             loading: document.getElementById("loading-state"),
@@ -647,8 +680,10 @@
             meta: document.getElementById("dashboard-meta"),
             kpiTotal: document.getElementById("kpi-total"),
             kpiAuthority: document.getElementById("kpi-authority"),
+            kpiAuthorityNote: document.getElementById("kpi-authority-note"),
             kpiWatchAction: document.getElementById("kpi-watch-action"),
             kpiWeighted: document.getElementById("kpi-weighted"),
+            kpiWeightedNote: document.getElementById("kpi-weighted-note"),
             contentPanel: document.getElementById("content-categories-panel"),
         };
 
@@ -689,8 +724,8 @@
             return `rgba(${r}, ${g}, ${b}, ${opacity})`;
         }
 
-        function colorFor(label, index = 0) {
-            return SERIES_COLORS[label] || FALLBACK_COLORS[index % FALLBACK_COLORS.length];
+        function colorFor(label, index = 0, palette = {}) {
+            return palette[label] || FALLBACK_COLORS[index % FALLBACK_COLORS.length];
         }
 
         function displayLabel(label) {
@@ -701,9 +736,9 @@
             return Object.entries(series || {}).filter(([, values]) => sum(values) > 0);
         }
 
-        function barDatasets(series, { stacked = false } = {}) {
+        function barDatasets(series, { stacked = false, palette = {} } = {}) {
             return nonZeroEntries(series).map(([label, values], index) => {
-                const color = colorFor(label, index);
+                const color = colorFor(label, index, palette);
                 return {
                     label: displayLabel(label),
                     data: values,
@@ -715,9 +750,9 @@
             });
         }
 
-        function lineDatasets(series, { fill = false } = {}) {
+        function lineDatasets(series, { fill = false, palette = {} } = {}) {
             return nonZeroEntries(series).map(([label, values], index) => {
-                const color = colorFor(label, index);
+                const color = colorFor(label, index, palette);
                 return {
                     label: displayLabel(label),
                     data: values,
@@ -791,7 +826,8 @@
             const sourceType = data.series.source_type || {};
             const actionCount = data.series.action_count || {};
             const actionWeighted = data.series.action_weighted || {};
-            const authorityItems = sum(sourceType.Authority || []);
+            const hasAuthorityItems = Array.isArray(sourceType.Authority);
+            const authorityItems = hasAuthorityItems ? sum(sourceType.Authority) : 0;
             const totalItems = sum(data.totals_by_day || []);
             const watchActionItems = sum(actionCount.Action || []) + sum(actionCount.Watch || []);
             const weightedSignal = Object.values(actionWeighted).reduce((total, values) => total + sum(values), 0);
@@ -799,8 +835,11 @@
             return {
                 totalItems,
                 authorityShare: totalItems ? authorityItems / totalItems : 0,
+                authorityItems,
+                hasAuthorityItems,
                 watchActionItems,
                 weightedSignal,
+                weightedSignalAverage: totalItems ? weightedSignal / totalItems : 0,
             };
         }
 
@@ -823,8 +862,14 @@
 
             elements.kpiTotal.textContent = String(kpis.totalItems);
             elements.kpiAuthority.textContent = `${Math.round(kpis.authorityShare * 100)}%`;
+            elements.kpiAuthorityNote.textContent = kpis.hasAuthorityItems
+                ? `${kpis.authorityItems} of ${kpis.totalItems} ranked items`
+                : "Items from official authorities";
             elements.kpiWatchAction.textContent = String(kpis.watchActionItems);
             elements.kpiWeighted.textContent = String(kpis.weightedSignal);
+            elements.kpiWeightedNote.textContent = kpis.totalItems
+                ? `Cumulative relevance · avg ${kpis.weightedSignalAverage.toFixed(1)}/item`
+                : "Cumulative AI relevance score";
             elements.meta.textContent = `Aggregated public metrics from ${formatDayLabel(payload.period.start_date)} to ${formatDayLabel(payload.period.end_date)}. Generated ${payload.generated_at}.`;
 
             if (kpis.totalItems === 0) {
@@ -851,25 +896,25 @@
 
             renderChart("action-count", {
                 type: "bar",
-                data: { labels, datasets: barDatasets(data.series.action_count, { stacked: true }) },
+                data: { labels, datasets: barDatasets(data.series.action_count, { stacked: true, palette: ACTION_COLORS }) },
                 options: baseOptions(true),
             });
 
             renderChart("weighted-signal", {
                 type: "line",
-                data: { labels, datasets: lineDatasets(data.series.action_weighted, { fill: true }) },
+                data: { labels, datasets: lineDatasets(data.series.action_weighted, { fill: true, palette: ACTION_COLORS }) },
                 options: baseOptions(false),
             });
 
             renderChart("source-type", {
                 type: "bar",
-                data: { labels, datasets: barDatasets(data.series.source_type, { stacked: true }) },
+                data: { labels, datasets: barDatasets(data.series.source_type, { stacked: true, palette: SOURCE_COLORS }) },
                 options: baseOptions(true),
             });
 
             renderChart("topic-mentions", {
                 type: "line",
-                data: { labels, datasets: lineDatasets(data.series.topic_mentions) },
+                data: { labels, datasets: lineDatasets(data.series.topic_mentions, { palette: TOPIC_COLORS }) },
                 options: baseOptions(false),
             });
 
@@ -878,7 +923,7 @@
             if (contentEntries.length) {
                 renderChart("content-categories", {
                     type: "bar",
-                    data: { labels, datasets: barDatasets(data.series.content_type, { stacked: true }) },
+                    data: { labels, datasets: barDatasets(data.series.content_type, { stacked: true, palette: CONTENT_COLORS }) },
                     options: baseOptions(true),
                 });
             }
