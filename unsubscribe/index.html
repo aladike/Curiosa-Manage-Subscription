@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Curiosa Unsubscribe</title>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .unsubscribe-shell {
+            width: min(680px, calc(100% - 32px));
+            margin: 48px auto;
+        }
+
+        .unsubscribe-card {
+            padding: 28px;
+        }
+
+        .unsubscribe-status-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 20px 0 0;
+            padding: 14px;
+            border: 1px solid rgba(30, 58, 138, 0.12);
+            border-radius: 12px;
+            background: rgba(248, 250, 252, 0.74);
+        }
+
+        .unsubscribe-status-label {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .unsubscribe-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 22px 0 0;
+        }
+
+        .unsubscribe-actions .button-danger:not(:disabled) {
+            background: var(--brand-red);
+            color: #ffffff;
+            box-shadow: 0 10px 22px rgba(190, 72, 93, 0.18);
+        }
+
+        .unsubscribe-actions .button-secondary:disabled {
+            cursor: default;
+        }
+
+        .unsubscribe-links {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 20px 0 0;
+            padding-top: 18px;
+            border-top: 1px solid var(--line);
+        }
+
+        .unsubscribe-link {
+            color: var(--brand-blue);
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        .unsubscribe-note {
+            margin-top: 18px;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.55;
+        }
+
+        .status-pill-neutral {
+            color: #475569;
+            background: rgba(241, 245, 249, 0.92);
+            border-color: rgba(100, 116, 139, 0.18);
+        }
+
+        @media (max-width: 640px) {
+            .unsubscribe-shell {
+                width: min(100% - 20px, 680px);
+                margin: 24px auto;
+            }
+
+            .unsubscribe-card {
+                padding: 22px 18px;
+            }
+
+            .unsubscribe-status-row,
+            .unsubscribe-actions {
+                align-items: stretch;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script>
+        window.CURIOSA_MANAGE_CONFIG = window.CURIOSA_MANAGE_CONFIG || {
+            apiBaseUrl: "https://bwdddngjubszavoftljo.supabase.co/functions/v1/manage-subscription"
+        };
+    </script>
+
+    <header style="border-bottom: 1px solid #E5E7EB; margin-bottom: 0; background: rgba(248,250,252,0.95); position: sticky; top: 0; z-index: 20;">
+        <div style="width: min(920px, calc(100% - 32px)); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; min-height: 54px; gap: 16px;">
+            <a href="../" style="font-size: 17px; font-weight: 800; color: #1e2d45; text-decoration: none; letter-spacing: -0.01em; flex-shrink: 0;">
+                Curio<span style="color: #1e3a8a;">sa</span>
+            </a>
+            <a href="https://aladike.github.io/Curiosa-Web/" style="font-size: 12px; color: #374151; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; padding: 6px 12px; border-radius: 8px; border: 1px solid #E5E7EB; background: #ffffff; white-space: nowrap;" referrerpolicy="no-referrer">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+                Curiosa Home
+            </a>
+        </div>
+    </header>
+
+    <main class="unsubscribe-shell">
+        <section class="hero-card unsubscribe-card">
+            <p class="eyebrow">Curiosa Email</p>
+            <h1>Unsubscribe from Curiosa emails</h1>
+            <p class="intro">
+                You can unsubscribe from Curiosa emails here. If you change your mind, you can re-subscribe using this same link.
+            </p>
+
+            <div id="status-row" class="unsubscribe-status-row is-hidden">
+                <p class="unsubscribe-status-label">Current subscription status</p>
+                <span id="status-badge" class="status-pill status-pill-neutral">Loading</span>
+            </div>
+
+            <p id="status-message" class="note" role="status" aria-live="polite">Loading your subscription status...</p>
+
+            <div id="action-buttons" class="unsubscribe-actions">
+                <button id="unsubscribe-button" class="button button-danger" type="button">Unsubscribe</button>
+                <button id="resubscribe-button" class="button button-secondary" type="button">Re-subscribe</button>
+            </div>
+
+            <div class="unsubscribe-links">
+                <a id="manage-link" class="unsubscribe-link" href="../subscription-configuration/">Manage Subscription</a>
+                <a class="unsubscribe-link" href="https://aladike.github.io/Curiosa-Web/" referrerpolicy="no-referrer">Curiosa Home</a>
+            </div>
+
+            <p class="unsubscribe-note">
+                To request access for another email address, open Curiosa and use Request access from the menu.
+            </p>
+        </section>
+    </main>
+
+    <script>
+        (function () {
+            const config = window.CURIOSA_MANAGE_CONFIG || {};
+            const params = new URLSearchParams(window.location.search);
+            const token = params.get("token");
+            const apiBaseUrl = (config.apiBaseUrl || "").trim().replace(/\/$/, "");
+
+            const state = {
+                status: "",
+                busy: false,
+            };
+
+            const statusRow = document.getElementById("status-row");
+            const statusBadge = document.getElementById("status-badge");
+            const statusMessage = document.getElementById("status-message");
+            const actionButtons = document.getElementById("action-buttons");
+            const unsubscribeButton = document.getElementById("unsubscribe-button");
+            const resubscribeButton = document.getElementById("resubscribe-button");
+            const manageLink = document.getElementById("manage-link");
+
+            function setMessage(message, tone) {
+                statusMessage.textContent = message || "";
+                statusMessage.classList.toggle("is-hidden", !message);
+                statusMessage.classList.toggle("note-warm", tone === "warm");
+            }
+
+            function setBusy(isBusy) {
+                state.busy = isBusy;
+                unsubscribeButton.disabled = isBusy;
+                resubscribeButton.disabled = isBusy;
+            }
+
+            function showFatal(message) {
+                statusRow.classList.add("is-hidden");
+                actionButtons.classList.add("is-hidden");
+                manageLink.classList.add("is-hidden");
+                setMessage(message, "warm");
+            }
+
+            function buildManageUrl() {
+                const url = new URL("../subscription-configuration/", window.location.href);
+                url.searchParams.set("token", token);
+                return url.toString();
+            }
+
+            function buildUnsubscribeApiUrl(action) {
+                const manageUrl = new URL(apiBaseUrl);
+                const unsubscribeUrl = new URL("/functions/v1/unsubscribe", manageUrl.origin);
+                unsubscribeUrl.searchParams.set("token", token);
+                unsubscribeUrl.searchParams.set("redirect", "0");
+                if (action) {
+                    unsubscribeUrl.searchParams.set("action", action);
+                }
+                return unsubscribeUrl.toString();
+            }
+
+            function renderStatus() {
+                const isActive = state.status === "active";
+                const isUnsubscribed = state.status === "unsubscribed";
+                statusRow.classList.toggle("is-hidden", !(isActive || isUnsubscribed));
+                statusBadge.className = "status-pill";
+
+                if (isActive) {
+                    statusBadge.textContent = "Active";
+                    statusBadge.classList.add("status-pill-active");
+                    unsubscribeButton.disabled = state.busy;
+                    unsubscribeButton.classList.remove("is-hidden");
+                    resubscribeButton.disabled = true;
+                    resubscribeButton.classList.remove("is-hidden");
+                    return;
+                }
+
+                if (isUnsubscribed) {
+                    statusBadge.textContent = "Unsubscribed";
+                    statusBadge.classList.add("status-pill-inactive");
+                    unsubscribeButton.disabled = true;
+                    unsubscribeButton.classList.add("is-hidden");
+                    resubscribeButton.disabled = state.busy;
+                    resubscribeButton.classList.remove("is-hidden");
+                    return;
+                }
+
+                statusBadge.textContent = "Loading";
+                statusBadge.classList.add("status-pill-neutral");
+                unsubscribeButton.disabled = true;
+                resubscribeButton.disabled = true;
+            }
+
+            async function requestJson(url, options) {
+                const response = await fetch(url, options);
+                let payload = null;
+                try {
+                    payload = await response.json();
+                } catch (_error) {
+                    payload = null;
+                }
+
+                if (!response.ok) {
+                    const errorCode = payload && payload.error ? payload.error : "request_failed";
+                    throw new Error(errorCode);
+                }
+
+                return payload;
+            }
+
+            async function loadStatus(successMessage) {
+                setBusy(true);
+                try {
+                    const payload = await requestJson(
+                        `${apiBaseUrl}?token=${encodeURIComponent(token)}`,
+                        { method: "GET", headers: { Accept: "application/json" } },
+                    );
+                    state.status = payload.status || "";
+                    renderStatus();
+                    setMessage(successMessage || "Your current subscription status is loaded.");
+                } catch (error) {
+                    const code = error instanceof Error ? error.message : "request_failed";
+                    if (code === "invalid_token") {
+                        showFatal("This unsubscribe link is invalid.");
+                        return;
+                    }
+                    if (code === "missing_token") {
+                        showFatal("This unsubscribe link is incomplete.");
+                        return;
+                    }
+                    setMessage("Temporary error. Please try again later or contact us.", "warm");
+                    renderStatus();
+                } finally {
+                    setBusy(false);
+                    renderStatus();
+                }
+            }
+
+            async function changeSubscription(action) {
+                setBusy(true);
+                setMessage(action === "resubscribe" ? "Re-subscribing..." : "Unsubscribing...");
+
+                try {
+                    const response = await fetch(buildUnsubscribeApiUrl(action), {
+                        method: "POST",
+                        headers: { Accept: "text/plain" },
+                    });
+                    if (!response.ok) {
+                        throw new Error("request_failed");
+                    }
+                    await loadStatus(action === "resubscribe"
+                        ? "You have been re-subscribed successfully."
+                        : "You have been unsubscribed successfully.");
+                } catch (_error) {
+                    setMessage("Could not update your subscription right now. Please try again later or contact us.", "warm");
+                } finally {
+                    setBusy(false);
+                    renderStatus();
+                }
+            }
+
+            unsubscribeButton.addEventListener("click", () => changeSubscription(""));
+            resubscribeButton.addEventListener("click", () => changeSubscription("resubscribe"));
+
+            if (!token) {
+                showFatal("This unsubscribe link is incomplete.");
+                return;
+            }
+
+            if (!apiBaseUrl) {
+                showFatal("Subscription status is temporarily unavailable. Please try again later or contact us.");
+                return;
+            }
+
+            manageLink.href = buildManageUrl();
+            renderStatus();
+            loadStatus();
+        })();
+    </script>
+</body>
+</html>

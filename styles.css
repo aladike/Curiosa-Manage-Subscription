@@ -495,6 +495,13 @@ h2 {
     border-color: rgba(190, 72, 93, 0.16);
 }
 
+.button-secondary {
+    background: rgba(241, 245, 249, 0.92);
+    color: #475569;
+    border-color: rgba(100, 116, 139, 0.18);
+    box-shadow: none;
+}
+
 .actions-card .button-primary {
     min-width: 168px;
 }
