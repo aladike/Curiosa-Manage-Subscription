@@ -8,57 +8,81 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <style>
         :root {
-            --bg: #f6f8fb;
+            --navy: #1e2d45;
+            --email-navy: #14233B;
+            --blue: #1e3a8a;
+            --source-blue: #1B5FA5;
+            --text: #101828;
+            --text-secondary: #374151;
+            --muted: #64748b;
+            --muted-soft: #94a3b8;
+            --border: #E5E7EB;
+            --email-border: #E1E7F0;
+            --background: #F8FAFC;
             --surface: #ffffff;
-            --surface-muted: #eef3f8;
-            --text: #111827;
-            --muted: #5f6c7b;
-            --line: #dbe4ef;
-            --brand: #1e2d45;
-            --blue: #1b5fa5;
-            --green: #197568;
-            --amber: #98690c;
-            --red: #a43f44;
+            --soft-blue: #eef3ff;
+            --soft-line: #d8deea;
+            --shadow-small: 0 1px 3px rgba(15,23,42,0.06);
+            --shadow-card: 0 10px 26px rgba(15,23,42,0.05);
+            --action: #991B1B;
+            --action-bg: #FEE2E2;
+            --action-border: #FECACA;
+            --watch: #713F12;
+            --watch-bg: #FEFCE8;
+            --watch-border: #FEF08A;
+            --fyi: #475569;
+            --fyi-bg: #F1F5F9;
+            --fyi-border: #E2E8F0;
+            --authority: #7C2D12;
+            --authority-bg: #FFEDD5;
+            --category: #2F4F80;
+            --category-bg: #E4EEFF;
+            --chip: #7A8CA0;
+            --chip-border: #C4CFD9;
         }
 
         * { box-sizing: border-box; }
 
         body {
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
             color: var(--text);
-            background: var(--bg);
+            background:
+                radial-gradient(circle at top right, rgba(30,58,138,0.08), transparent 34%),
+                linear-gradient(180deg, #fff 0%, var(--background) 50%);
         }
 
-        .shell {
-            width: min(1180px, calc(100% - 32px));
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            border-bottom: 1px solid rgba(229,231,235,0.8);
+            background: rgba(248,250,252,0.93);
+            backdrop-filter: blur(16px);
+        }
+
+        .header-inner,
+        .shell,
+        .footer-inner {
+            width: min(1160px, calc(100% - 72px));
             margin: 0 auto;
-            padding: 24px 0 40px;
         }
 
-        .topbar,
-        .dashboard-head,
-        .status,
-        .kpi,
-        .chart-panel {
-            border: 1px solid var(--line);
-            border-radius: 8px;
-            background: var(--surface);
-        }
-
-        .topbar {
+        .header-inner {
+            min-height: 60px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 16px;
-            padding: 12px 14px;
+            gap: 18px;
         }
 
         .brand {
-            color: var(--brand);
-            font-size: 19px;
+            color: var(--navy);
+            font-size: 21px;
             font-weight: 800;
             text-decoration: none;
+            line-height: 1;
         }
 
         .brand span { color: var(--blue); }
@@ -66,61 +90,110 @@
         .nav {
             display: flex;
             flex-wrap: wrap;
+            justify-content: flex-end;
             gap: 8px;
         }
 
         .nav a {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             min-height: 34px;
-            padding: 7px 10px;
-            border: 1px solid var(--line);
-            border-radius: 7px;
-            color: var(--brand);
-            background: #ffffff;
-            font-size: 13px;
+            padding: 7px 13px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            color: var(--navy);
+            background: var(--surface);
+            font-size: 13.5px;
             font-weight: 700;
+            line-height: 1;
             text-decoration: none;
+            transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+        }
+
+        .nav a:hover {
+            border-color: var(--soft-line);
+            background: var(--soft-blue);
+            color: var(--blue);
+        }
+
+        .nav a.nav-primary {
+            border-color: var(--navy);
+            color: #fff;
+            background: var(--navy);
+        }
+
+        .shell {
+            padding: 34px 0 56px;
         }
 
         .dashboard-head {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) auto;
-            gap: 18px;
-            margin-top: 16px;
-            padding: 20px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 24px;
+            padding-bottom: 24px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            min-height: 25px;
+            margin-bottom: 13px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: var(--soft-blue);
+            color: var(--blue);
+            font-size: 11px;
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+        }
+
+        .badge::before {
+            content: "";
+            width: 5px;
+            height: 5px;
+            border-radius: 999px;
+            background: var(--source-blue);
         }
 
         h1 {
             margin: 0;
-            color: var(--brand);
-            font-size: 30px;
-            line-height: 1.15;
+            color: var(--navy);
+            font-size: 34px;
+            font-weight: 800;
+            line-height: 1.05;
             letter-spacing: 0;
         }
 
         .subhead {
-            margin: 7px 0 0;
+            max-width: 650px;
+            margin: 9px 0 0;
             color: var(--muted);
-            font-size: 14px;
-            line-height: 1.5;
+            font-size: 13.5px;
+            line-height: 1.55;
         }
 
         .toggle {
             display: inline-grid;
             grid-template-columns: 1fr 1fr;
-            align-self: start;
-            min-width: 172px;
-            padding: 3px;
-            border: 1px solid var(--line);
-            border-radius: 8px;
-            background: var(--surface-muted);
+            min-width: 176px;
+            padding: 4px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: #fff;
+            box-shadow: var(--shadow-small);
         }
 
         .toggle button {
             min-height: 34px;
             border: 0;
-            border-radius: 6px;
+            border-radius: 999px;
             color: var(--muted);
             background: transparent;
             font: inherit;
@@ -130,23 +203,26 @@
         }
 
         .toggle button.active {
-            color: var(--brand);
-            background: #ffffff;
-            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+            color: #fff;
+            background: var(--navy);
         }
 
         .status {
-            margin-top: 16px;
-            padding: 16px;
+            margin-bottom: 18px;
+            padding: 16px 18px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
             color: var(--muted);
-            font-size: 14px;
+            background: var(--surface);
+            box-shadow: var(--shadow-small);
+            font-size: 13.5px;
             line-height: 1.5;
         }
 
         .status.error {
-            color: var(--red);
-            border-color: #f0b8bc;
-            background: #fff5f5;
+            color: var(--action);
+            border-color: var(--action-border);
+            background: #fff8f8;
         }
 
         .hidden { display: none !important; }
@@ -154,104 +230,255 @@
         .kpi-grid {
             display: grid;
             grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 12px;
-            margin-top: 16px;
+            gap: 11px;
+            margin-bottom: 14px;
         }
 
         .kpi {
-            padding: 16px;
-            min-height: 112px;
+            position: relative;
+            overflow: hidden;
+            min-height: 132px;
+            padding: 19px 21px 17px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--surface);
+            box-shadow: var(--shadow-small);
+        }
+
+        .kpi::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: 3px;
+            background: var(--accent, var(--blue));
+        }
+
+        .kpi-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .kpi-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 7px;
+            color: var(--accent, var(--blue));
+            background: color-mix(in srgb, var(--accent, var(--blue)) 14%, #fff);
+            font-size: 15px;
+            font-weight: 800;
         }
 
         .kpi-label {
-            margin: 0 0 10px;
+            margin: 0;
             color: var(--muted);
-            font-size: 12px;
-            font-weight: 800;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
+            font-size: 11.5px;
+            font-weight: 700;
+            line-height: 1.2;
         }
 
         .kpi-value {
-            margin: 0;
-            color: var(--brand);
+            margin: 14px 0 0;
+            color: var(--navy);
             font-size: 32px;
             font-weight: 800;
             line-height: 1;
+            letter-spacing: 0;
         }
 
         .kpi-note {
             margin: 8px 0 0;
             color: var(--muted);
-            font-size: 12px;
+            font-size: 11px;
             line-height: 1.4;
         }
 
         .chart-grid {
             display: grid;
+            gap: 14px;
+        }
+
+        .chart-row-two {
+            display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 14px;
-            margin-top: 16px;
+        }
+
+        .chart-row-three {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
         }
 
         .chart-panel {
             min-width: 0;
-            padding: 16px;
+            padding: 18px 18px 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--surface);
+            box-shadow: var(--shadow-card);
         }
 
-        .chart-panel h2 {
-            margin: 0 0 12px;
-            color: var(--brand);
-            font-size: 16px;
-            line-height: 1.3;
+        .chart-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .chart-title {
+            margin: 0;
+            color: var(--navy);
+            font-size: 13.5px;
+            font-weight: 700;
+            line-height: 1.25;
+        }
+
+        .chart-subtitle {
+            margin: 4px 0 0;
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .chart-tag {
+            display: inline-flex;
+            align-items: center;
+            min-height: 21px;
+            padding: 3px 8px;
+            border-radius: 999px;
+            color: var(--blue);
+            background: var(--soft-blue);
+            font-size: 10px;
+            font-weight: 700;
+            line-height: 1;
+            white-space: nowrap;
         }
 
         .chart-frame {
             position: relative;
-            height: 290px;
+            height: 220px;
+        }
+
+        .chart-frame-volume { height: 160px; }
+        .chart-frame-compact { height: 200px; }
+
+        .site-footer {
+            border-top: 1px solid var(--border);
+            background: #fff;
+        }
+
+        .footer-inner {
+            min-height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 17px 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 14px;
+        }
+
+        .footer-links a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: var(--blue);
+            text-decoration: underline;
         }
 
         @media (max-width: 900px) {
-            .dashboard-head,
-            .chart-grid {
-                grid-template-columns: 1fr;
+            .header-inner,
+            .shell,
+            .footer-inner {
+                width: min(1160px, calc(100% - 36px));
             }
 
-            .kpi-grid {
+            .dashboard-head {
+                flex-direction: column;
+            }
+
+            .kpi-grid,
+            .chart-row-two {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .chart-row-three {
+                grid-template-columns: 1fr;
             }
         }
 
-        @media (max-width: 620px) {
-            .topbar {
+        @media (max-width: 640px) {
+            .header-inner {
+                align-items: flex-start;
+                flex-direction: column;
+                padding: 12px 0;
+            }
+
+            .nav {
+                justify-content: flex-start;
+            }
+
+            .dashboard-head {
+                gap: 18px;
+            }
+
+            h1 {
+                font-size: 30px;
+            }
+
+            .kpi-grid,
+            .chart-row-two,
+            .chart-row-three {
+                grid-template-columns: 1fr;
+            }
+
+            .toggle {
+                width: 100%;
+            }
+
+            .footer-inner {
                 align-items: flex-start;
                 flex-direction: column;
             }
 
-            .kpi-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .chart-frame {
-                height: 260px;
+            .footer-links {
+                justify-content: flex-start;
             }
         }
     </style>
 </head>
 <body>
-    <main class="shell">
-        <header class="topbar">
+    <header class="site-header">
+        <div class="header-inner">
             <a class="brand" href="../">Curio<span>sa</span></a>
             <nav class="nav" aria-label="Curiosa public routes">
                 <a href="../">Curiosa</a>
                 <a href="../subscribe/">Subscribe</a>
-                <a href="../subscription-configuration/">Subscription Configuration</a>
+                <a class="nav-primary" href="../subscription-configuration/">Subscription Configuration</a>
             </nav>
-        </header>
+        </div>
+    </header>
 
+    <main class="shell">
         <section class="dashboard-head" aria-labelledby="dashboard-title">
             <div>
-                <h1 id="dashboard-title">Analytics Dashboard</h1>
+                <span class="badge">Analytics</span>
+                <h1 id="dashboard-title">Curiosa Analytics Dashboard</h1>
                 <p id="dashboard-meta" class="subhead">Aggregated public metrics from Curiosa daily briefings.</p>
             </div>
             <div class="toggle" aria-label="Date range">
@@ -266,56 +493,121 @@
 
         <section id="dashboard-content" class="hidden">
             <div class="kpi-grid" aria-label="Key metrics">
-                <article class="kpi">
-                    <p class="kpi-label">Total items</p>
+                <article class="kpi" style="--accent: #1e3a8a;">
+                    <div class="kpi-top">
+                        <p class="kpi-label">Briefing items</p>
+                        <span class="kpi-icon" aria-hidden="true">#</span>
+                    </div>
                     <p id="kpi-total" class="kpi-value">0</p>
-                    <p class="kpi-note">Ranked daily briefing items</p>
+                    <p class="kpi-note">Articles processed &amp; ranked</p>
                 </article>
-                <article class="kpi">
-                    <p class="kpi-label">Authority share</p>
+                <article class="kpi" style="--accent: #7C2D12;">
+                    <div class="kpi-top">
+                        <p class="kpi-label">Regulatory share</p>
+                        <span class="kpi-icon" aria-hidden="true">R</span>
+                    </div>
                     <p id="kpi-authority" class="kpi-value">0%</p>
-                    <p class="kpi-note">Items from classified authorities</p>
+                    <p class="kpi-note">Items from official authorities</p>
                 </article>
-                <article class="kpi">
-                    <p class="kpi-label">Watch + Action</p>
+                <article class="kpi" style="--accent: #713F12;">
+                    <div class="kpi-top">
+                        <p class="kpi-label">Action signals</p>
+                        <span class="kpi-icon" aria-hidden="true">!</span>
+                    </div>
                     <p id="kpi-watch-action" class="kpi-value">0</p>
-                    <p class="kpi-note">Higher-signal action labels</p>
+                    <p class="kpi-note">Items marked Action or Watch</p>
                 </article>
-                <article class="kpi">
-                    <p class="kpi-label">Weighted signal</p>
+                <article class="kpi" style="--accent: #991B1B;">
+                    <div class="kpi-top">
+                        <p class="kpi-label">Signal pressure</p>
+                        <span class="kpi-icon" aria-hidden="true">S</span>
+                    </div>
                     <p id="kpi-weighted" class="kpi-value">0</p>
-                    <p class="kpi-note">Sum of available weight scores</p>
+                    <p class="kpi-note">Cumulative AI relevance score</p>
                 </article>
             </div>
 
             <div class="chart-grid" aria-label="Dashboard charts">
                 <section class="chart-panel">
-                    <h2>Daily Volume</h2>
-                    <div class="chart-frame"><canvas id="daily-volume"></canvas></div>
+                    <div class="chart-head">
+                        <div>
+                            <h2 class="chart-title">Daily Briefing Volume</h2>
+                            <p class="chart-subtitle">Items ranked and sent in each daily briefing</p>
+                        </div>
+                        <span class="chart-tag">items / day</span>
+                    </div>
+                    <div class="chart-frame chart-frame-volume"><canvas id="daily-volume"></canvas></div>
                 </section>
-                <section class="chart-panel">
-                    <h2>Action Count</h2>
-                    <div class="chart-frame"><canvas id="action-count"></canvas></div>
-                </section>
-                <section class="chart-panel">
-                    <h2>Weighted Signal</h2>
-                    <div class="chart-frame"><canvas id="weighted-signal"></canvas></div>
-                </section>
-                <section class="chart-panel">
-                    <h2>Authority vs Media</h2>
-                    <div class="chart-frame"><canvas id="source-type"></canvas></div>
-                </section>
-                <section class="chart-panel">
-                    <h2>Topic Mentions</h2>
-                    <div class="chart-frame"><canvas id="topic-mentions"></canvas></div>
-                </section>
-                <section id="content-categories-panel" class="chart-panel">
-                    <h2>Content Categories</h2>
-                    <div class="chart-frame"><canvas id="content-categories"></canvas></div>
-                </section>
+
+                <div class="chart-row-two">
+                    <section class="chart-panel">
+                        <div class="chart-head">
+                            <div>
+                                <h2 class="chart-title">Priority Classification</h2>
+                                <p class="chart-subtitle">AI label per item: Action -> Watch -> FYI</p>
+                            </div>
+                            <span class="chart-tag">stacked</span>
+                        </div>
+                        <div class="chart-frame"><canvas id="action-count"></canvas></div>
+                    </section>
+                    <section class="chart-panel">
+                        <div class="chart-head">
+                            <div>
+                                <h2 class="chart-title">Signal Pressure</h2>
+                                <p class="chart-subtitle">Weighted relevance; peaks mark high-stakes days</p>
+                            </div>
+                            <span class="chart-tag">area</span>
+                        </div>
+                        <div class="chart-frame"><canvas id="weighted-signal"></canvas></div>
+                    </section>
+                </div>
+
+                <div class="chart-row-three">
+                    <section class="chart-panel">
+                        <div class="chart-head">
+                            <div>
+                                <h2 class="chart-title">Source Mix</h2>
+                                <p class="chart-subtitle">Regulators vs. media &amp; blogs</p>
+                            </div>
+                            <span class="chart-tag">stacked</span>
+                        </div>
+                        <div class="chart-frame chart-frame-compact"><canvas id="source-type"></canvas></div>
+                    </section>
+                    <section class="chart-panel">
+                        <div class="chart-head">
+                            <div>
+                                <h2 class="chart-title">Topic Activity</h2>
+                                <p class="chart-subtitle">Mentions by theme per day</p>
+                            </div>
+                            <span class="chart-tag">line</span>
+                        </div>
+                        <div class="chart-frame chart-frame-compact"><canvas id="topic-mentions"></canvas></div>
+                    </section>
+                    <section id="content-categories-panel" class="chart-panel">
+                        <div class="chart-head">
+                            <div>
+                                <h2 class="chart-title">Content Mix</h2>
+                                <p class="chart-subtitle">Article categories</p>
+                            </div>
+                            <span class="chart-tag">stacked</span>
+                        </div>
+                        <div class="chart-frame chart-frame-compact"><canvas id="content-categories"></canvas></div>
+                    </section>
+                </div>
             </div>
         </section>
     </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <span>Curiosa · Research project · 2026</span>
+            <nav class="footer-links" aria-label="Footer links">
+                <a href="../">Curiosa</a>
+                <a href="../subscribe/">Subscribe</a>
+                <a href="../subscription-configuration/">Subscription Configuration</a>
+            </nav>
+        </div>
+    </footer>
 
     <script>
         const state = {
@@ -324,15 +616,59 @@
             charts: {},
         };
 
-        const palette = [
-            "#1b5fa5",
-            "#197568",
-            "#98690c",
-            "#a43f44",
-            "#5b4b9a",
-            "#52616f",
-            "#9b5f2a",
-        ];
+        const COLORS = {
+            volume: "#1e3a8a",
+            volumeFill: "rgba(30, 58, 138, 0.16)",
+            action: "#991B1B",
+            watch: "#713F12",
+            fyi: "#475569",
+            monitor: "#713F12",
+            ignore: "#94a3b8",
+            unknown: "#94a3b8",
+            authority: "#7C2D12",
+            media: "#2F4F80",
+            category: "#2F4F80",
+            chip: "#7A8CA0",
+            source: "#1B5FA5",
+            privacy: "#2F4F80",
+            enforcement: "#991B1B",
+            incident: "#7C2D12",
+            security: "#1B5FA5",
+            legal: "#713F12",
+        };
+
+        const DISPLAY_LABELS = {
+            "Action": "Action — address immediately",
+            "Watch": "Watch — monitor closely",
+            "FYI": "FYI — for awareness",
+            "Monitor": "Monitor — track context",
+            "Ignore": "Ignore — low relevance",
+            "Unknown": "Unknown",
+            "Authority": "Regulatory bodies",
+            "Media / Blog": "Media & blogs",
+        };
+
+        const SERIES_COLORS = {
+            "Action": COLORS.action,
+            "Watch": COLORS.watch,
+            "FYI": COLORS.fyi,
+            "Monitor": COLORS.monitor,
+            "Ignore": COLORS.ignore,
+            "Unknown": COLORS.unknown,
+            "Authority": COLORS.authority,
+            "Media / Blog": COLORS.media,
+            "Enforcement": COLORS.enforcement,
+            "Incident": COLORS.incident,
+            "Security": COLORS.security,
+            "Legal": COLORS.legal,
+            "Privacy / GDPR": COLORS.privacy,
+            "Privacy": COLORS.privacy,
+            "Technology": COLORS.source,
+            "Authority / Regulator": COLORS.authority,
+            "Other": COLORS.chip,
+        };
+
+        const FALLBACK_COLORS = ["#1B5FA5", "#2F4F80", "#7C2D12", "#713F12", "#991B1B", "#7A8CA0"];
 
         const elements = {
             loading: document.getElementById("loading-state"),
@@ -368,14 +704,63 @@
             );
         }
 
-        function stackedDatasets(series) {
-            return Object.entries(series || {}).map(([label, values], index) => ({
-                label,
-                data: values,
-                borderWidth: 1,
-                borderColor: palette[index % palette.length],
-                backgroundColor: palette[index % palette.length],
-            }));
+        function formatDayLabel(isoDate) {
+            const [year, month, day] = isoDate.split("-").map(Number);
+            const date = new Date(Date.UTC(year, month - 1, day));
+            const weekdays = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+            return `${weekdays[date.getUTCDay()]}, ${day}.${month}`;
+        }
+
+        function transparentize(hex, opacity) {
+            const normalized = hex.replace("#", "");
+            const bigint = parseInt(normalized, 16);
+            const r = (bigint >> 16) & 255;
+            const g = (bigint >> 8) & 255;
+            const b = bigint & 255;
+            return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+        }
+
+        function colorFor(label, index = 0) {
+            return SERIES_COLORS[label] || FALLBACK_COLORS[index % FALLBACK_COLORS.length];
+        }
+
+        function displayLabel(label) {
+            return DISPLAY_LABELS[label] || label;
+        }
+
+        function nonZeroEntries(series) {
+            return Object.entries(series || {}).filter(([, values]) => sum(values) > 0);
+        }
+
+        function barDatasets(series, { stacked = false } = {}) {
+            return nonZeroEntries(series).map(([label, values], index) => {
+                const color = colorFor(label, index);
+                return {
+                    label: displayLabel(label),
+                    data: values,
+                    borderWidth: 1,
+                    borderRadius: 2,
+                    borderColor: color,
+                    backgroundColor: transparentize(color, stacked ? 0.78 : 0.18),
+                };
+            });
+        }
+
+        function lineDatasets(series, { fill = false } = {}) {
+            return nonZeroEntries(series).map(([label, values], index) => {
+                const color = colorFor(label, index);
+                return {
+                    label: displayLabel(label),
+                    data: values,
+                    fill,
+                    borderWidth: 1.5,
+                    borderColor: color,
+                    backgroundColor: transparentize(color, fill ? 0.2 : 0.1),
+                    tension: 0.35,
+                    pointRadius: 2,
+                    pointHoverRadius: 4,
+                };
+            });
         }
 
         function destroyChart(id) {
@@ -394,17 +779,41 @@
             return {
                 responsive: true,
                 maintainAspectRatio: false,
-                animation: false,
+                animation: { duration: 300, easing: "easeOutCubic" },
                 interaction: { mode: "index", intersect: false },
                 plugins: {
                     legend: {
                         position: "bottom",
-                        labels: { boxWidth: 12, boxHeight: 12 },
+                        labels: {
+                            boxWidth: 10,
+                            boxHeight: 10,
+                            color: "#64748b",
+                            font: { size: 11 },
+                            padding: 11,
+                        },
+                    },
+                    tooltip: {
+                        backgroundColor: "#1e2d45",
+                        titleColor: "#ffffff",
+                        bodyColor: "#94a3b8",
+                        padding: 9,
+                        cornerRadius: 7,
                     },
                 },
                 scales: {
-                    x: { stacked, grid: { display: false } },
-                    y: { stacked, beginAtZero: true, ticks: { precision: 0 } },
+                    x: {
+                        stacked,
+                        grid: { display: false },
+                        border: { color: "#e5e7eb" },
+                        ticks: { color: "#94a3b8", font: { size: 10 } },
+                    },
+                    y: {
+                        stacked,
+                        beginAtZero: true,
+                        grid: { color: "#f1f5f9" },
+                        border: { color: "#e5e7eb" },
+                        ticks: { color: "#94a3b8", font: { size: 10 }, precision: 0 },
+                    },
                 },
             };
         }
@@ -430,7 +839,7 @@
             const payload = state.payload;
             const availableDays = payload.days.length;
             const count = Math.min(state.range, availableDays);
-            const labels = slice(payload.days, count).map((value) => value.slice(5));
+            const labels = slice(payload.days, count).map(formatDayLabel);
             const data = {
                 totals_by_day: slice(payload.totals_by_day || [], count),
                 series: {
@@ -447,7 +856,7 @@
             elements.kpiAuthority.textContent = `${Math.round(kpis.authorityShare * 100)}%`;
             elements.kpiWatchAction.textContent = String(kpis.watchActionItems);
             elements.kpiWeighted.textContent = String(kpis.weightedSignal);
-            elements.meta.textContent = `Aggregated public metrics from ${payload.period.start_date} to ${payload.period.end_date}. Generated ${payload.generated_at}.`;
+            elements.meta.textContent = `Aggregated public metrics from ${formatDayLabel(payload.period.start_date)} to ${formatDayLabel(payload.period.end_date)}. Generated ${payload.generated_at}.`;
 
             if (kpis.totalItems === 0) {
                 showOnly("empty");
@@ -462,8 +871,10 @@
                     datasets: [{
                         label: "Items",
                         data: data.totals_by_day,
-                        backgroundColor: "#1b5fa5",
-                        borderColor: "#1b5fa5",
+                        backgroundColor: COLORS.volumeFill,
+                        borderColor: COLORS.volume,
+                        borderWidth: 1.5,
+                        borderRadius: 3,
                     }],
                 },
                 options: baseOptions(false),
@@ -471,34 +882,34 @@
 
             renderChart("action-count", {
                 type: "bar",
-                data: { labels, datasets: stackedDatasets(data.series.action_count) },
+                data: { labels, datasets: barDatasets(data.series.action_count, { stacked: true }) },
                 options: baseOptions(true),
             });
 
             renderChart("weighted-signal", {
                 type: "line",
-                data: { labels, datasets: stackedDatasets(data.series.action_weighted) },
+                data: { labels, datasets: lineDatasets(data.series.action_weighted, { fill: true }) },
                 options: baseOptions(false),
             });
 
             renderChart("source-type", {
                 type: "bar",
-                data: { labels, datasets: stackedDatasets(data.series.source_type) },
+                data: { labels, datasets: barDatasets(data.series.source_type, { stacked: true }) },
                 options: baseOptions(true),
             });
 
             renderChart("topic-mentions", {
                 type: "line",
-                data: { labels, datasets: stackedDatasets(data.series.topic_mentions) },
+                data: { labels, datasets: lineDatasets(data.series.topic_mentions) },
                 options: baseOptions(false),
             });
 
-            const contentEntries = Object.entries(data.series.content_type || {});
+            const contentEntries = nonZeroEntries(data.series.content_type || {});
             elements.contentPanel.classList.toggle("hidden", contentEntries.length === 0);
             if (contentEntries.length) {
                 renderChart("content-categories", {
                     type: "bar",
-                    data: { labels, datasets: stackedDatasets(data.series.content_type) },
+                    data: { labels, datasets: barDatasets(data.series.content_type, { stacked: true }) },
                     options: baseOptions(true),
                 });
             }
