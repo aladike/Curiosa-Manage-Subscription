@@ -24,16 +24,16 @@
             --soft-line: #d8deea;
             --shadow-small: 0 1px 3px rgba(15,23,42,0.06);
             --shadow-card: 0 10px 26px rgba(15,23,42,0.05);
-            --action: #991B1B;
+            --action: #DC2626;
             --action-bg: #FEE2E2;
             --action-border: #FECACA;
-            --watch: #713F12;
+            --watch: #D97706;
             --watch-bg: #FEFCE8;
             --watch-border: #FEF08A;
             --fyi: #475569;
             --fyi-bg: #F1F5F9;
             --fyi-border: #E2E8F0;
-            --authority: #7C2D12;
+            --authority: #EA580C;
             --authority-bg: #FFEDD5;
             --category: #2F4F80;
             --category-bg: #E4EEFF;
@@ -251,26 +251,6 @@
             inset: 0 0 auto 0;
             height: 3px;
             background: var(--accent, var(--blue));
-        }
-
-        .kpi-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        .kpi-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            border-radius: 7px;
-            color: var(--accent, var(--blue));
-            background: color-mix(in srgb, var(--accent, var(--blue)) 14%, #fff);
-            font-size: 15px;
-            font-weight: 800;
         }
 
         .kpi-label {
@@ -494,34 +474,22 @@
         <section id="dashboard-content" class="hidden">
             <div class="kpi-grid" aria-label="Key metrics">
                 <article class="kpi" style="--accent: #1e3a8a;">
-                    <div class="kpi-top">
-                        <p class="kpi-label">Briefing items</p>
-                        <span class="kpi-icon" aria-hidden="true">#</span>
-                    </div>
+                    <p class="kpi-label">Briefing items</p>
                     <p id="kpi-total" class="kpi-value">0</p>
                     <p class="kpi-note">Articles processed &amp; ranked</p>
                 </article>
-                <article class="kpi" style="--accent: #7C2D12;">
-                    <div class="kpi-top">
-                        <p class="kpi-label">Regulatory share</p>
-                        <span class="kpi-icon" aria-hidden="true">R</span>
-                    </div>
+                <article class="kpi" style="--accent: #EA580C;">
+                    <p class="kpi-label">Regulatory share</p>
                     <p id="kpi-authority" class="kpi-value">0%</p>
                     <p class="kpi-note">Items from official authorities</p>
                 </article>
-                <article class="kpi" style="--accent: #713F12;">
-                    <div class="kpi-top">
-                        <p class="kpi-label">Action signals</p>
-                        <span class="kpi-icon" aria-hidden="true">!</span>
-                    </div>
+                <article class="kpi" style="--accent: #D97706;">
+                    <p class="kpi-label">Action signals</p>
                     <p id="kpi-watch-action" class="kpi-value">0</p>
                     <p class="kpi-note">Items marked Action or Watch</p>
                 </article>
-                <article class="kpi" style="--accent: #991B1B;">
-                    <div class="kpi-top">
-                        <p class="kpi-label">Signal pressure</p>
-                        <span class="kpi-icon" aria-hidden="true">S</span>
-                    </div>
+                <article class="kpi" style="--accent: #DC2626;">
+                    <p class="kpi-label">Signal pressure</p>
                     <p id="kpi-weighted" class="kpi-value">0</p>
                     <p class="kpi-note">Cumulative AI relevance score</p>
                 </article>
@@ -617,32 +585,33 @@
         };
 
         const COLORS = {
-            volume: "#1e3a8a",
-            volumeFill: "rgba(30, 58, 138, 0.16)",
-            action: "#991B1B",
-            watch: "#713F12",
-            fyi: "#475569",
-            monitor: "#713F12",
-            ignore: "#94a3b8",
-            unknown: "#94a3b8",
-            authority: "#7C2D12",
-            media: "#2F4F80",
-            category: "#2F4F80",
-            chip: "#7A8CA0",
-            source: "#1B5FA5",
+            action: "#DC2626",
+            watch: "#D97706",
+            fyi: "#64748B",
+            monitor: "#2563EB",
+            ignore: "#CBD5E1",
+            authority: "#EA580C",
+            media: "#1B5FA5",
+            unknown: "#CBD5E1",
             privacy: "#2F4F80",
-            enforcement: "#991B1B",
-            incident: "#7C2D12",
             security: "#1B5FA5",
-            legal: "#713F12",
+            legal: "#D97706",
+            enforcement: "#DC2626",
+            incident: "#EA580C",
+            other: "#94A3B8",
+            navy: "#14233B",
+            brand: "#1B2D49",
+            volume: "#1B5FA5",
+            volumeFill: "rgba(27, 95, 165, 0.18)",
+            category: "#2F4F80",
         };
 
         const DISPLAY_LABELS = {
-            "Action": "Action — address immediately",
-            "Watch": "Watch — monitor closely",
-            "FYI": "FYI — for awareness",
-            "Monitor": "Monitor — track context",
-            "Ignore": "Ignore — low relevance",
+            "Action": "Action",
+            "Watch": "Watch",
+            "FYI": "FYI",
+            "Monitor": "Monitor",
+            "Ignore": "Ignore",
             "Unknown": "Unknown",
             "Authority": "Regulatory bodies",
             "Media / Blog": "Media & blogs",
@@ -663,12 +632,12 @@
             "Legal": COLORS.legal,
             "Privacy / GDPR": COLORS.privacy,
             "Privacy": COLORS.privacy,
-            "Technology": COLORS.source,
+            "Technology": COLORS.monitor,
             "Authority / Regulator": COLORS.authority,
-            "Other": COLORS.chip,
+            "Other": COLORS.other,
         };
 
-        const FALLBACK_COLORS = ["#1B5FA5", "#2F4F80", "#7C2D12", "#713F12", "#991B1B", "#7A8CA0"];
+        const FALLBACK_COLORS = ["#1B5FA5", "#2563EB", "#2F4F80", "#D97706", "#EA580C", "#94A3B8"];
 
         const elements = {
             loading: document.getElementById("loading-state"),
@@ -755,7 +724,7 @@
                     fill,
                     borderWidth: 1.5,
                     borderColor: color,
-                    backgroundColor: transparentize(color, fill ? 0.2 : 0.1),
+                    backgroundColor: transparentize(color, fill ? 0.16 : 0.1),
                     tension: 0.35,
                     pointRadius: 2,
                     pointHoverRadius: 4,
