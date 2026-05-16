@@ -5,15 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="referrer" content="no-referrer">
     <title>Curiosa Analytics Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <style>
         :root {
-            --bg: #f8fafc;
+            --bg: #f6f8fb;
             --surface: #ffffff;
-            --text: #101828;
-            --muted: #475569;
+            --surface-muted: #eef3f8;
+            --text: #111827;
+            --muted: #5f6c7b;
             --line: #dbe4ef;
             --brand: #1e2d45;
-            --blue: #1e3a8a;
+            --blue: #1b5fa5;
+            --green: #197568;
+            --amber: #98690c;
+            --red: #a43f44;
         }
 
         * { box-sizing: border-box; }
@@ -22,82 +27,515 @@
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             color: var(--text);
-            background: linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+            background: var(--bg);
         }
 
         .shell {
-            width: min(820px, calc(100% - 32px));
-            min-height: 100vh;
+            width: min(1180px, calc(100% - 32px));
             margin: 0 auto;
-            display: grid;
-            align-content: center;
-            gap: 24px;
-            padding: 40px 0;
+            padding: 24px 0 40px;
+        }
+
+        .topbar,
+        .dashboard-head,
+        .status,
+        .kpi,
+        .chart-panel {
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--surface);
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 12px 14px;
         }
 
         .brand {
             color: var(--brand);
-            font-size: 20px;
+            font-size: 19px;
             font-weight: 800;
             text-decoration: none;
         }
 
         .brand span { color: var(--blue); }
 
+        .nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .nav a {
+            display: inline-flex;
+            align-items: center;
+            min-height: 34px;
+            padding: 7px 10px;
+            border: 1px solid var(--line);
+            border-radius: 7px;
+            color: var(--brand);
+            background: #ffffff;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .dashboard-head {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 18px;
+            margin-top: 16px;
+            padding: 20px;
+        }
+
         h1 {
             margin: 0;
             color: var(--brand);
-            font-size: clamp(34px, 6vw, 56px);
-            line-height: 1;
+            font-size: 30px;
+            line-height: 1.15;
             letter-spacing: 0;
         }
 
-        .panel {
-            padding: 22px;
-            border: 1px solid var(--line);
-            border-radius: 8px;
-            background: var(--surface);
-        }
-
-        .panel p {
-            margin: 0;
+        .subhead {
+            margin: 7px 0 0;
             color: var(--muted);
-            font-size: 17px;
-            line-height: 1.6;
+            font-size: 14px;
+            line-height: 1.5;
         }
 
-        .links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .links a {
-            display: inline-flex;
-            align-items: center;
-            min-height: 38px;
-            padding: 8px 12px;
+        .toggle {
+            display: inline-grid;
+            grid-template-columns: 1fr 1fr;
+            align-self: start;
+            min-width: 172px;
+            padding: 3px;
             border: 1px solid var(--line);
             border-radius: 8px;
+            background: var(--surface-muted);
+        }
+
+        .toggle button {
+            min-height: 34px;
+            border: 0;
+            border-radius: 6px;
+            color: var(--muted);
+            background: transparent;
+            font: inherit;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .toggle button.active {
             color: var(--brand);
             background: #ffffff;
-            font-weight: 700;
-            text-decoration: none;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+        }
+
+        .status {
+            margin-top: 16px;
+            padding: 16px;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .status.error {
+            color: var(--red);
+            border-color: #f0b8bc;
+            background: #fff5f5;
+        }
+
+        .hidden { display: none !important; }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .kpi {
+            padding: 16px;
+            min-height: 112px;
+        }
+
+        .kpi-label {
+            margin: 0 0 10px;
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .kpi-value {
+            margin: 0;
+            color: var(--brand);
+            font-size: 32px;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .kpi-note {
+            margin: 8px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 16px;
+        }
+
+        .chart-panel {
+            min-width: 0;
+            padding: 16px;
+        }
+
+        .chart-panel h2 {
+            margin: 0 0 12px;
+            color: var(--brand);
+            font-size: 16px;
+            line-height: 1.3;
+        }
+
+        .chart-frame {
+            position: relative;
+            height: 290px;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard-head,
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .kpi-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 620px) {
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-frame {
+                height: 260px;
+            }
         }
     </style>
 </head>
 <body>
     <main class="shell">
-        <a class="brand" href="../">Curio<span>sa</span></a>
-        <h1>Curiosa Analytics Dashboard</h1>
-        <section class="panel" aria-label="Dashboard status">
-            <p>Coming soon. This placeholder contains no analytics data, subscriber data, credentials, or generated news content.</p>
+        <header class="topbar">
+            <a class="brand" href="../">Curio<span>sa</span></a>
+            <nav class="nav" aria-label="Curiosa public routes">
+                <a href="../">Curiosa</a>
+                <a href="../subscribe/">Subscribe</a>
+                <a href="../subscription-configuration/">Subscription Configuration</a>
+            </nav>
+        </header>
+
+        <section class="dashboard-head" aria-labelledby="dashboard-title">
+            <div>
+                <h1 id="dashboard-title">Analytics Dashboard</h1>
+                <p id="dashboard-meta" class="subhead">Aggregated public metrics from Curiosa daily briefings.</p>
+            </div>
+            <div class="toggle" aria-label="Date range">
+                <button type="button" class="active" data-range="7">7 days</button>
+                <button type="button" data-range="30">30 days</button>
+            </div>
         </section>
-        <nav class="links" aria-label="Curiosa public routes">
-            <a href="../">Curiosa</a>
-            <a href="../subscribe/">Subscribe</a>
-            <a href="../subscription-configuration/">Subscription Configuration</a>
-        </nav>
+
+        <section id="loading-state" class="status" role="status">Loading dashboard data...</section>
+        <section id="error-state" class="status error hidden" role="alert"></section>
+        <section id="empty-state" class="status hidden" role="status">No ranked briefing items are available for this period yet.</section>
+
+        <section id="dashboard-content" class="hidden">
+            <div class="kpi-grid" aria-label="Key metrics">
+                <article class="kpi">
+                    <p class="kpi-label">Total items</p>
+                    <p id="kpi-total" class="kpi-value">0</p>
+                    <p class="kpi-note">Ranked daily briefing items</p>
+                </article>
+                <article class="kpi">
+                    <p class="kpi-label">Authority share</p>
+                    <p id="kpi-authority" class="kpi-value">0%</p>
+                    <p class="kpi-note">Items from classified authorities</p>
+                </article>
+                <article class="kpi">
+                    <p class="kpi-label">Watch + Action</p>
+                    <p id="kpi-watch-action" class="kpi-value">0</p>
+                    <p class="kpi-note">Higher-signal action labels</p>
+                </article>
+                <article class="kpi">
+                    <p class="kpi-label">Weighted signal</p>
+                    <p id="kpi-weighted" class="kpi-value">0</p>
+                    <p class="kpi-note">Sum of available weight scores</p>
+                </article>
+            </div>
+
+            <div class="chart-grid" aria-label="Dashboard charts">
+                <section class="chart-panel">
+                    <h2>Daily Volume</h2>
+                    <div class="chart-frame"><canvas id="daily-volume"></canvas></div>
+                </section>
+                <section class="chart-panel">
+                    <h2>Action Count</h2>
+                    <div class="chart-frame"><canvas id="action-count"></canvas></div>
+                </section>
+                <section class="chart-panel">
+                    <h2>Weighted Signal</h2>
+                    <div class="chart-frame"><canvas id="weighted-signal"></canvas></div>
+                </section>
+                <section class="chart-panel">
+                    <h2>Authority vs Media</h2>
+                    <div class="chart-frame"><canvas id="source-type"></canvas></div>
+                </section>
+                <section class="chart-panel">
+                    <h2>Topic Mentions</h2>
+                    <div class="chart-frame"><canvas id="topic-mentions"></canvas></div>
+                </section>
+                <section id="content-categories-panel" class="chart-panel">
+                    <h2>Content Categories</h2>
+                    <div class="chart-frame"><canvas id="content-categories"></canvas></div>
+                </section>
+            </div>
+        </section>
     </main>
+
+    <script>
+        const state = {
+            payload: null,
+            range: 7,
+            charts: {},
+        };
+
+        const palette = [
+            "#1b5fa5",
+            "#197568",
+            "#98690c",
+            "#a43f44",
+            "#5b4b9a",
+            "#52616f",
+            "#9b5f2a",
+        ];
+
+        const elements = {
+            loading: document.getElementById("loading-state"),
+            error: document.getElementById("error-state"),
+            empty: document.getElementById("empty-state"),
+            content: document.getElementById("dashboard-content"),
+            meta: document.getElementById("dashboard-meta"),
+            kpiTotal: document.getElementById("kpi-total"),
+            kpiAuthority: document.getElementById("kpi-authority"),
+            kpiWatchAction: document.getElementById("kpi-watch-action"),
+            kpiWeighted: document.getElementById("kpi-weighted"),
+            contentPanel: document.getElementById("content-categories-panel"),
+        };
+
+        function showOnly(name) {
+            elements.loading.classList.toggle("hidden", name !== "loading");
+            elements.error.classList.toggle("hidden", name !== "error");
+            elements.empty.classList.toggle("hidden", name !== "empty");
+            elements.content.classList.toggle("hidden", name !== "content");
+        }
+
+        function sum(values) {
+            return values.reduce((total, value) => total + Number(value || 0), 0);
+        }
+
+        function slice(values, count) {
+            return values.slice(Math.max(values.length - count, 0));
+        }
+
+        function sliceSeries(series, count) {
+            return Object.fromEntries(
+                Object.entries(series || {}).map(([label, values]) => [label, slice(values, count)])
+            );
+        }
+
+        function stackedDatasets(series) {
+            return Object.entries(series || {}).map(([label, values], index) => ({
+                label,
+                data: values,
+                borderWidth: 1,
+                borderColor: palette[index % palette.length],
+                backgroundColor: palette[index % palette.length],
+            }));
+        }
+
+        function destroyChart(id) {
+            if (state.charts[id]) {
+                state.charts[id].destroy();
+                delete state.charts[id];
+            }
+        }
+
+        function renderChart(id, config) {
+            destroyChart(id);
+            state.charts[id] = new Chart(document.getElementById(id), config);
+        }
+
+        function baseOptions(stacked = false) {
+            return {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: false,
+                interaction: { mode: "index", intersect: false },
+                plugins: {
+                    legend: {
+                        position: "bottom",
+                        labels: { boxWidth: 12, boxHeight: 12 },
+                    },
+                },
+                scales: {
+                    x: { stacked, grid: { display: false } },
+                    y: { stacked, beginAtZero: true, ticks: { precision: 0 } },
+                },
+            };
+        }
+
+        function computeKpis(data) {
+            const sourceType = data.series.source_type || {};
+            const actionCount = data.series.action_count || {};
+            const actionWeighted = data.series.action_weighted || {};
+            const authorityItems = sum(sourceType.Authority || []);
+            const totalItems = sum(data.totals_by_day || []);
+            const watchActionItems = sum(actionCount.Action || []) + sum(actionCount.Watch || []);
+            const weightedSignal = Object.values(actionWeighted).reduce((total, values) => total + sum(values), 0);
+
+            return {
+                totalItems,
+                authorityShare: totalItems ? authorityItems / totalItems : 0,
+                watchActionItems,
+                weightedSignal,
+            };
+        }
+
+        function render() {
+            const payload = state.payload;
+            const availableDays = payload.days.length;
+            const count = Math.min(state.range, availableDays);
+            const labels = slice(payload.days, count).map((value) => value.slice(5));
+            const data = {
+                totals_by_day: slice(payload.totals_by_day || [], count),
+                series: {
+                    action_count: sliceSeries(payload.series.action_count, count),
+                    action_weighted: sliceSeries(payload.series.action_weighted, count),
+                    topic_mentions: sliceSeries(payload.series.topic_mentions, count),
+                    content_type: sliceSeries(payload.series.content_type, count),
+                    source_type: sliceSeries(payload.series.source_type, count),
+                },
+            };
+            const kpis = computeKpis(data);
+
+            elements.kpiTotal.textContent = String(kpis.totalItems);
+            elements.kpiAuthority.textContent = `${Math.round(kpis.authorityShare * 100)}%`;
+            elements.kpiWatchAction.textContent = String(kpis.watchActionItems);
+            elements.kpiWeighted.textContent = String(kpis.weightedSignal);
+            elements.meta.textContent = `Aggregated public metrics from ${payload.period.start_date} to ${payload.period.end_date}. Generated ${payload.generated_at}.`;
+
+            if (kpis.totalItems === 0) {
+                showOnly("empty");
+            } else {
+                showOnly("content");
+            }
+
+            renderChart("daily-volume", {
+                type: "bar",
+                data: {
+                    labels,
+                    datasets: [{
+                        label: "Items",
+                        data: data.totals_by_day,
+                        backgroundColor: "#1b5fa5",
+                        borderColor: "#1b5fa5",
+                    }],
+                },
+                options: baseOptions(false),
+            });
+
+            renderChart("action-count", {
+                type: "bar",
+                data: { labels, datasets: stackedDatasets(data.series.action_count) },
+                options: baseOptions(true),
+            });
+
+            renderChart("weighted-signal", {
+                type: "line",
+                data: { labels, datasets: stackedDatasets(data.series.action_weighted) },
+                options: baseOptions(false),
+            });
+
+            renderChart("source-type", {
+                type: "bar",
+                data: { labels, datasets: stackedDatasets(data.series.source_type) },
+                options: baseOptions(true),
+            });
+
+            renderChart("topic-mentions", {
+                type: "line",
+                data: { labels, datasets: stackedDatasets(data.series.topic_mentions) },
+                options: baseOptions(false),
+            });
+
+            const contentEntries = Object.entries(data.series.content_type || {});
+            elements.contentPanel.classList.toggle("hidden", contentEntries.length === 0);
+            if (contentEntries.length) {
+                renderChart("content-categories", {
+                    type: "bar",
+                    data: { labels, datasets: stackedDatasets(data.series.content_type) },
+                    options: baseOptions(true),
+                });
+            }
+        }
+
+        async function loadDashboard() {
+            showOnly("loading");
+            try {
+                const response = await fetch("./data.json", { cache: "no-store" });
+                if (!response.ok) {
+                    throw new Error(`Dashboard data is unavailable (${response.status}).`);
+                }
+                const payload = await response.json();
+                if (!payload || payload.schema_version !== 1 || !Array.isArray(payload.days)) {
+                    throw new Error("Dashboard data has an unsupported format.");
+                }
+                state.payload = payload;
+                render();
+            } catch (error) {
+                elements.error.textContent = error.message || "Dashboard data could not be loaded.";
+                showOnly("error");
+            }
+        }
+
+        document.querySelectorAll("[data-range]").forEach((button) => {
+            button.addEventListener("click", () => {
+                state.range = Number(button.dataset.range);
+                document.querySelectorAll("[data-range]").forEach((item) => {
+                    item.classList.toggle("active", item === button);
+                });
+                if (state.payload) {
+                    render();
+                }
+            });
+        });
+
+        loadDashboard();
+    </script>
 </body>
 </html>
