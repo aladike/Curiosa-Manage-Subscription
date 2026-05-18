@@ -277,6 +277,71 @@
             line-height: 1.4;
         }
 
+        .insight-strip {
+            margin: 0 0 14px;
+        }
+
+        .insight-strip-head {
+            margin: 0 0 8px;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+        }
+
+        .insight-grid {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 11px;
+        }
+
+        .insight-card {
+            min-width: 0;
+            padding: 13px 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--surface);
+            box-shadow: var(--shadow-small);
+        }
+
+        .insight-label {
+            margin: 0;
+            color: var(--muted);
+            font-size: 10px;
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .insight-value {
+            margin: 8px 0 0;
+            color: var(--navy);
+            font-size: 17px;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: 0;
+        }
+
+        .insight-note {
+            margin: 5px 0 0;
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.35;
+        }
+
+        .insight-card.is-warning {
+            border-color: var(--watch-border);
+            background: #fffdf3;
+        }
+
+        .insight-card.is-ok {
+            border-color: #BBF7D0;
+            background: #F0FDF4;
+        }
+
         .chart-grid {
             display: grid;
             gap: 14px;
@@ -401,6 +466,10 @@
             .chart-row-three {
                 grid-template-columns: 1fr;
             }
+
+            .insight-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
         }
 
         @media (max-width: 640px) {
@@ -423,6 +492,7 @@
             }
 
             .kpi-grid,
+            .insight-grid,
             .chart-row-two,
             .chart-row-three {
                 grid-template-columns: 1fr;
@@ -495,6 +565,37 @@
                     <p id="kpi-weighted-note" class="kpi-note">Cumulative AI relevance score</p>
                 </article>
             </div>
+
+            <section class="insight-strip" aria-label="Selected range insights">
+                <div class="insight-strip-head">Selected range insights</div>
+                <div class="insight-grid">
+                    <article class="insight-card">
+                        <p class="insight-label">Peak volume day</p>
+                        <p id="insight-peak-volume" class="insight-value">&mdash;</p>
+                        <p id="insight-peak-volume-note" class="insight-note">Most ranked items</p>
+                    </article>
+                    <article class="insight-card">
+                        <p class="insight-label">Peak signal day</p>
+                        <p id="insight-peak-signal" class="insight-value">&mdash;</p>
+                        <p id="insight-peak-signal-note" class="insight-note">Highest weighted score</p>
+                    </article>
+                    <article class="insight-card">
+                        <p class="insight-label">Top topic</p>
+                        <p id="insight-top-topic" class="insight-value">&mdash;</p>
+                        <p id="insight-top-topic-note" class="insight-note">Most mentions</p>
+                    </article>
+                    <article class="insight-card">
+                        <p class="insight-label">Action / Watch share</p>
+                        <p id="insight-action-share" class="insight-value">&mdash;</p>
+                        <p id="insight-action-share-note" class="insight-note">Of selected items</p>
+                    </article>
+                    <article id="insight-quality-card" class="insight-card">
+                        <p class="insight-label">Data quality</p>
+                        <p id="insight-quality" class="insight-value">&mdash;</p>
+                        <p id="insight-quality-note" class="insight-note">Selected range</p>
+                    </article>
+                </div>
+            </section>
 
             <div class="chart-grid" aria-label="Dashboard charts">
                 <section class="chart-panel">
@@ -684,6 +785,17 @@
             kpiWatchAction: document.getElementById("kpi-watch-action"),
             kpiWeighted: document.getElementById("kpi-weighted"),
             kpiWeightedNote: document.getElementById("kpi-weighted-note"),
+            insightPeakVolume: document.getElementById("insight-peak-volume"),
+            insightPeakVolumeNote: document.getElementById("insight-peak-volume-note"),
+            insightPeakSignal: document.getElementById("insight-peak-signal"),
+            insightPeakSignalNote: document.getElementById("insight-peak-signal-note"),
+            insightTopTopic: document.getElementById("insight-top-topic"),
+            insightTopTopicNote: document.getElementById("insight-top-topic-note"),
+            insightActionShare: document.getElementById("insight-action-share"),
+            insightActionShareNote: document.getElementById("insight-action-share-note"),
+            insightQuality: document.getElementById("insight-quality"),
+            insightQualityNote: document.getElementById("insight-quality-note"),
+            insightQualityCard: document.getElementById("insight-quality-card"),
             contentPanel: document.getElementById("content-categories-panel"),
         };
 
@@ -822,6 +934,49 @@
             };
         }
 
+        function maxIndex(values) {
+            if (!Array.isArray(values) || values.length === 0) return -1;
+            let bestIndex = 0;
+            let bestValue = Number(values[0] || 0);
+
+            values.forEach((value, index) => {
+                const numeric = Number(value || 0);
+                if (numeric > bestValue) {
+                    bestValue = numeric;
+                    bestIndex = index;
+                }
+            });
+
+            return bestIndex;
+        }
+
+        function sumSeriesByDay(series) {
+            const values = Object.values(series || {});
+            if (!values.length) return [];
+
+            const length = Math.max(...values.map((items) => items.length));
+            return Array.from({ length }, (_, index) =>
+                values.reduce((total, items) => total + Number(items[index] || 0), 0)
+            );
+        }
+
+        function totalsByLabel(series) {
+            return Object.entries(series || {})
+                .map(([label, values]) => [label, sum(values)])
+                .filter(([, total]) => total > 0)
+                .sort((a, b) => b[1] - a[1]);
+        }
+
+        function percent(value) {
+            return `${Math.round(value * 100)}%`;
+        }
+
+        function compactNumber(value) {
+            const numeric = Number(value || 0);
+            if (numeric >= 1000) return `${(numeric / 1000).toFixed(1)}k`;
+            return String(numeric);
+        }
+
         function computeKpis(data) {
             const sourceType = data.series.source_type || {};
             const actionCount = data.series.action_count || {};
@@ -843,6 +998,56 @@
             };
         }
 
+        function computeInsights(data, labels, kpis) {
+            const totals = data.totals_by_day || [];
+            const weightedByDay = sumSeriesByDay(data.series.action_weighted || {});
+            const topicTotals = totalsByLabel(data.series.topic_mentions || {});
+            const peakVolumeIndex = maxIndex(totals);
+            const peakSignalIndex = maxIndex(weightedByDay);
+            const topTopic = topicTotals[0] || null;
+            const unknownActionItems = sum((data.series.action_count || {}).Unknown || []);
+            const actionShare = kpis.totalItems ? kpis.watchActionItems / kpis.totalItems : 0;
+
+            return {
+                peakVolumeLabel: peakVolumeIndex >= 0 ? labels[peakVolumeIndex] : "-",
+                peakVolumeValue: peakVolumeIndex >= 0 ? Number(totals[peakVolumeIndex] || 0) : 0,
+                peakSignalLabel: peakSignalIndex >= 0 ? labels[peakSignalIndex] : "-",
+                peakSignalValue: peakSignalIndex >= 0 ? Number(weightedByDay[peakSignalIndex] || 0) : 0,
+                topTopicLabel: topTopic ? displayLabel(topTopic[0]) : "-",
+                topTopicValue: topTopic ? topTopic[1] : 0,
+                actionShare,
+                unknownActionItems,
+            };
+        }
+
+        function renderInsights(insights) {
+            elements.insightPeakVolume.textContent = insights.peakVolumeLabel;
+            elements.insightPeakVolumeNote.textContent = insights.peakVolumeValue
+                ? `${insights.peakVolumeValue} ranked items`
+                : "No ranked items";
+
+            elements.insightPeakSignal.textContent = insights.peakSignalLabel;
+            elements.insightPeakSignalNote.textContent = insights.peakSignalValue
+                ? `${compactNumber(insights.peakSignalValue)} weighted score`
+                : "No weighted signal";
+
+            elements.insightTopTopic.textContent = insights.topTopicLabel;
+            elements.insightTopTopicNote.textContent = insights.topTopicValue
+                ? `${insights.topTopicValue} mentions`
+                : "No topic mentions";
+
+            elements.insightActionShare.textContent = percent(insights.actionShare);
+            elements.insightActionShareNote.textContent = "Action or Watch items";
+
+            const hasUnknown = insights.unknownActionItems > 0;
+            elements.insightQuality.textContent = hasUnknown ? "Partial" : "Complete";
+            elements.insightQualityNote.textContent = hasUnknown
+                ? `${insights.unknownActionItems} Unknown action labels`
+                : "No Unknown action labels";
+            elements.insightQualityCard.classList.toggle("is-warning", hasUnknown);
+            elements.insightQualityCard.classList.toggle("is-ok", !hasUnknown);
+        }
+
         function render() {
             const payload = state.payload;
             const availableDays = payload.days.length;
@@ -860,6 +1065,7 @@
                 },
             };
             const kpis = computeKpis(data);
+            const insights = computeInsights(data, labels, kpis);
 
             elements.kpiTotal.textContent = String(kpis.totalItems);
             elements.kpiAuthority.textContent = `${Math.round(kpis.authorityShare * 100)}%`;
@@ -875,6 +1081,7 @@
             const selectedStart = selectedDays[0] || payload.period.start_date;
             const selectedEnd = selectedDays[selectedDays.length - 1] || payload.period.end_date;
             elements.meta.textContent = `Showing ${count}-day metrics from ${formatDayLabel(selectedStart)} to ${formatDayLabel(selectedEnd)}. Generated ${payload.generated_at}.`;
+            renderInsights(insights);
 
             if (kpis.totalItems === 0) {
                 showOnly("empty");
