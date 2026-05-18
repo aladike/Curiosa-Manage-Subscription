@@ -1407,19 +1407,19 @@
                 <div class="dashboard-mini-grid" aria-label="Dashboard metric preview">
                     <div class="dashboard-mini-kpi" style="--accent: #1e3a8a;">
                         <p class="dashboard-mini-label">Briefing items</p>
-                        <p class="dashboard-mini-value">1.2k</p>
+                        <p class="dashboard-mini-value" data-dashboard-kpi="total-items">1.2k</p>
                     </div>
                     <div class="dashboard-mini-kpi" style="--accent: #EA580C;">
                         <p class="dashboard-mini-label">Regulatory share</p>
-                        <p class="dashboard-mini-value">9%</p>
+                        <p class="dashboard-mini-value" data-dashboard-kpi="authority-share">9%</p>
                     </div>
                     <div class="dashboard-mini-kpi" style="--accent: #DC2626;">
                         <p class="dashboard-mini-label">Action signals</p>
-                        <p class="dashboard-mini-value">205</p>
+                        <p class="dashboard-mini-value" data-dashboard-kpi="watch-action-items">205</p>
                     </div>
                     <div class="dashboard-mini-kpi" style="--accent: #1B5FA5;">
                         <p class="dashboard-mini-label">Signal pressure</p>
-                        <p class="dashboard-mini-value">4.3k</p>
+                        <p class="dashboard-mini-value" data-dashboard-kpi="weighted-signal">4.3k</p>
                     </div>
                 </div>
                 <div class="dashboard-chart-mini" aria-label="Static dashboard chart preview">
@@ -1546,6 +1546,48 @@
                 statusMessage.classList.toggle('form-status-error', tone === 'error');
             }
 
+            function formatCompactNumber(value) {
+                const number = Number(value) || 0;
+                if (number >= 1000) {
+                    const precision = number >= 10000 ? 0 : 1;
+                    return `${(number / 1000).toFixed(precision).replace(/\.0$/, '')}k`;
+                }
+                return String(Math.round(number));
+            }
+
+            async function loadDashboardPreview() {
+                const targets = {
+                    totalItems: document.querySelector('[data-dashboard-kpi="total-items"]'),
+                    authorityShare: document.querySelector('[data-dashboard-kpi="authority-share"]'),
+                    watchActionItems: document.querySelector('[data-dashboard-kpi="watch-action-items"]'),
+                    weightedSignal: document.querySelector('[data-dashboard-kpi="weighted-signal"]'),
+                };
+
+                try {
+                    const response = await fetch('./dashboard/data.json', { cache: 'no-store' });
+                    if (!response.ok) {
+                        return;
+                    }
+                    const payload = await response.json();
+                    if (!payload || payload.schema_version !== 1 || !payload.kpis) {
+                        return;
+                    }
+
+                    if (targets.totalItems) {
+                        targets.totalItems.textContent = formatCompactNumber(payload.total_items);
+                    }
+                    if (targets.authorityShare) {
+                        targets.authorityShare.textContent = `${Math.round((Number(payload.kpis.authority_share) || 0) * 100)}%`;
+                    }
+                    if (targets.watchActionItems) {
+                        targets.watchActionItems.textContent = formatCompactNumber(payload.kpis.watch_action_items);
+                    }
+                    if (targets.weightedSignal) {
+                        targets.weightedSignal.textContent = formatCompactNumber(payload.kpis.weighted_signal);
+                    }
+                } catch (_error) {}
+            }
+
             function openAccessForm() {
                 form.classList.add('is-open');
                 form.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1581,6 +1623,7 @@
             }
 
             setSubmittedAt();
+            loadDashboardPreview();
 
             loadEmailJs()
                 .then((client) => {

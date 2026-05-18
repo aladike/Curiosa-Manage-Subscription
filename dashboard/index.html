@@ -847,7 +847,8 @@
             const payload = state.payload;
             const availableDays = payload.days.length;
             const count = Math.min(state.range, availableDays);
-            const labels = slice(payload.days, count).map(formatDayLabel);
+            const selectedDays = slice(payload.days, count);
+            const labels = selectedDays.map(formatDayLabel);
             const data = {
                 totals_by_day: slice(payload.totals_by_day || [], count),
                 series: {
@@ -870,7 +871,14 @@
             elements.kpiWeightedNote.textContent = kpis.totalItems
                 ? `Cumulative relevance · avg ${kpis.weightedSignalAverage.toFixed(1)}/item`
                 : "Cumulative AI relevance score";
-            elements.meta.textContent = `Aggregated public metrics from ${formatDayLabel(payload.period.start_date)} to ${formatDayLabel(payload.period.end_date)}. Generated ${payload.generated_at}.`;
+
+            const selectedStart = selectedDays[0] || payload.period.start_date;
+            const selectedEnd = selectedDays[selectedDays.length - 1] || payload.period.end_date;
+            const unknownActionItems = sum(data.series.action_count.Unknown || []);
+            const dataNote = unknownActionItems > 0
+                ? ` Data note: ${unknownActionItems} older ranked items in this selected range lack AI action/weight labels and are shown as Unknown.`
+                : "";
+            elements.meta.textContent = `Showing ${count}-day metrics from ${formatDayLabel(selectedStart)} to ${formatDayLabel(selectedEnd)}. Generated ${payload.generated_at}.${dataNote}`;
 
             if (kpis.totalItems === 0) {
                 showOnly("empty");
