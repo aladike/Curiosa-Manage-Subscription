@@ -277,26 +277,78 @@
             line-height: 1.4;
         }
 
+        .insight-grid {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 11px;
+            margin: 0 0 18px;
+        }
+
+        .insight-card {
+            min-width: 0;
+            padding: 15px 16px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--surface);
+            box-shadow: var(--shadow-small);
+        }
+
+        .insight-label {
+            margin: 0;
+            color: var(--muted);
+            font-size: 10.5px;
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .insight-value {
+            margin: 9px 0 0;
+            color: var(--navy);
+            font-size: 18px;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: 0;
+        }
+
+        .insight-note {
+            margin: 6px 0 0;
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.35;
+        }
+
+        .insight-card.is-warning {
+            border-color: var(--watch-border);
+            background: #fffdf3;
+        }
+
+        .insight-card.is-ok {
+            border-color: #BBF7D0;
+            background: #F0FDF4;
+        }
+
         .chart-grid {
             display: grid;
-            gap: 14px;
+            gap: 18px;
         }
 
         .chart-row-two {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 14px;
+            gap: 18px;
         }
 
         .chart-row-three {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 14px;
+            gap: 18px;
         }
 
         .chart-panel {
             min-width: 0;
-            padding: 18px 18px 14px;
+            padding: 20px 20px 16px;
             border: 1px solid var(--border);
             border-radius: 10px;
             background: var(--surface);
@@ -382,6 +434,12 @@
             text-decoration: underline;
         }
 
+        @media (max-width: 1100px) {
+            .insight-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
         @media (max-width: 900px) {
             .header-inner,
             .shell,
@@ -399,6 +457,12 @@
             }
 
             .chart-row-three {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .insight-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -496,6 +560,34 @@
                 </article>
             </div>
 
+            <section class="insight-grid" aria-label="Selected range insights">
+                <article class="insight-card">
+                    <p class="insight-label">Peak volume day</p>
+                    <p id="insight-peak-volume" class="insight-value">-</p>
+                    <p id="insight-peak-volume-note" class="insight-note">Most ranked items</p>
+                </article>
+                <article class="insight-card">
+                    <p class="insight-label">Peak signal day</p>
+                    <p id="insight-peak-signal" class="insight-value">-</p>
+                    <p id="insight-peak-signal-note" class="insight-note">Highest weighted score</p>
+                </article>
+                <article class="insight-card">
+                    <p class="insight-label">Top topic</p>
+                    <p id="insight-top-topic" class="insight-value">-</p>
+                    <p id="insight-top-topic-note" class="insight-note">Most mentions</p>
+                </article>
+                <article class="insight-card">
+                    <p class="insight-label">Action / Watch share</p>
+                    <p id="insight-action-share" class="insight-value">-</p>
+                    <p id="insight-action-share-note" class="insight-note">Of selected items</p>
+                </article>
+                <article id="insight-quality-card" class="insight-card">
+                    <p class="insight-label">Data quality</p>
+                    <p id="insight-quality" class="insight-value">-</p>
+                    <p id="insight-quality-note" class="insight-note">Selected range</p>
+                </article>
+            </section>
+
             <div class="chart-grid" aria-label="Dashboard charts">
                 <section class="chart-panel">
                     <div class="chart-head">
@@ -536,9 +628,9 @@
                         <div class="chart-head">
                             <div>
                                 <h2 class="chart-title">Source Mix</h2>
-                                <p class="chart-subtitle">Regulators vs. media &amp; blogs</p>
+                                <p class="chart-subtitle">Official authorities as share of ranked items</p>
                             </div>
-                            <span class="chart-tag">by source</span>
+                            <span class="chart-tag">share / day</span>
                         </div>
                         <div class="chart-frame chart-frame-compact"><canvas id="source-type"></canvas></div>
                     </section>
@@ -546,7 +638,7 @@
                         <div class="chart-head">
                             <div>
                                 <h2 class="chart-title">Topic Activity</h2>
-                                <p class="chart-subtitle">Mentions by theme per day</p>
+                                <p class="chart-subtitle">Top themes in the selected range</p>
                             </div>
                             <span class="chart-tag">topic mentions</span>
                         </div>
@@ -593,11 +685,11 @@
             ignore: "#CBD5E1",
             authority: "#EA580C",
             media: "#1B5FA5",
-            unknown: "#94A3B8",
+            unknown: "#CBD5E1",
             privacy: "#059669",
             security: "#2563EB",
             legal: "#7C3AED",
-            enforcement: "#DC2626",
+            enforcement: "#9F1239",
             incident: "#EA580C",
             other: "#64748B",
             navy: "#14233B",
@@ -684,6 +776,17 @@
             kpiWatchAction: document.getElementById("kpi-watch-action"),
             kpiWeighted: document.getElementById("kpi-weighted"),
             kpiWeightedNote: document.getElementById("kpi-weighted-note"),
+            insightPeakVolume: document.getElementById("insight-peak-volume"),
+            insightPeakVolumeNote: document.getElementById("insight-peak-volume-note"),
+            insightPeakSignal: document.getElementById("insight-peak-signal"),
+            insightPeakSignalNote: document.getElementById("insight-peak-signal-note"),
+            insightTopTopic: document.getElementById("insight-top-topic"),
+            insightTopTopicNote: document.getElementById("insight-top-topic-note"),
+            insightActionShare: document.getElementById("insight-action-share"),
+            insightActionShareNote: document.getElementById("insight-action-share-note"),
+            insightQuality: document.getElementById("insight-quality"),
+            insightQualityNote: document.getElementById("insight-quality-note"),
+            insightQualityCard: document.getElementById("insight-quality-card"),
             contentPanel: document.getElementById("content-categories-panel"),
         };
 
@@ -822,6 +925,72 @@
             };
         }
 
+        function singleSeriesOptions(stacked = false) {
+            const options = baseOptions(stacked);
+            options.plugins.legend.display = false;
+            return options;
+        }
+
+        function horizontalBarOptions() {
+            const options = baseOptions(false);
+            options.indexAxis = "y";
+            options.plugins.legend.display = false;
+            options.interaction = { mode: "nearest", intersect: true };
+            options.scales.x.beginAtZero = true;
+            options.scales.y.grid.display = false;
+            return options;
+        }
+
+        function percentLineOptions() {
+            const options = singleSeriesOptions(false);
+            options.scales.y.suggestedMax = 100;
+            options.scales.y.ticks.callback = (value) => `${value}%`;
+            options.plugins.tooltip.callbacks = {
+                label: (context) => `${context.dataset.label}: ${context.parsed.y}%`,
+            };
+            return options;
+        }
+
+        function maxIndex(values) {
+            if (!Array.isArray(values) || values.length === 0) return -1;
+            let bestIndex = 0;
+            let bestValue = Number(values[0] || 0);
+            values.forEach((value, index) => {
+                const numeric = Number(value || 0);
+                if (numeric > bestValue) {
+                    bestValue = numeric;
+                    bestIndex = index;
+                }
+            });
+            return bestIndex;
+        }
+
+        function sumSeriesByDay(series) {
+            const values = Object.values(series || {});
+            if (!values.length) return [];
+            const length = Math.max(...values.map((items) => items.length));
+            return Array.from({ length }, (_, index) =>
+                values.reduce((total, items) => total + Number(items[index] || 0), 0)
+            );
+        }
+
+        function totalsByLabel(series) {
+            return Object.entries(series || {})
+                .map(([label, values]) => [label, sum(values)])
+                .filter(([, total]) => total > 0)
+                .sort((a, b) => b[1] - a[1]);
+        }
+
+        function percent(value) {
+            return `${Math.round(value * 100)}%`;
+        }
+
+        function compactNumber(value) {
+            const numeric = Number(value || 0);
+            if (numeric >= 1000) return `${(numeric / 1000).toFixed(1)}k`;
+            return String(numeric);
+        }
+
         function computeKpis(data) {
             const sourceType = data.series.source_type || {};
             const actionCount = data.series.action_count || {};
@@ -843,6 +1012,56 @@
             };
         }
 
+        function computeInsights(data, labels, kpis) {
+            const totals = data.totals_by_day || [];
+            const weightedByDay = sumSeriesByDay(data.series.action_weighted || {});
+            const topicTotals = totalsByLabel(data.series.topic_mentions || {});
+            const peakVolumeIndex = maxIndex(totals);
+            const peakSignalIndex = maxIndex(weightedByDay);
+            const topTopic = topicTotals[0] || null;
+            const unknownActionItems = sum((data.series.action_count || {}).Unknown || []);
+            const actionShare = kpis.totalItems ? kpis.watchActionItems / kpis.totalItems : 0;
+
+            return {
+                peakVolumeLabel: peakVolumeIndex >= 0 ? labels[peakVolumeIndex] : "-",
+                peakVolumeValue: peakVolumeIndex >= 0 ? Number(totals[peakVolumeIndex] || 0) : 0,
+                peakSignalLabel: peakSignalIndex >= 0 ? labels[peakSignalIndex] : "-",
+                peakSignalValue: peakSignalIndex >= 0 ? Number(weightedByDay[peakSignalIndex] || 0) : 0,
+                topTopicLabel: topTopic ? displayLabel(topTopic[0]) : "-",
+                topTopicValue: topTopic ? topTopic[1] : 0,
+                actionShare,
+                unknownActionItems,
+            };
+        }
+
+        function renderInsights(insights) {
+            elements.insightPeakVolume.textContent = insights.peakVolumeLabel;
+            elements.insightPeakVolumeNote.textContent = insights.peakVolumeValue
+                ? `${insights.peakVolumeValue} ranked items`
+                : "No ranked items";
+
+            elements.insightPeakSignal.textContent = insights.peakSignalLabel;
+            elements.insightPeakSignalNote.textContent = insights.peakSignalValue
+                ? `${compactNumber(insights.peakSignalValue)} weighted score`
+                : "No weighted signal";
+
+            elements.insightTopTopic.textContent = insights.topTopicLabel;
+            elements.insightTopTopicNote.textContent = insights.topTopicValue
+                ? `${insights.topTopicValue} mentions`
+                : "No topic mentions";
+
+            elements.insightActionShare.textContent = percent(insights.actionShare);
+            elements.insightActionShareNote.textContent = "Action or Watch items";
+
+            const hasUnknown = insights.unknownActionItems > 0;
+            elements.insightQuality.textContent = hasUnknown ? "Partial" : "Complete";
+            elements.insightQualityNote.textContent = hasUnknown
+                ? `${insights.unknownActionItems} Unknown action labels`
+                : "No Unknown action labels";
+            elements.insightQualityCard.classList.toggle("is-warning", hasUnknown);
+            elements.insightQualityCard.classList.toggle("is-ok", !hasUnknown);
+        }
+
         function render() {
             const payload = state.payload;
             const availableDays = payload.days.length;
@@ -860,6 +1079,14 @@
                 },
             };
             const kpis = computeKpis(data);
+            const insights = computeInsights(data, labels, kpis);
+            const weightedByDay = sumSeriesByDay(data.series.action_weighted || {});
+            const topTopics = totalsByLabel(data.series.topic_mentions || {}).slice(0, 5);
+            const authorityValues = data.series.source_type.Authority || [];
+            const regulatoryShareByDay = data.totals_by_day.map((total, index) => {
+                const authority = Number(authorityValues[index] || 0);
+                return total ? Math.round((authority / total) * 100) : 0;
+            });
 
             elements.kpiTotal.textContent = String(kpis.totalItems);
             elements.kpiAuthority.textContent = `${Math.round(kpis.authorityShare * 100)}%`;
@@ -874,11 +1101,8 @@
 
             const selectedStart = selectedDays[0] || payload.period.start_date;
             const selectedEnd = selectedDays[selectedDays.length - 1] || payload.period.end_date;
-            const unknownActionItems = sum(data.series.action_count.Unknown || []);
-            const dataNote = unknownActionItems > 0
-                ? ` Data note: ${unknownActionItems} older ranked items in this selected range lack AI action/weight labels and are shown as Unknown.`
-                : "";
-            elements.meta.textContent = `Showing ${count}-day metrics from ${formatDayLabel(selectedStart)} to ${formatDayLabel(selectedEnd)}. Generated ${payload.generated_at}.${dataNote}`;
+            elements.meta.textContent = `Showing ${count}-day metrics from ${formatDayLabel(selectedStart)} to ${formatDayLabel(selectedEnd)}. Generated ${payload.generated_at}.`;
+            renderInsights(insights);
 
             if (kpis.totalItems === 0) {
                 showOnly("empty");
@@ -899,7 +1123,7 @@
                         borderRadius: 3,
                     }],
                 },
-                options: baseOptions(false),
+                options: singleSeriesOptions(false),
             });
 
             renderChart("action-count", {
@@ -910,20 +1134,58 @@
 
             renderChart("weighted-signal", {
                 type: "line",
-                data: { labels, datasets: lineDatasets(data.series.action_weighted, { fill: true, palette: ACTION_COLORS }) },
-                options: baseOptions(false),
+                data: {
+                    labels,
+                    datasets: [{
+                        label: "Total weighted signal",
+                        data: weightedByDay,
+                        fill: true,
+                        borderWidth: 1.8,
+                        borderColor: COLORS.volume,
+                        backgroundColor: transparentize(COLORS.volume, 0.16),
+                        tension: 0.35,
+                        pointRadius: 2,
+                        pointHoverRadius: 4,
+                    }],
+                },
+                options: singleSeriesOptions(false),
             });
 
             renderChart("source-type", {
-                type: "bar",
-                data: { labels, datasets: barDatasets(data.series.source_type, { stacked: true, palette: SOURCE_COLORS }) },
-                options: baseOptions(true),
+                type: "line",
+                data: {
+                    labels,
+                    datasets: [{
+                        label: "Regulatory share",
+                        data: regulatoryShareByDay,
+                        fill: true,
+                        borderWidth: 1.8,
+                        borderColor: COLORS.authority,
+                        backgroundColor: transparentize(COLORS.authority, 0.14),
+                        tension: 0.35,
+                        pointRadius: 2,
+                        pointHoverRadius: 4,
+                    }],
+                },
+                options: percentLineOptions(),
             });
 
             renderChart("topic-mentions", {
-                type: "line",
-                data: { labels, datasets: lineDatasets(data.series.topic_mentions, { palette: TOPIC_COLORS }) },
-                options: baseOptions(false),
+                type: "bar",
+                data: {
+                    labels: topTopics.map(([label]) => displayLabel(label)),
+                    datasets: [{
+                        label: "Mentions",
+                        data: topTopics.map(([, value]) => value),
+                        borderWidth: 1,
+                        borderRadius: 3,
+                        borderColor: topTopics.map(([label], index) => colorFor(label, index, TOPIC_COLORS)),
+                        backgroundColor: topTopics.map(([label], index) =>
+                            transparentize(colorFor(label, index, TOPIC_COLORS), 0.55)
+                        ),
+                    }],
+                },
+                options: horizontalBarOptions(),
             });
 
             const contentEntries = nonZeroEntries(data.series.content_type || {});
@@ -934,6 +1196,8 @@
                     data: { labels, datasets: barDatasets(data.series.content_type, { stacked: true, palette: CONTENT_COLORS }) },
                     options: baseOptions(true),
                 });
+            } else {
+                destroyChart("content-categories");
             }
         }
 
