@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="referrer" content="no-referrer">
-    <title>Curiosa Analytics Dashboard</title>
+    <title>Analytics Dashboard | Curiosa</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <style>
         :root {
@@ -179,6 +179,49 @@
             line-height: 1.55;
         }
 
+        .range-summary {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 7px;
+            max-width: 760px;
+            margin: 12px 0 0;
+        }
+
+        .range-pill,
+        .range-dates,
+        .range-generated {
+            display: inline-flex;
+            align-items: center;
+            min-height: 27px;
+            padding: 5px 10px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: rgba(255,255,255,0.74);
+            color: var(--muted);
+            font-size: 11.5px;
+            font-weight: 700;
+            line-height: 1;
+            box-shadow: var(--shadow-small);
+        }
+
+        .range-pill {
+            border-color: var(--soft-line);
+            background: var(--soft-blue);
+            color: var(--blue);
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+
+        .range-dates {
+            color: var(--navy);
+        }
+
+        .range-generated {
+            color: var(--muted);
+            font-weight: 600;
+        }
+
         .toggle {
             display: inline-grid;
             grid-template-columns: 1fr 1fr;
@@ -279,16 +322,6 @@
 
         .insight-strip {
             margin: 0 0 14px;
-        }
-
-        .insight-strip-head {
-            margin: 0 0 8px;
-            color: var(--muted);
-            font-size: 11px;
-            font-weight: 800;
-            line-height: 1;
-            letter-spacing: 0.07em;
-            text-transform: uppercase;
         }
 
         .insight-grid {
@@ -414,6 +447,63 @@
         .chart-frame-compact { height: 200px; }
         .chart-frame-topic { height: 240px; }
 
+        .dashboard-faq {
+            margin-top: 18px;
+            padding: 18px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: rgba(255,255,255,0.82);
+            box-shadow: var(--shadow-small);
+        }
+
+        .faq-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 14px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .faq-head h2 {
+            margin: 0;
+            color: var(--navy);
+            font-size: 14px;
+            font-weight: 800;
+            line-height: 1.25;
+        }
+
+        .faq-head p {
+            max-width: 480px;
+            margin: 0;
+            color: var(--muted);
+            font-size: 11.5px;
+            line-height: 1.45;
+            text-align: right;
+        }
+
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .faq-item h3 {
+            margin: 0 0 6px;
+            color: var(--navy);
+            font-size: 12px;
+            font-weight: 800;
+            line-height: 1.25;
+        }
+
+        .faq-item p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 11.5px;
+            line-height: 1.45;
+        }
+
         .site-footer {
             border-top: 1px solid var(--border);
             background: #fff;
@@ -470,6 +560,18 @@
             .insight-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
+
+            .faq-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .faq-head {
+                flex-direction: column;
+            }
+
+            .faq-head p {
+                text-align: left;
+            }
         }
 
         @media (max-width: 640px) {
@@ -502,6 +604,23 @@
                 width: 100%;
             }
 
+            .range-summary {
+                align-items: stretch;
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .range-pill,
+            .range-dates,
+            .range-generated {
+                justify-content: center;
+                width: 100%;
+            }
+
+            .faq-grid {
+                grid-template-columns: 1fr;
+            }
+
             .footer-inner {
                 align-items: flex-start;
                 flex-direction: column;
@@ -529,8 +648,12 @@
         <section class="dashboard-head" aria-labelledby="dashboard-title">
             <div>
                 <span class="badge">Analytics</span>
-                <h1 id="dashboard-title">Curiosa Analytics Dashboard</h1>
-                <p id="dashboard-meta" class="subhead">Aggregated public metrics from Curiosa daily briefings.</p>
+                <h1 id="dashboard-title">Analytics Dashboard</h1>
+                <div id="dashboard-meta" class="range-summary" aria-live="polite">
+                    <span id="range-window-label" class="range-pill">7-day window</span>
+                    <span id="range-window-dates" class="range-dates">Latest selected range</span>
+                    <span id="range-generated" class="range-generated">Generated from aggregate data</span>
+                </div>
             </div>
             <div class="toggle" aria-label="Date range">
                 <button type="button" class="active" data-range="7">7 days</button>
@@ -566,8 +689,7 @@
                 </article>
             </div>
 
-            <section class="insight-strip" aria-label="Selected range insights">
-                <div class="insight-strip-head">Selected range insights</div>
+            <section class="insight-strip" aria-label="Range summary cards">
                 <div class="insight-grid">
                     <article class="insight-card">
                         <p class="insight-label">Peak volume day</p>
@@ -624,7 +746,7 @@
                         <div class="chart-head">
                             <div>
                                 <h2 class="chart-title">Signal Pressure</h2>
-                                <p class="chart-subtitle">Weighted AI relevance score by action label; not item count. Counts are shown in Priority Classification.</p>
+                                <p class="chart-subtitle">Weighted AI relevance score by action label</p>
                             </div>
                             <span class="chart-tag">weighted score</span>
                         </div>
@@ -665,6 +787,32 @@
                     </section>
                 </div>
             </div>
+
+            <section class="dashboard-faq" aria-labelledby="dashboard-faq-title">
+                <div class="faq-head">
+                    <h2 id="dashboard-faq-title">How to read this dashboard</h2>
+                    <p>Public aggregate metrics only; no article-level or subscriber data is exposed.</p>
+                </div>
+
+                <div class="faq-grid">
+                    <article class="faq-item">
+                        <h3>Briefing volume</h3>
+                        <p>Ranked items included in the selected daily briefing window.</p>
+                    </article>
+                    <article class="faq-item">
+                        <h3>Priority classification</h3>
+                        <p>Item counts by AI action label: Action, Watch, FYI, or Unknown.</p>
+                    </article>
+                    <article class="faq-item">
+                        <h3>Signal pressure</h3>
+                        <p>Weighted relevance score by action label. It is not an item count.</p>
+                    </article>
+                    <article class="faq-item">
+                        <h3>Source and topics</h3>
+                        <p>Source Mix shows authority vs media/blog counts; Topic Activity tracks aggregate theme mentions.</p>
+                    </article>
+                </div>
+            </section>
         </section>
     </main>
 
@@ -779,6 +927,9 @@
             empty: document.getElementById("empty-state"),
             content: document.getElementById("dashboard-content"),
             meta: document.getElementById("dashboard-meta"),
+            rangeWindowLabel: document.getElementById("range-window-label"),
+            rangeWindowDates: document.getElementById("range-window-dates"),
+            rangeGenerated: document.getElementById("range-generated"),
             kpiTotal: document.getElementById("kpi-total"),
             kpiAuthority: document.getElementById("kpi-authority"),
             kpiAuthorityNote: document.getElementById("kpi-authority-note"),
@@ -825,6 +976,19 @@
             const date = new Date(Date.UTC(year, month - 1, day));
             const weekdays = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
             return `${weekdays[date.getUTCDay()]}, ${day}.${month}`;
+        }
+
+        function formatGeneratedAt(isoDate) {
+            const date = new Date(isoDate);
+            if (Number.isNaN(date.getTime())) return isoDate;
+
+            const day = String(date.getUTCDate()).padStart(2, "0");
+            const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+            const year = date.getUTCFullYear();
+            const hours = String(date.getUTCHours()).padStart(2, "0");
+            const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+
+            return `${day}.${month}.${year} · ${hours}:${minutes} UTC`;
         }
 
         function transparentize(hex, opacity) {
@@ -932,6 +1096,12 @@
                     },
                 },
             };
+        }
+
+        function singleSeriesOptions(stacked = false) {
+            const options = baseOptions(stacked);
+            options.plugins.legend.display = false;
+            return options;
         }
 
         function weightedScoreOptions() {
@@ -1092,7 +1262,13 @@
 
             const selectedStart = selectedDays[0] || payload.period.start_date;
             const selectedEnd = selectedDays[selectedDays.length - 1] || payload.period.end_date;
-            elements.meta.textContent = `Showing ${count}-day metrics from ${formatDayLabel(selectedStart)} to ${formatDayLabel(selectedEnd)}. Generated ${payload.generated_at}.`;
+            elements.rangeWindowLabel.textContent = `${count}-day window`;
+            elements.rangeWindowDates.textContent = `${formatDayLabel(selectedStart)} → ${formatDayLabel(selectedEnd)}`;
+            elements.rangeGenerated.textContent = `Generated ${formatGeneratedAt(payload.generated_at)}`;
+            elements.meta.setAttribute(
+                "aria-label",
+                `Showing ${count}-day metrics from ${formatDayLabel(selectedStart)} to ${formatDayLabel(selectedEnd)}. Generated ${payload.generated_at}.`
+            );
             renderInsights(insights);
 
             if (kpis.totalItems === 0) {
@@ -1106,7 +1282,7 @@
                 data: {
                     labels,
                     datasets: [{
-                        label: "Items",
+                        label: "News",
                         data: data.totals_by_day,
                         backgroundColor: COLORS.volumeFill,
                         borderColor: COLORS.volume,
@@ -1114,7 +1290,7 @@
                         borderRadius: 3,
                     }],
                 },
-                options: baseOptions(false),
+                options: singleSeriesOptions(false),
             });
 
             renderChart("action-count", {
